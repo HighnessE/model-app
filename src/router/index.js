@@ -12,8 +12,8 @@ import cardCollect from '@/components/cardCollect/cardCollect'
 import Center from '@/components/center/center'
 import Setup from '@/components/setup/setup'
 import Contact from '@/components/contact/contact'
-import Addr from '@/common/vuxAddress/vuxAddress'
-import ReleaseNotice from '@/components/releaseNotice/releaseNotice'
+import notifyDetail from '@/components/notifyDetail/notifyDetail'
+import releaseNotify from '@/components/releaseNotify/releaseNotify'
 Vue.use(Router)
 
 const routes = [{
@@ -72,13 +72,13 @@ const routes = [{
     name: 'Contact',
     component: Contact
 }, {
-    path: '/releaseNotice',
-    name: 'releaseNotice',
-    component: ReleaseNotice
+    path: '/releaseNotify',
+    name: 'releaseNotify',
+    component: releaseNotify
 }, {
-    path: '/addr',
-    name: 'addr',
-    component: Addr
+    path: '/notifyDetail',
+    name: 'notifyDetail',
+    component: notifyDetail
 }]
 
 export default new Router({

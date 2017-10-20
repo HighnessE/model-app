@@ -2,9 +2,9 @@
     <ul class="popup-content">
         <li class="popup-item" v-for="(item,index) in arrList" :key='index' @click="selectItem(index)">
             <div>
-                <x-icon type="ios-cog" size="0.4rem"></x-icon>
+                <x-icon type="ios-circle-outline" size="0.4rem"></x-icon>
             </div>
-            <p>{{item.items}}</p>
+            <p>{{item[items]}}</p>
         </li>
     </ul>
 </template>

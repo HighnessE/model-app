@@ -1,6 +1,122 @@
 <template>
   <div id="notify-detail">
-      <x-header>通告详情</x-header>
+    <x-header>通告详情</x-header>
+    <div class="notify-content">
+      <!-- 通告头部 -->
+      <div class="notifyhead">
+        <img class="notifyheadbg" src="./img/notifybg.jpg">
+        <div class="header">
+          <div class="headerimg">
+            <img src="./img/notifybg.jpg">
+          </div>
+          <div class="nickname">xiaomi</div>
+        </div>
+        <h4>深圳招男神</h4>
+      </div>
+      <!-- 工作时间和地点 -->
+      <div class="infopart">
+        <div class="crossbar">
+          <x-icon type="ios-clock-outline" size="0.5rem" class="icon-notify"></x-icon>
+          <h4>工作时间：</h4>
+          <p>2017-1-5 — 2017-1-5</p>
+        </div>
+        <div class="crossbar2">
+          <div>
+            <x-icon type="ios-location-outline" size="0.5rem" class="icon-notify"></x-icon>
+            <h4>工作地点：</h4>
+          </div>
+          <p>上海上海</p>
+        </div>
+      </div>
+      <!-- 岗位要求 -->
+      <div class="requestpart">
+        <div class="crossbox">
+          <div class="titleline">
+            <x-icon type="person-stalker" size="0.5rem" class="icon-notify"></x-icon>
+            <h4>岗位要求</h4>
+          </div>
+          <div class="request">
+            <div>
+              <span>性别：男</span>
+              <span>人数：23人</span>
+              <span>面试：否</span>
+            </div>
+            <div>
+              <span>价格：100/人</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 详细说明 -->
+      <div class="detailpart">
+        <div class="crossbox">
+          <div class="titleline">
+            <x-icon type="ios-search" size="0.5rem" class="icon-notify"></x-icon>
+            <h4>详细说明</h4>
+          </div>
+          <p>小混混大盛和扣扣是网游世界的高手，为了找钱玩游戏，两人想碰瓷敲诈李小果一笔，李小果夫妇撞了人后逃逸，大盛和扣扣找到李家，为了要钱干脆赖在李家不走了——从此，他们的每一步都走得很惊</p>
+        </div>
+      </div>
+      <!-- 联系方式 -->
+      <div class="detailpart">
+        <div class="crossbox">
+          <div class="titleline">
+            <x-icon type="ios-list-outline" size="0.5rem" class="icon-notify"></x-icon>
+            <h4>联系方式</h4>
+          </div>
+          <p>手机&nbsp;&nbsp;12345678910</p>
+        </div>
+      </div>
+      <!-- 上传的图片 -->
+      <div class="samplepart">
+        <div class="crossimgbox">
+          <div class="titleline">
+            <x-icon type="images" size="0.5rem" class="icon-notify"></x-icon>
+            <h4>图片</h4>
+          </div>
+          <div>
+            <ul> 
+              <li>
+                <img src="" alt="">
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- 操作栏 -->
+      <div class="handlepart">
+        <div class="crossbar">
+          <div class="collectbtn">
+            <x-icon type="ios-star" size="0.5rem" class="icon-notify"></x-icon>
+            <span>收藏</span>
+          </div>
+          <div class="reportbtn">
+            <x-icon type="alert-circled" size="0.5rem" class="icon-notify"></x-icon>
+            <span>举报</span>
+          </div>
+          <div>
+            <x-icon type="eye" size="0.5rem" class="icon-notify"></x-icon>
+            <span>123</span>
+          </div>
+        </div>
+      </div>
+      <!-- 跳转栏 -->
+      <div class="jumppart">
+        <a href="/home" class="crossjump">
+          <img src="./img/morenotify2.png">
+          <span>查看更多通告</span>
+        </a>
+      </div>
+      <!-- 用户须知 -->
+      <div class="infomationpart">
+        <div class="crossbar">
+          <p>用户须知：</p>
+          <p>○ 为保证平台环境，请用户自觉遵守相关法律法规，禁止发布违法违规等内容。</p>
+          <p>○ 如发现虚假单，请点击上方“举报”，平台核实后将会第一时间删除通告，情节严重者将被永久屏蔽账号。</p>
+          <img src="./img/usernote.jpg" width="100%" style="margin-top:0.1333rem">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -17,6 +133,300 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+.notify-content {
+  width: 100%;
+  .notifyhead {
+    position: relative;
+    margin-bottom: 0.2667rem;
+    padding-bottom: 0.3467rem;
+    background: #fff;
+    width: 100%;
+    .notifyheadbg {
+      width: 100%;
+    }
+    .header {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -70%);
+      border-radius: 50%;
+      .headerimg {
+        width: 1.6rem;
+        height: 1.6rem;
+        overflow: hidden;
+        display: block;
+        border-radius: 50%;
+        margin: 0 auto 0.1067rem;
+        img {
+          width: 100%;
+        }
+      }
+      .nickname {
+        font-size: 0.4rem;
+        color: #ff2f76;
+        text-align: center;
+      }
+    }
+    h4 {
+      margin-top: 1.2267rem;
+      text-align: center;
+      font-size: 0.4267rem;
+      color: #382f2d;
+    }
+    .deadline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.3733rem;
+      text-align: center;
+      font-size: 0.4rem;
+      color: #919191;
+      img {
+        width: 0.3733rem;
+        display: block;
+        margin-right: 0.16rem;
+      }
+    }
+  }
+  .infopart {
+    background: #fff;
+    margin-bottom: 0.2667rem;
+    .crossbar, .crossbar2 {
+      width: 100%;
+      padding: 0.48rem 0.4267rem 0.4267rem 0.56rem;
+      box-sizing: border-box;
+    }
+  }
+  .requestpart, .detailpart {
+    background: #fff;
+    margin-bottom: 0.2667rem;
+    .crossbox {
+      width: 100%;
+      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+      box-sizing: border-box;
+    }
+  }
+  .infopart {
+    .crossbar {
+      display: flex;
+      align-items: center;
+      border-bottom: 0.0267rem solid #eaeaea;
+      svg {
+        display: block;
+        width: 0.48rem;
+        margin-right: 0.3733rem;
+      }
+      h4, p {
+        font-size: 0.4rem;
+        line-height: 0.6667rem;
+      }
+      h4 {
+        color: #382f2f;
+        margin-right: 0.1333rem;
+      }
+      p {
+        color: #919191;
+      }
+    }
+    .crossbar2 {
+      display: flex;
+      align-items: flex-start;
+      div {
+        display: flex;
+        align-items: center;
+        svg {
+          margin-right: 0.3733rem;
+        }
+        h4 {
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+          color: #382f2f;
+          margin-right: 0.1333rem;
+        }
+      }
+      p {
+        flex: 1;
+        font-size: 0.4rem;
+        color: #919191;
+        line-height: 0.6667rem;
+      }
+    }
+  }
+  .requestpart {
+    .crossbox {
+      .titleline {
+        display: flex;
+        align-items: center;
+        height: 0.6667rem;
+        svg {
+          margin-right: 0.3733rem;
+        }
+        h4 {
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+          color: #382f2f;
+        }
+      }
+      .request {
+        margin-left: 0.8533rem;
+        div {
+          display: flex;
+          flex-flow: row wrap;
+          span {
+            flex: 1;
+            display: block;
+            font-size: 0.4rem;
+            margin-top: 0.4267rem;
+            color: #919191;
+          }
+        }
+      }
+    }
+  }
+  .detailpart {
+    .crossbox {
+      .titleline {
+        display: flex;
+        align-items: center;
+        height: 0.6667rem;
+        svg {
+          margin-right: 0.3733rem;
+        }
+        h4 {
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+          color: #382f2f;
+        }
+      }
+      p {
+        margin-left: 0.8533rem;
+        color: #919191;
+        line-height: 0.6667rem;
+        font-size: 0.4rem;
+      }
+    }
+  }
+  .samplepart {
+    background: #fff;
+    margin-bottom: 0.2667rem;
+    .crossimgbox {
+      padding: 0.5333rem 0.4267rem 0.2667rem 0.56rem;
+      .titleline {
+        display: flex;
+        align-items: center;
+        height: 0.6667rem;
+        svg {
+          margin-right: 0.3733rem;
+        }
+        h4 {
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+          color: #382f2f;
+        }
+      }
+      div {
+        width: 100%;
+        text-align: center;
+        ul {
+          display: inline-block;
+          width: 6.64rem;
+          margin: 0.3733rem auto 0;
+          font-size: 0;
+          li {
+            width: 2.0533rem;
+            height: 2.0533rem;
+            display: inline-block;
+            margin-right: 0.2133rem;
+            img {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          li:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+  .handlepart {
+    background: #fff;
+    margin-bottom: 0.2667rem;
+    .crossbar {
+      width: 100%;
+      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      > div {
+        display: flex;
+        align-items: center;
+        height: 0.56rem;
+        background: #fff;
+        margin-right: 0.9333rem;
+        outline: none;
+        svg {
+          margin-right: 0.1333rem;
+        }
+        span {
+          font-size: 0.4rem;
+          color: #919191;
+        }
+      }
+      > div :last-child {
+        margin-right: 0.2133rem;
+      }
+    }
+  }
+  .jumppart {
+    background: #fff;
+    margin-bottom: 0.2667rem;
+    a.crossjump {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+      box-sizing: border-box;
+      font-size: 0.4267rem;
+      background: #fff;
+      color: #919191;
+      img {
+        width: 0.48rem;
+        height: 0.48rem;
+        margin-right: 0.2667rem;
+      }
+      span {
+        color: #ff2f76;
+      }
+    }
+    a:active {
+      background: #909090;
+    }
+  }
 
+  .infomationpart {
+    background: #fff;
+    margin-bottom: 1.0667rem;
+    .crossbar {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.48rem 0.4267rem 0.4267rem 0.6133rem;
+      p {
+        color: #919191;
+        font-size: 0.4rem;
+        line-height: 0.6667rem;
+        margin-top: 0.1333rem;
+      }
+    }
+  }
+  .icon-notify {
+    fill:#909090;
+  }
+  .icon-success {
+    fill:#ff2f76;
+  }
+}
 </style>

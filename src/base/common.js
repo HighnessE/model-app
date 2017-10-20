@@ -1,0 +1,6 @@
+export const domains = 'http://www.qingmeng168.com'
+export const domain = 'http://www.qingmeng168.com/model-spring-lm/'
+export const domainAnnu = domain + 'Annunciate/'
+export const domainModle = domain + 'Modle/'
+export const domainPic = domain + 'Picture/'
+export const domainPay = domain + 'payment/'

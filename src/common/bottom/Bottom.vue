@@ -4,31 +4,59 @@
       <div class="wrapbox">
         <div class="wrapone">
           <router-link to="/Home">
-            <img src="./images/1.png" >
-            <span class="active">最新通告</span>
+            <img :src="$route.path == '/Home' ? imgHome.active : imgHome.quiet" >
+            <span>最新通告</span>
           </router-link>
-          <router-link to="/Card">
-            <img src="./images/2.1.png" >
+          <router-link to="/Card" >
+            <img :src="$route.path == '/Card' ? imgCard.active : imgCard.quiet">
             <span>模特名片</span>
           </router-link>
         </div>
         <div class="wraptwo">
           <router-link to="/Message">
-            <img src="./images/3.1.png" >
+            <img :src="$route.path == '/Message' ? imgMessage.active : imgMessage.quiet">
             <span>我的消息</span>
           </router-link>
           <router-link to="/Center">
-            <img src="./images/4.1.png" >
+            <img :src="$route.path == '/Center' ? imgCenter.active : imgCenter.quiet">
             <span>个人中心</span>
           </router-link>
         </div>
       </div>
-      <div class="releasebtn">发布</div>
+      <div class="releasebtn" v-if="$route.path == '/Card'" @click="judgeCard"><p>制作名片</p></div>
+      <div class="releasebtn" v-else @click="releaseLayer">发布</div>
   </div>
 </template>
 <script>
 export default {
-  
+  data(){
+    return {
+      imgHome:{
+        active:require("./images/1.png"),
+        quiet:require("./images/1.1.png")
+      },
+      imgCard:{
+        active:require("./images/2.png"),
+        quiet:require("./images/2.1.png")
+      },
+      imgMessage:{
+        active:require("./images/3.png"),
+        quiet:require("./images/3.1.png")
+      },
+      imgCenter:{
+        active:require("./images/4.png"),
+        quiet:require("./images/4.1.png")
+      }
+    }
+  },
+  methods: {
+    releaseLayer(){
+      
+    },
+    judgeCard(){
+
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -36,7 +64,7 @@ export default {
   position: fixed;
   left: 0;
   bottom:0;
-   width: 100%;
+  width: 100%;
   height: 1.33rem;
   .wrapbox {
     display: flex;
@@ -62,7 +90,7 @@ export default {
           margin-top: 0.16rem;
           font-size:0.32rem;
         }
-        span.active {
+        &.router-link-active {
           color: #ff2f76;
         }
       }

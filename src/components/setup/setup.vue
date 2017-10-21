@@ -1,6 +1,7 @@
 <template>
   <div id="setup">
     <x-header>设置与隐私</x-header>
+    <!-- 平台规则 -->
     <div class="contentwrap">
         <div class="rule">
             <span>平台规则</span>

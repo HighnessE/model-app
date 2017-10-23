@@ -14,6 +14,8 @@ import Setup from '@/components/setup/setup'
 import Contact from '@/components/contact/contact'
 import notifyDetail from '@/components/notifyDetail/notifyDetail'
 import releaseNotify from '@/components/releaseNotify/releaseNotify'
+import releaseCard from '@/components/releaseCard/releaseCard'
+import cardDetail from '@/components/cardDetail/cardDetail'
 Vue.use(Router)
 
 const routes = [{
@@ -79,6 +81,14 @@ const routes = [{
     path: '/notifyDetail',
     name: 'notifyDetail',
     component: notifyDetail
+}, {
+    path:'/cardDetail',
+    name:'cardDetail',
+    component:cardDetail
+}, {
+    path:'/releaseCard',
+    name:'releaseCard',
+    component:releaseCard
 }]
 
 export default new Router({

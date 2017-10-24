@@ -23,42 +23,42 @@ const routes = [{
     redirect: '/Home'
 }, {
     path: '/Home',
-    name: 'Home',
+    meta: {title:'最新通告'},
     component: Home
 }, {
     path: '/Card',
-    name: 'Card',
+    meta: {title:'模特名片'},
     component: Card
 }, {
     path: '/Message',
-    name: 'Message',
+    meta: {title:'我的消息'},
     component: Message
 }, {
     path: '/Center',
-    name: 'Center',
+    meta: {title:'个人中心'},
     component: Center
 }, {
     path: '/MsgList',
-    name: 'MsgList',
+    meta: {title:'我的消息'},
     component: MessageList
 }, {
     path: '/MsgDetail',
-    name: 'MsgDetail',
+    meta: {title:'我的消息'},
     component: MessageDetail
 }, {
     path: '/myCardList',
-    name: 'myCardList',
+    meta: {title:'我的名片'},
     component: myCardList
 }, {
     path: '/myCollect',
     component: myCollect,
     children: [{
         path: 'notifyCollect',
-        name: 'notifyCollect',
+        meta: {title:'通告收藏'},
         component: notifyCollect
     }, {
         path: 'cardCollect',
-        name: 'cardCollect',
+        meta: {title:'名片收藏'},
         component: cardCollect
     }, {
         path: '/',
@@ -67,27 +67,27 @@ const routes = [{
     }]
 }, {
     path: '/Setup',
-    name: 'Setup',
+    meta: {title:'设置与隐私'},
     component: Setup
 }, {
     path: '/Contact',
-    name: 'Contact',
+    meta: {title:'联系我们'},
     component: Contact
 }, {
     path: '/releaseNotify',
-    name: 'releaseNotify',
+    meta: {title:'发布通告'},
     component: releaseNotify
 }, {
     path: '/notifyDetail',
-    name: 'notifyDetail',
+    meta: {title:'通告详情'},
     component: notifyDetail
 }, {
     path:'/cardDetail',
-    name:'cardDetail',
+    meta:{title:'名片详情'},
     component:cardDetail
 }, {
     path:'/releaseCard',
-    name:'releaseCard',
+    meta:{title:'发布名片'},
     component:releaseCard
 }]
 

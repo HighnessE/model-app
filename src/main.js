@@ -7,14 +7,26 @@ import router from './router'
 import { remInit } from './base/remInit.js'
 import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
+import { WechatPlugin } from 'vux'
+
 Vue.use(VueAwesomeSwiper)
+Vue.use(WechatPlugin)
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
-
+Vue.directive('title', {
+    inserted: function(el, binding) {
+        document.title = el.dataset.title
+    }
+})
 Vue.prototype.$http = axios
     /* eslint-disable no-new */
 new Vue({
     router,
     render: h => h(App)
 }).$mount('#app-box')
+//每次页面加载执行（授权）
+router.beforeEach((to,from,next) => {
+    document.title = to.meta.title || '美约通告'
+    next()
+})

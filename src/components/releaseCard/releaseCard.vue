@@ -8,11 +8,11 @@
     <div class="editcard">
       <!-- 姓名 -->
       <group>
-        <x-input title="姓名" v-model="value"></x-input>
+        <x-input title="姓名" v-model="name" :should-toast-error=false :max="10"></x-input>
       </group>
       <!--年龄-->
       <group>
-        <x-input title="年龄" v-model="value"></x-input>
+        <x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3"></x-input>
       </group>
       <!--地区-->
       <div class="items">
@@ -26,13 +26,14 @@
           </div>
         </div>
       </div>
+      <div class="graybar"></div>
       <!--身高-->
       <group>
-        <x-input title="身高" v-model="value"></x-input>
+        <x-input title="身高/cm" type="number" v-model="height" :should-toast-error=false :max="3"></x-input>
       </group>
       <!--体重-->
       <group>
-        <x-input title="体重" v-model="value"></x-input>
+        <x-input title="体重/kg" type="number" v-model="weight" :should-toast-error=false :max="3"></x-input>
       </group>
       <!--三围-->
       <div class="items">
@@ -48,16 +49,17 @@
       </div>
       <!--鞋码-->
       <group>
-        <x-input title="身高" v-model="value"></x-input>
+        <x-input title="鞋码" type="number" v-model="shoe" :should-toast-error=false :max="2"></x-input>
       </group>
+      <div class="graybar"></div>
       <!--风格标签-->
       <div class="items">
         <div class="itemwrap">
           <div class="itemtype">
             <span>风格标签</span>
           </div>
-          <div class="itemhandle">
-            <input type="text" placeholder="选择2~5个" readonly>
+          <div class="itemhandle" @click.prevent="showStyleTag=!showStyleTag">
+            <input type="text" placeholder="选择2~5个" :value="styleTag.join(' / ')" readonly>
             <x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
           </div>
         </div>
@@ -68,18 +70,19 @@
           <div class="itemtype">
             <span>工作标签</span>
           </div>
-          <div class="itemhandle">
-            <input type="text" placeholder="选择2~5个" id="jobstag-btn" readonly>
+          <div class="itemhandle" @click="showWorkTag=!showWorkTag">
+            <input type="text" placeholder="选择2~5个" :value="workTag.join(' / ')" readonly>
             <x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
           </div>
         </div>
       </div>
       <!--工作履历-->
-      <group :title="工作履历">
-        <x-textarea :max="200" name="resume" placeholder="placeholder"></x-textarea>
+      <group>
+        <x-textarea title="工作履历" :max="140" v-model="resume" placeholder="说出你的故事" autosize></x-textarea>
       </group>
+      <div class="graybar"></div>
       <!--工作报价-->
-      <div id="offer">
+      <div class="reward">
         <div class="items">
           <div class="itemwrap">
             <div class="itemtype">
@@ -92,23 +95,40 @@
           </div>
         </div>
         <div class="offerList">
-
+          <div class="joboffer">
+            <div class="offer">
+              <x-icon type="social-yen" size="0.5rem" class="icon-home"></x-icon>
+              <span class="type">发膜</span>
+              <span class="price">
+                <span class="money">10</span>元/天</span>
+            </div>
+            <div class="delbtn">
+              <x-icon type="close-circled" size="0.5rem" class="icon-home"></x-icon>
+            </div>
+          </div>
         </div>
-        <!--工作报价-->
         <div class="addoffer">
-          <span>添加报价</span>
+          <span @click="showOfferDialog = !showOfferDialog">添加报价</span>
         </div>
       </div>
+      <div class="graybar"></div>
       <!--个人描述-->
-      <group :title="个人描述">
-        <x-textarea :max="200" name="resume" placeholder="placeholder"></x-textarea>
+      <group>
+        <x-textarea title="个人描述" :max="50" v-model="self" placeholder="介绍一下你自己吧~"></x-textarea>
       </group>
+      <div class="graybar"></div>
       <!--添加封面-->
       <div class="samplepartbox">
         <div class="crossimgbox">
           <div class="title">添加封面图</div>
           <div class="samplelist">
             <ul class="addpicture">
+              <li class="showpic">
+                <img class="showpicimg">
+                <div class="deletebtn">
+                  <x-icon type="android-add-circle" size="0.4rem" class="icon-home"></x-icon>
+                </div>
+              </li>
               <li class="addpicbtn">
                 <x-icon type="android-add-circle" size="2.0rem" class="icon-home"></x-icon>
               </li>
@@ -135,6 +155,42 @@
         <div class="sample">
         </div>
       </div>
+      <!-- 工作标签弹窗 -->
+      <x-dialog v-model="showWorkTag">
+        <select-button :selections="workArr" @on-change="getTagChange('workTag',$event)">
+          <div @click="showWorkTag = false">完成</div>
+        </select-button>
+      </x-dialog>
+      <!-- 风格标签弹窗 -->
+      <x-dialog v-model="showStyleTag" hide-on-blur>
+        <select-button :selections="styleArr" @on-change="getTagChange('styleTag',$event)">
+          <div @click="showStyleTag = false">完成</div>
+        </select-button>
+      </x-dialog>
+      <!-- 工作报价弹窗 -->
+      <x-dialog class="dialog-offer" v-model="showOfferDialog">
+        <div class="contentwrap">
+          <div class="headwrap">
+            <h4>选择报价</h4>
+          </div>
+          <div class="worktype">
+            <span class="title">工作类型</span>
+            <div class="seletbox">
+              <input type="text" placeholder="点击选择" readonly id="worktype">
+              <x-icon type="android-add-circle" size="0.4rem" class="icon-home"></x-icon>
+            </div>
+          </div>
+          <div class="pricewrap">
+            <span class="title">价格</span>
+            <div class="seletbox">
+              <input type="number" placeholder="点击输入" id="price">
+            </div>
+          </div>
+          <div class="confirmbtn" @click="showOfferDialog = false">
+            <span>确定</span>
+          </div>
+        </div>
+      </x-dialog>
     </div>
   </div>
 </template>
@@ -143,22 +199,82 @@
     XHeader,
     XInput,
     Group,
-    XTextarea
+    XTextarea,
+    XDialog
   } from 'vux';
   import VSwitch from '../../common/switch/switch'
+  import VAddress from '../../common/vuxAddress/vuxAddress'
+  import selectButton from '../../common/selectButton/selectButton'
   export default {
     components: {
       XHeader,
+      XDialog,
       XInput,
       Group,
-      XTextarea
+      XTextarea,
+      VSwitch,
+      VAddress,
+      selectButton
+    },
+    data() {
+      return {
+        name: '',
+        age: '',
+        height: '',
+        weight: '',
+        shoe: '',
+        resume: '',
+        self: '',
+        workTag: [],
+        styleTag: [],
+        workArr: [{
+          type: 1
+        }, {
+          type: 2
+        }],
+        styleArr: [{
+          type: 3
+        }, {
+          type: 4
+        }],
+        showWorkTag: false,
+        showStyleTag: false,
+        showOfferDialog:false
+      }
+    },
+    methods: {
+      getTagChange(attr, val) {
+        this[attr] = val;
+        console.log(this.workTag)
+      }
     }
   }
 
 </script>
 <style lang="less">
   .create-card {
-    //公共样式
+    .weui-cells {
+      font-size: 0.4rem !important;
+      color: #382e2e !important;
+      margin-top: 0 !important;
+      .weui-cell {
+        padding: 0.4135rem 0.4267rem !important;
+      }
+      .weui-icon {
+        padding-left: 0.1333rem !important;
+      }
+      .weui-icon-clear {
+        font-size: 0.3733rem !important;
+      }
+    }
+    .vux-input-icon.weui-icon-warn:before,
+    .vux-input-icon.weui-icon-success:before {
+      font-size: 0.56rem !important;
+    } //公共样式
+    .weui-dialog {
+      width: 9.0933rem !important;
+      max-width: none !important;
+    }
     .items {
       .itemwrap {
         height: 1.3867rem;
@@ -203,20 +319,23 @@
         }
       }
     }
-    //工作面和报价那一块
-    #offer {
+    .graybar {
+      height: 0.2667rem;
+    } //工作面和报价那一块
+    .reward {
       .joboffer {
         height: 1.3867rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background-color: #fff;
+        border-bottom: 1px solid #ddd;
         .offer {
           height: 1.3867rem;
           display: flex;
           justify-content: center;
           align-items: center;
-          img {
+          svg {
             display: block;
             margin-left: 0.4533rem;
             width: 0.5067rem;
@@ -236,19 +355,16 @@
           }
         }
         .delbtn {
+          display: flex;
+          align-items: center;
           margin-right: 0.88rem;
-          img {
-            display: block;
-            width: 0.6133rem;
-            height: 0.6133rem;
-          }
         }
       }
       .addoffer {
+        display: flex;
         justify-content: center;
         align-items: center;
         height: 1.12rem;
-        display: none;
         span {
           align-self: flex-end;
           margin-bottom: 0.2133rem;
@@ -322,8 +438,7 @@
           }
         }
       }
-    }
-    //上传作品集
+    } //上传作品集
     .uploadpic {
       background-color: #fff;
       display: flex;
@@ -397,8 +512,7 @@
           color: #5863a7;
         }
       }
-    }
-    //确认上传
+    } //确认上传
     .confirmsubmit {
       display: block;
       width: 76%;
@@ -412,6 +526,92 @@
       line-height: 1.2rem;
       margin: 0.9067rem auto 1.0667rem;
       border-radius: 0.16rem;
+    }
+    .dialog-offer {
+      .contentwrap {
+        width: 9.0933rem;
+        background: #f6f6f6;
+        border-radius: 0.16rem;
+        .headwrap {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 9.0933rem;
+          height: 1.4133rem;
+          background-color: #f6f6f6;
+          border-radius: 0.16rem;
+          h4 {
+            color: #382e2e;
+            font-size: 0.4533rem;
+            margin-left: 0.3467rem;
+          }
+        }
+        .worktype {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 1.3867rem;
+          background-color: #fff;
+          margin-bottom: 0.2667rem;
+          span {
+            margin-left: 0.48rem;
+            font-size: 0.4rem;
+          }
+          .seletbox {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            #worktype {
+              text-align: right;
+              font-size: 0.4rem;
+              padding-right: 0.2667rem;
+            }
+            img {
+              width: 0.2133rem;
+              margin-right: 0.4533rem;
+            }
+          }
+        }
+        .pricewrap {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 1.3867rem;
+          background-color: #fff;
+          margin-bottom: 0.2667rem;
+          span {
+            margin-left: 0.48rem;
+            font-size: 0.4rem;
+          }
+          .seletbox {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-right: 0.4533rem;
+            #price {
+              font-size: 0.4rem;
+              width: 4.72rem;
+              height: 1.2rem;
+              outline: none;
+              text-align: right;
+              padding-right: 0.5333rem;
+              border-bottom: 0.0267rem solid #2bb019;
+            }
+          }
+        }
+        .confirmbtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 1.36rem;
+          background-color: #fe3076;
+          border-radius: 0 0 0.16rem 0.16rem;
+          span {
+            color: #fff;
+            font-size: 0.4533rem;
+          }
+        }
+      }
     }
   }
 

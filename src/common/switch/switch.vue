@@ -1,5 +1,5 @@
 <template>
-  <div :class="switchClass" @click="switchClass.active = !switchClass.active">
+  <div :class="switchClass" @click="toggleClass()">
     <button class="switchbtn" :style="{'left':switchClass.active == true?'0.96rem':'0'}"></button>
   </div>
 </template>
@@ -10,11 +10,16 @@ export default {
           switchClass: {
               switch:true,
               active:false
-          }
+          },
+          judge:false
       }
   },  
   methods:{
-      
+      toggleClass(){
+          this.switchClass.active = !this.switchClass.active;
+          this.judge = this.switchClass.active?true:false
+          this.$emit('on-change',this.judge)
+      }
   }
 }
 </script>

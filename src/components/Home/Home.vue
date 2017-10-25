@@ -110,14 +110,14 @@ export default {
     }
   },
   created () {
-    // this.getBanner()
+    this.getBanner()
   },
   methods: {
-    // getBanner(){
-    //   this.$http.get(domainAnnu + 'Banner').then(function(res){
-    //     console.log(res)
-    //   })
-    // }
+    getBanner(){
+      this.$http.get('/model-spring-lm/Annunciate/Banner').then(function(res){
+        console.log(res)
+      })
+    }
   }
 }
 </script>

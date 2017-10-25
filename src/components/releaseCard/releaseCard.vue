@@ -58,7 +58,7 @@
           <div class="itemtype">
             <span>风格标签</span>
           </div>
-          <div class="itemhandle" @click.prevent="showStyleTag=!showStyleTag">
+          <div class="itemhandle" @click="showStyleDialog=!showStyleDialog">
             <input type="text" placeholder="选择2~5个" :value="styleTag.join(' / ')" readonly>
             <x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
           </div>
@@ -70,7 +70,7 @@
           <div class="itemtype">
             <span>工作标签</span>
           </div>
-          <div class="itemhandle" @click="showWorkTag=!showWorkTag">
+          <div class="itemhandle" @click="showWorkDialog=!showWorkDialog">
             <input type="text" placeholder="选择2~5个" :value="workTag.join(' / ')" readonly>
             <x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
           </div>
@@ -90,7 +90,7 @@
             </div>
             <div class="itemhandle itemhandle-btn">
               <span>是否面议</span>
-              <v-switch></v-switch>
+              <v-switch @on-change="ifInterView($event)"></v-switch>
             </div>
           </div>
         </div>
@@ -137,14 +137,14 @@
         </div>
       </div>
       <!--上传作品-->
-      <div class="uploadpic">
+      <!-- <div class="uploadpic">
         <div class="title">上传作品</div>
         <div class="imgbox">
         </div>
         <div class="newcreate">
           <span>+新建作品集</span>
         </div>
-      </div>
+      </div> -->
       <!--确认提交-->
       <div>
         <button class="confirmsubmit">
@@ -156,15 +156,15 @@
         </div>
       </div>
       <!-- 工作标签弹窗 -->
-      <x-dialog v-model="showWorkTag">
+      <x-dialog v-model="showWorkDialog">
         <select-button :selections="workArr" @on-change="getTagChange('workTag',$event)">
-          <div @click="showWorkTag = false">完成</div>
+          <div @click="showWorkDialog = false">完成</div>
         </select-button>
       </x-dialog>
       <!-- 风格标签弹窗 -->
-      <x-dialog v-model="showStyleTag" hide-on-blur>
+      <x-dialog v-model="showStyleDialog">
         <select-button :selections="styleArr" @on-change="getTagChange('styleTag',$event)">
-          <div @click="showStyleTag = false">完成</div>
+          <div @click="showStyleDialog = false">完成</div>
         </select-button>
       </x-dialog>
       <!-- 工作报价弹窗 -->
@@ -175,21 +175,27 @@
           </div>
           <div class="worktype">
             <span class="title">工作类型</span>
-            <div class="seletbox">
+            <div class="seletbox" @click="openNotifyDialog()">
               <input type="text" placeholder="点击选择" readonly id="worktype">
-              <x-icon type="android-add-circle" size="0.4rem" class="icon-home"></x-icon>
+              <x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
             </div>
           </div>
           <div class="pricewrap">
             <span class="title">价格</span>
             <div class="seletbox">
-              <input type="number" placeholder="点击输入" id="price">
+              <input type="number" placeholder="点击输入" class="price">
             </div>
           </div>
           <div class="confirmbtn" @click="showOfferDialog = false">
             <span>确定</span>
           </div>
         </div>
+      </x-dialog>
+      <!-- 通告类型弹窗 -->
+      <x-dialog v-model="showNotifyDialog">
+        <single-select-button :selections="notifyArr" @on-change="getNotifyTag($event)">
+          <div @click="closeNotifyDialog()">完成</div>
+        </single-select-button>
       </x-dialog>
     </div>
   </div>
@@ -205,6 +211,7 @@
   import VSwitch from '../../common/switch/switch'
   import VAddress from '../../common/vuxAddress/vuxAddress'
   import selectButton from '../../common/selectButton/selectButton'
+  import singleSelectButton from '../../common/singleSelectButton/singleSelectButton'
   export default {
     components: {
       XHeader,
@@ -214,7 +221,8 @@
       XTextarea,
       VSwitch,
       VAddress,
-      selectButton
+      selectButton,
+      singleSelectButton
     },
     data() {
       return {
@@ -227,6 +235,7 @@
         self: '',
         workTag: [],
         styleTag: [],
+        interview:false,
         workArr: [{
           type: 1
         }, {
@@ -237,15 +246,35 @@
         }, {
           type: 4
         }],
-        showWorkTag: false,
-        showStyleTag: false,
-        showOfferDialog:false
+        notifyArr:[],
+        showWorkDialog: false,
+        showStyleDialog: false,
+        showOfferDialog:false,
+        showNotifyDialog:false,
+        
       }
     },
     methods: {
       getTagChange(attr, val) {
         this[attr] = val;
         console.log(this.workTag)
+      },
+      getNotifyTag(val){
+        console.log(val)
+      },
+      openNotifyDialog() {
+        this.showNotifyDialog = true;
+        this.showOfferDialog = false;
+      },
+      closeNotifyDialog(){
+        this.showNotifyDialog = false;
+        this.showOfferDialog = true;
+      },
+      ifInterView(val) {
+        this.interview = val
+      },
+      changeOffer(){
+        console.log(222);
       }
     }
   }
@@ -566,8 +595,7 @@
               font-size: 0.4rem;
               padding-right: 0.2667rem;
             }
-            img {
-              width: 0.2133rem;
+            svg {
               margin-right: 0.4533rem;
             }
           }
@@ -588,7 +616,7 @@
             justify-content: flex-end;
             align-items: center;
             margin-right: 0.4533rem;
-            #price {
+            .price {
               font-size: 0.4rem;
               width: 4.72rem;
               height: 1.2rem;

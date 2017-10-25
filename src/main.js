@@ -14,11 +14,6 @@ Vue.use(WechatPlugin)
 FastClick.attach(document.body)
 
 Vue.config.productionTip = false
-Vue.directive('title', {
-    inserted: function(el, binding) {
-        document.title = el.dataset.title
-    }
-})
 Vue.prototype.$http = axios
     /* eslint-disable no-new */
 new Vue({

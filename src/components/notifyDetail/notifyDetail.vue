@@ -75,7 +75,7 @@
             <h4>图片</h4>
           </div>
           <div>
-            <ul> 
+            <ul>
               <li>
                 <img src="" alt="">
               </li>
@@ -116,317 +116,356 @@
           <img src="./img/usernote.jpg" width="100%" style="margin-top:0.1333rem">
         </div>
       </div>
+      <!-- 举报弹窗 -->
+      <x-dialog>
+        <div class="report">
+          <h4>举报理由</h4>
+          <textarea name="" id="reportbox" rows="5" placeholder="请输入您想要举报的理由"></textarea>
+          <div class="notify">请输入举报理由！</div>
+          <!-- 添加图片 -->
+          <div class="samplepartbox">
+            <div class="addphotoline">
+              <div class="titleline">
+                <h4>添加图片(可增加举报通过的几率)</h4>
+              </div>
+            </div>
+            <div class="samplelist">
+              <ul class="addpicture">
+                <li class="showpic">
+                  <img class="showpicimg" src="" alt="">
+                  <div class="deletebtn">
+                    <!-- <img src="../img/logo/delete.png?v=-32a0aa3" alt=""> -->
+                  </div>
+                </li>
+                <li class="addpicbtn">
+                  <!-- <img src="../img/logo/addpicbtn.png?v=-507bd3b" alt=""> -->
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button class="reportsubmit">提交</button>
+        </div>
+      </x-dialog>
     </div>
   </div>
 </template>
 <script>
-import { XHeader} from 'vux'
-export default {
-  components: {
-    XHeader
-  },
-  data () {
-    return {
-      
+  import {
+    XHeader,
+    XDialog
+  } from 'vux'
+  export default {
+    components: {
+      XHeader,
+      XDialog
+    },
+    data() {
+      return {
+
+      }
     }
   }
-}
+
 </script>
 
 <style lang="less" scoped>
-.notify-content {
-  width: 100%;
-  .notifyhead {
-    position: relative;
-    margin-bottom: 0.2667rem;
-    padding-bottom: 0.3467rem;
-    background: #fff;
+  .notify-content {
     width: 100%;
-    .notifyheadbg {
+    .notifyhead {
+      position: relative;
+      margin-bottom: 0.2667rem;
+      padding-bottom: 0.3467rem;
+      background: #fff;
       width: 100%;
-    }
-    .header {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -70%);
-      border-radius: 50%;
-      .headerimg {
-        width: 1.6rem;
-        height: 1.6rem;
-        overflow: hidden;
-        display: block;
+      .notifyheadbg {
+        width: 100%;
+      }
+      .header {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -70%);
         border-radius: 50%;
-        margin: 0 auto 0.1067rem;
-        img {
-          width: 100%;
+        .headerimg {
+          width: 1.6rem;
+          height: 1.6rem;
+          overflow: hidden;
+          display: block;
+          border-radius: 50%;
+          margin: 0 auto 0.1067rem;
+          img {
+            width: 100%;
+          }
         }
-      }
-      .nickname {
-        font-size: 0.4rem;
-        color: #ff2f76;
-        text-align: center;
-      }
-    }
-    h4 {
-      margin-top: 1.2267rem;
-      text-align: center;
-      font-size: 0.4267rem;
-      color: #382f2d;
-    }
-    .deadline {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 0.3733rem;
-      text-align: center;
-      font-size: 0.4rem;
-      color: #919191;
-      img {
-        width: 0.3733rem;
-        display: block;
-        margin-right: 0.16rem;
-      }
-    }
-  }
-  .infopart {
-    background: #fff;
-    margin-bottom: 0.2667rem;
-    .crossbar, .crossbar2 {
-      width: 100%;
-      padding: 0.48rem 0.4267rem 0.4267rem 0.56rem;
-      box-sizing: border-box;
-    }
-  }
-  .requestpart, .detailpart {
-    background: #fff;
-    margin-bottom: 0.2667rem;
-    .crossbox {
-      width: 100%;
-      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
-      box-sizing: border-box;
-    }
-  }
-  .infopart {
-    .crossbar {
-      display: flex;
-      align-items: center;
-      border-bottom: 0.0267rem solid #eaeaea;
-      svg {
-        display: block;
-        width: 0.48rem;
-        margin-right: 0.3733rem;
-      }
-      h4, p {
-        font-size: 0.4rem;
-        line-height: 0.6667rem;
+        .nickname {
+          font-size: 0.4rem;
+          color: #ff2f76;
+          text-align: center;
+        }
       }
       h4 {
-        color: #382f2f;
-        margin-right: 0.1333rem;
-      }
-      p {
-        color: #919191;
-      }
-    }
-    .crossbar2 {
-      display: flex;
-      align-items: flex-start;
-      div {
-        display: flex;
-        align-items: center;
-        svg {
-          margin-right: 0.3733rem;
-        }
-        h4 {
-          font-size: 0.4rem;
-          line-height: 0.6667rem;
-          color: #382f2f;
-          margin-right: 0.1333rem;
-        }
-      }
-      p {
-        flex: 1;
-        font-size: 0.4rem;
-        color: #919191;
-        line-height: 0.6667rem;
-      }
-    }
-  }
-  .requestpart {
-    .crossbox {
-      .titleline {
-        display: flex;
-        align-items: center;
-        height: 0.6667rem;
-        svg {
-          margin-right: 0.3733rem;
-        }
-        h4 {
-          font-size: 0.4rem;
-          line-height: 0.6667rem;
-          color: #382f2f;
-        }
-      }
-      .request {
-        margin-left: 0.8533rem;
-        div {
-          display: flex;
-          flex-flow: row wrap;
-          span {
-            flex: 1;
-            display: block;
-            font-size: 0.4rem;
-            margin-top: 0.4267rem;
-            color: #919191;
-          }
-        }
-      }
-    }
-  }
-  .detailpart {
-    .crossbox {
-      .titleline {
-        display: flex;
-        align-items: center;
-        height: 0.6667rem;
-        svg {
-          margin-right: 0.3733rem;
-        }
-        h4 {
-          font-size: 0.4rem;
-          line-height: 0.6667rem;
-          color: #382f2f;
-        }
-      }
-      p {
-        margin-left: 0.8533rem;
-        color: #919191;
-        line-height: 0.6667rem;
-        font-size: 0.4rem;
-      }
-    }
-  }
-  .samplepart {
-    background: #fff;
-    margin-bottom: 0.2667rem;
-    .crossimgbox {
-      padding: 0.5333rem 0.4267rem 0.2667rem 0.56rem;
-      .titleline {
-        display: flex;
-        align-items: center;
-        height: 0.6667rem;
-        svg {
-          margin-right: 0.3733rem;
-        }
-        h4 {
-          font-size: 0.4rem;
-          line-height: 0.6667rem;
-          color: #382f2f;
-        }
-      }
-      div {
-        width: 100%;
+        margin-top: 1.2267rem;
         text-align: center;
-        ul {
-          display: inline-block;
-          width: 6.64rem;
-          margin: 0.3733rem auto 0;
-          font-size: 0;
-          li {
-            width: 2.0533rem;
-            height: 2.0533rem;
-            display: inline-block;
-            margin-right: 0.2133rem;
-            img {
-              width: 100%;
-              height: 100%;
-            }
-          }
-          li:last-child {
-            margin-right: 0;
-          }
+        font-size: 0.4267rem;
+        color: #382f2d;
+      }
+      .deadline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.3733rem;
+        text-align: center;
+        font-size: 0.4rem;
+        color: #919191;
+        img {
+          width: 0.3733rem;
+          display: block;
+          margin-right: 0.16rem;
         }
       }
     }
-  }
-  .handlepart {
-    background: #fff;
-    margin-bottom: 0.2667rem;
-    .crossbar {
-      width: 100%;
-      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
-      box-sizing: border-box;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      > div {
+    .infopart {
+      background: #fff;
+      margin-bottom: 0.2667rem;
+      .crossbar,
+      .crossbar2 {
+        width: 100%;
+        padding: 0.48rem 0.4267rem 0.4267rem 0.56rem;
+        box-sizing: border-box;
+      }
+    }
+    .requestpart,
+    .detailpart {
+      background: #fff;
+      margin-bottom: 0.2667rem;
+      .crossbox {
+        width: 100%;
+        padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+        box-sizing: border-box;
+      }
+    }
+    .infopart {
+      .crossbar {
         display: flex;
         align-items: center;
-        height: 0.56rem;
-        background: #fff;
-        margin-right: 0.9333rem;
-        outline: none;
+        border-bottom: 0.0267rem solid #eaeaea;
         svg {
+          display: block;
+          width: 0.48rem;
+          margin-right: 0.3733rem;
+        }
+        h4,
+        p {
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+        }
+        h4 {
+          color: #382f2f;
           margin-right: 0.1333rem;
         }
-        span {
-          font-size: 0.4rem;
+        p {
           color: #919191;
         }
       }
-      > div :last-child {
-        margin-right: 0.2133rem;
+      .crossbar2 {
+        display: flex;
+        align-items: flex-start;
+        div {
+          display: flex;
+          align-items: center;
+          svg {
+            margin-right: 0.3733rem;
+          }
+          h4 {
+            font-size: 0.4rem;
+            line-height: 0.6667rem;
+            color: #382f2f;
+            margin-right: 0.1333rem;
+          }
+        }
+        p {
+          flex: 1;
+          font-size: 0.4rem;
+          color: #919191;
+          line-height: 0.6667rem;
+        }
       }
     }
-  }
-  .jumppart {
-    background: #fff;
-    margin-bottom: 0.2667rem;
-    a.crossjump {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
-      box-sizing: border-box;
-      font-size: 0.4267rem;
+    .requestpart {
+      .crossbox {
+        .titleline {
+          display: flex;
+          align-items: center;
+          height: 0.6667rem;
+          svg {
+            margin-right: 0.3733rem;
+          }
+          h4 {
+            font-size: 0.4rem;
+            line-height: 0.6667rem;
+            color: #382f2f;
+          }
+        }
+        .request {
+          margin-left: 0.8533rem;
+          div {
+            display: flex;
+            flex-flow: row wrap;
+            span {
+              flex: 1;
+              display: block;
+              font-size: 0.4rem;
+              margin-top: 0.4267rem;
+              color: #919191;
+            }
+          }
+        }
+      }
+    }
+    .detailpart {
+      .crossbox {
+        .titleline {
+          display: flex;
+          align-items: center;
+          height: 0.6667rem;
+          svg {
+            margin-right: 0.3733rem;
+          }
+          h4 {
+            font-size: 0.4rem;
+            line-height: 0.6667rem;
+            color: #382f2f;
+          }
+        }
+        p {
+          margin-left: 0.8533rem;
+          color: #919191;
+          line-height: 0.6667rem;
+          font-size: 0.4rem;
+        }
+      }
+    }
+    .samplepart {
       background: #fff;
-      color: #919191;
-      img {
-        width: 0.48rem;
-        height: 0.48rem;
-        margin-right: 0.2667rem;
-      }
-      span {
-        color: #ff2f76;
+      margin-bottom: 0.2667rem;
+      .crossimgbox {
+        padding: 0.5333rem 0.4267rem 0.2667rem 0.56rem;
+        .titleline {
+          display: flex;
+          align-items: center;
+          height: 0.6667rem;
+          svg {
+            margin-right: 0.3733rem;
+          }
+          h4 {
+            font-size: 0.4rem;
+            line-height: 0.6667rem;
+            color: #382f2f;
+          }
+        }
+        div {
+          width: 100%;
+          text-align: center;
+          ul {
+            display: inline-block;
+            width: 6.64rem;
+            margin: 0.3733rem auto 0;
+            font-size: 0;
+            li {
+              width: 2.0533rem;
+              height: 2.0533rem;
+              display: inline-block;
+              margin-right: 0.2133rem;
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            li:last-child {
+              margin-right: 0;
+            }
+          }
+        }
       }
     }
-    a:active {
-      background: #909090;
+    .handlepart {
+      background: #fff;
+      margin-bottom: 0.2667rem;
+      .crossbar {
+        width: 100%;
+        padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        >div {
+          display: flex;
+          align-items: center;
+          height: 0.56rem;
+          background: #fff;
+          margin-right: 0.9333rem;
+          outline: none;
+          svg {
+            margin-right: 0.1333rem;
+          }
+          span {
+            font-size: 0.4rem;
+            color: #919191;
+          }
+        }
+        >div :last-child {
+          margin-right: 0.2133rem;
+        }
+      }
+    }
+    .jumppart {
+      background: #fff;
+      margin-bottom: 0.2667rem;
+      a.crossjump {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 0.48rem 0.4267rem 0.48rem 0.56rem;
+        box-sizing: border-box;
+        font-size: 0.4267rem;
+        background: #fff;
+        color: #919191;
+        img {
+          width: 0.48rem;
+          height: 0.48rem;
+          margin-right: 0.2667rem;
+        }
+        span {
+          color: #ff2f76;
+        }
+      }
+      a:active {
+        background: #909090;
+      }
+    }
+
+    .infomationpart {
+      background: #fff;
+      margin-bottom: 1.0667rem;
+      .crossbar {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.48rem 0.4267rem 0.4267rem 0.6133rem;
+        p {
+          color: #919191;
+          font-size: 0.4rem;
+          line-height: 0.6667rem;
+          margin-top: 0.1333rem;
+        }
+      }
+    }
+    .icon-notify {
+      fill: #909090;
+    }
+    .icon-success {
+      fill: #ff2f76;
     }
   }
 
-  .infomationpart {
-    background: #fff;
-    margin-bottom: 1.0667rem;
-    .crossbar {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.48rem 0.4267rem 0.4267rem 0.6133rem;
-      p {
-        color: #919191;
-        font-size: 0.4rem;
-        line-height: 0.6667rem;
-        margin-top: 0.1333rem;
-      }
-    }
-  }
-  .icon-notify {
-    fill:#909090;
-  }
-  .icon-success {
-    fill:#ff2f76;
-  }
-}
 </style>

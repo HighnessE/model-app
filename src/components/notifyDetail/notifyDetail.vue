@@ -7,25 +7,25 @@
         <img class="notifyheadbg" src="./img/notifybg.jpg">
         <div class="header">
           <div class="headerimg">
-            <img src="./img/notifybg.jpg">
+            <img :src="notifyData.hurl">
           </div>
-          <div class="nickname">xiaomi</div>
+          <div class="nickname">{{notifyData.name}}</div>
         </div>
-        <h4>深圳招男神</h4>
+        <h4>{{notifyData.theme}}</h4>
       </div>
       <!-- 工作时间和地点 -->
       <div class="infopart">
         <div class="crossbar">
           <x-icon type="ios-clock-outline" size="0.5rem" class="icon-notify"></x-icon>
           <h4>工作时间：</h4>
-          <p>2017-1-5 — 2017-1-5</p>
+          <p>{{notifyData.work_time}} — {{notifyData.work_finish}}</p>
         </div>
         <div class="crossbar2">
           <div>
             <x-icon type="ios-location-outline" size="0.5rem" class="icon-notify"></x-icon>
             <h4>工作地点：</h4>
           </div>
-          <p>上海上海</p>
+          <p>{{notifyData.workplace}} {{notifyData.information}}</p>
         </div>
       </div>
       <!-- 岗位要求 -->
@@ -37,12 +37,12 @@
           </div>
           <div class="request">
             <div>
-              <span>性别：男</span>
-              <span>人数：23人</span>
-              <span>面试：否</span>
+              <span>性别：{{notifyData.asex}}</span>
+              <span>人数：{{notifyData.number}}人</span>
+              <span>面试：{{notifyData.interview}}</span>
             </div>
             <div>
-              <span>价格：100/人</span>
+              <span>价格：{{notifyData.price}}</span>
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
             <x-icon type="ios-search" size="0.5rem" class="icon-notify"></x-icon>
             <h4>详细说明</h4>
           </div>
-          <p>小混混大盛和扣扣是网游世界的高手，为了找钱玩游戏，两人想碰瓷敲诈李小果一笔，李小果夫妇撞了人后逃逸，大盛和扣扣找到李家，为了要钱干脆赖在李家不走了——从此，他们的每一步都走得很惊</p>
+          <p>{{notifyData.details}}</p>
         </div>
       </div>
       <!-- 联系方式 -->
@@ -64,7 +64,7 @@
             <x-icon type="ios-list-outline" size="0.5rem" class="icon-notify"></x-icon>
             <h4>联系方式</h4>
           </div>
-          <p>手机&nbsp;&nbsp;12345678910</p>
+          <p>{{contactType}}&nbsp;&nbsp;{{contactInfo}}</p>
         </div>
       </div>
       <!-- 上传的图片 -->
@@ -76,8 +76,8 @@
           </div>
           <div>
             <ul>
-              <li>
-                <img src="" alt="">
+              <li v-for="(item,index) in pictures" :key="index">
+                <img :src="'http://192.168.0.105'+item.p_url" alt="">
               </li>
             </ul>
           </div>
@@ -90,13 +90,13 @@
             <x-icon type="ios-star" size="0.5rem" class="icon-notify"></x-icon>
             <span>收藏</span>
           </div>
-          <div class="reportbtn">
+          <div class="reportbtn" @click="reportNotify()">
             <x-icon type="alert-circled" size="0.5rem" class="icon-notify"></x-icon>
             <span>举报</span>
           </div>
           <div>
             <x-icon type="eye" size="0.5rem" class="icon-notify"></x-icon>
-            <span>123</span>
+            <span>{{notifyData.hit}}</span>
           </div>
         </div>
       </div>
@@ -117,34 +117,10 @@
         </div>
       </div>
       <!-- 举报弹窗 -->
-      <x-dialog>
-        <div class="report">
-          <h4>举报理由</h4>
-          <textarea name="" id="reportbox" rows="5" placeholder="请输入您想要举报的理由"></textarea>
-          <div class="notify">请输入举报理由！</div>
-          <!-- 添加图片 -->
-          <div class="samplepartbox">
-            <div class="addphotoline">
-              <div class="titleline">
-                <h4>添加图片(可增加举报通过的几率)</h4>
-              </div>
-            </div>
-            <div class="samplelist">
-              <ul class="addpicture">
-                <li class="showpic">
-                  <img class="showpicimg" src="" alt="">
-                  <div class="deletebtn">
-                    <!-- <img src="../img/logo/delete.png?v=-32a0aa3" alt=""> -->
-                  </div>
-                </li>
-                <li class="addpicbtn">
-                  <!-- <img src="../img/logo/addpicbtn.png?v=-507bd3b" alt=""> -->
-                </li>
-              </ul>
-            </div>
-          </div>
-          <button class="reportsubmit">提交</button>
-        </div>
+      <x-dialog class="report-dialog" v-model="showReportDialog" hide-on-blur>
+        <v-report>
+          <button class="reportsubmit" @click="commitReport()">提交</button>
+        </v-report>
       </x-dialog>
     </div>
   </div>
@@ -154,15 +130,65 @@
     XHeader,
     XDialog
   } from 'vux'
+  import VReport from '../../common/report/report' 
   export default {
     components: {
       XHeader,
-      XDialog
+      XDialog,
+      VReport
     },
     data() {
       return {
-
+        notifyData:{},
+        showReportDialog:false,
+        ifReport:'',
+        ifCollect:'',
+        pictures:[],
+        reportClass:{
+          
+        },
+        collectClass:{
+          
+        }
       }
+    },
+    computed: {
+      contactType(){
+        console.log(this.notifyData)
+        return this.notifyData.contact.split(':')[0] == 'weixin'?
+              '微信号': this.notifyData.contact.split(':')[0] == 'iphone'?
+              '手机号': this.notifyData.contact.split(':')[0] == 'email'?
+              '邮箱': this.notifyData.contact.split(':')[0] == 'qq'?
+              'QQ号码':'用户未填写'
+      },
+      contactInfo(){
+        return this.notifyData.contact.split(':')[1]
+      }
+    },
+    methods: {
+      // 点击举报事件
+      reportNotify() {
+        let reportTag = this.ifReport;
+        if (reportTag === '未举报') {
+          this.showReportDialog = true;
+        }
+      },
+      getNotifyData() {
+        this.$http.post('/model-spring-lm/Annunciate/Particulars?vid=3125589')
+        .then((res) => {
+          console.log(res)
+          this.notifyData = res.data.annunciate;
+          this.ifCollect = res.data.model_an;
+          this.ifReport = res.data.reports;
+          this.pictures = res.data.view;
+        })
+      },
+      commitReport() {
+        this.showReportDialog = false
+      }
+    },
+    created(){
+      this.getNotifyData()
     }
   }
 
@@ -460,6 +486,8 @@
         }
       }
     }
+
+    
     .icon-notify {
       fill: #909090;
     }

@@ -98,11 +98,7 @@ export default {
   },
   data () {
     return {
-      baseList : [{
-          url: 'javascript:',
-          img: 'http://admin.qingmeng168.com:8081/ChatRobot/IMG/pic/cOfAccjo_1503990422982.png',
-          title: ''
-        }],
+      baseList : [],
       showStyle:false,
       showSort:false,
       styleArr:[],
@@ -110,13 +106,43 @@ export default {
     }
   },
   created () {
+    this.initPrames()
     this.getBanner()
   },
   methods: {
     getBanner(){
-      this.$http.get('/model-spring-lm/Annunciate/Banner').then(function(res){
-        console.log(res)
+      this.$http.get('/model-spring-lm/Annunciate/Banner').then((data) => {
+        let res = data.data
+        let bannerList = []
+        res.map(function(item){
+          let obj = {
+            url:item.BannerURL,
+            img:item.BannerPicture,
+            title:'',
+            id: item.ID
+          }
+          bannerList.push(obj)
+        })
+        console.log(bannerList)
+        this.baseList = bannerList
       })
+    },
+    getNotifyList(){
+      // this.$http.post('')
+    },
+    initPrames(){
+      let initData = {
+        initAddr : '全国',
+        initType : '',
+        initSort : 'deadline',
+        initProvince :'',
+        initCity : ''
+      }
+      for (let item in iniData) {
+        if (localStorage.getItem(item)) {
+          iniData[item] = localStorage.getItem(item)
+        }
+      }
     }
   }
 }

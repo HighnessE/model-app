@@ -29,7 +29,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/model-spring-lm/**': {
-                target: 'http://192.168.0.113'
+                target: 'http://192.168.0.105'
             }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"

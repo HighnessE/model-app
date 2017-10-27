@@ -4,15 +4,15 @@
     <div id="selectpartment">
         <div id="addrselectbox">
           <div class="showarea">
-            <v-address></v-address>
+            <v-address :localAddr="defaultAddr"></v-address>
             <div class="arrowbox">
               <x-icon type="ios-arrow-down" size="0.4rem"></x-icon>
             </div>
           </div>
         </div>
         <div id="typeselectbox">
-          <div class="showarea" @click="showStyle=!showStyle">
-            <span>全部</span>
+          <div class="showarea" @click="showType=!showType">
+            <span>{{type}}</span>
             <div class="arrowbox">
               <x-icon type="ios-arrow-down" size="0.4rem"></x-icon>
             </div>
@@ -20,18 +20,18 @@
         </div>
         <div id="sortselectbox">
           <div class="showarea" @click="showSort=!showSort">
-            <span>按发布时间</span>
+            <span>{{sort}}</span>
             <div class="arrowbox">
               <x-icon type="ios-arrow-down" size="0.4rem"></x-icon>
             </div>
           </div>
         </div>
     </div>
-    <x-dialog v-model="showStyle" class="dialog-style" hide-on-blur>
-      <select-list :arrLsit="sortArr" items="antype"></select-list>
+    <x-dialog v-model="showType" hide-on-blur>
+      <select-list :arrList="typeArr" @on-change="selectPrames('type',$event)"></select-list>
     </x-dialog>
-    <x-dialog v-model="showSort" class="dialog-sort" hide-on-blur>
-      <select-list :arrLsit="sortArr" items="antype"></select-list>
+    <x-dialog v-model="showSort" hide-on-blur>
+      <select-list :arrList="sortArr" @on-change="selectPrames('sort',$event)"></select-list>
     </x-dialog>
     <scroller lock-x height="10.5333rem" ref="scrollerBottom" :scroll-bottom-offst="200">
       <div id="list-content">
@@ -86,6 +86,7 @@ import { Swiper, ChinaAddressV4Data, LoadMore ,Scroller ,Divider, XDialog} from 
 import VAddress from '../../common/vuxAddress/vuxAddress'
 import selectList from '../../common/selectLayer/selectLayer'
 import { domainAnnu } from '../../base/common.js'
+import qs from 'qs'
 export default {
   components: {
     Swiper,
@@ -99,19 +100,25 @@ export default {
   data () {
     return {
       baseList : [],
-      showStyle:false,
+      showType:false,
       showSort:false,
-      styleArr:[],
-      sortArr:[]
+      typeArr:["全部"],
+      sortArr:['按发布时间','按需求人数'],
+      defaultAddr:[],
+      type:'',
+      sort:'',
+      
     }
   },
   created () {
     this.initPrames()
     this.getBanner()
+    this.getTypeList()
   },
   methods: {
+    //获取banner图
     getBanner(){
-      this.$http.get('/model-spring-lm/Annunciate/Banner').then((data) => {
+      this.$http.get('/model/Annunciate/Banner').then((data) => {
         let res = data.data
         let bannerList = []
         res.map(function(item){
@@ -127,21 +134,58 @@ export default {
         this.baseList = bannerList
       })
     },
+    // 获取通告列表
     getNotifyList(){
-      // this.$http.post('')
+      
     },
+    //初始化数据
     initPrames(){
       let initData = {
         initAddr : '全国',
-        initType : '',
-        initSort : 'deadline',
+        initType : '全部',
+        initSort : '按发布时间',
         initProvince :'',
         initCity : ''
       }
-      for (let item in iniData) {
+      for (let item in initData) {
         if (localStorage.getItem(item)) {
-          iniData[item] = localStorage.getItem(item)
+          initData[item] = localStorage.getItem(item)
         }
+      }
+      this.defaultAddr = initData.initAddr
+      this.type = initData.initType
+      this.sort = initData.initSort
+      this.getInitData()
+    },
+    //获取类型图
+    getTypeList(){
+      this.$http.get('/model/Annunciate/typeList')
+      .then((res) => {
+        let arr = res.data.map(function(item){
+          return item.antype
+        })
+        this.typeArr = this.typeArr.concat(arr)
+      })
+    },
+    getInitData(){
+      this.$http.post('/model/Annunciate/annunciate',qs.stringify({
+        page:1,
+        address:'',
+        type:'',
+        sort:'deadline'
+      })).then((res) =>{
+        console.log(res.data.page)
+      })
+    },
+    selectPrames(attr,val){
+      this[attr] = val
+      console.log(this[attr])
+      if(attr == 'type'){
+        localStorage.setItem('initType',val)
+        this.showType = false
+      }else if(attr == 'sort'){
+        localStorage.setItem('initSort',val)
+        this.showSort = false
       }
     }
   }

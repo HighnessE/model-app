@@ -4,13 +4,13 @@
             <div>
                 <x-icon type="ios-circle-outline" size="0.4rem"></x-icon>
             </div>
-            <p>{{item[items]}}</p>
+            <p>{{item}}</p>
         </li>
     </ul>
 </template>
 <script>
 export default {
-  props:['arrList','items'],
+  props:['arrList'],
   data (){
       return {
 
@@ -18,8 +18,8 @@ export default {
   },
   methods:{
       selectItem(index){
-          let nowVal = arrList[index].items
-          this.$emit('update'+arrList,nowVal)
+          let nowVal = this.arrList[index]
+          this.$emit('on-change',nowVal)
       }
   }
 }

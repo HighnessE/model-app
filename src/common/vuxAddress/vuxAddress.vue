@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { Group, Datetime, XAddress, ChinaAddressV4Data} from 'vux'
+import { Group, Datetime, XAddress, ChinaAddressV4Data, Value2nameFilter as value2name} from 'vux'
 export default {
   components: {
     XAddress,
@@ -31,6 +31,10 @@ export default {
   },
   watch: {
     value: function(newVal){
+      console.log(newVal)
+      console.log(value2name(newVal, ChinaAddressV4Data))
+      newVal[0] = '--'
+      this.value = newVal
       this.$emit('sendAddr',newVal)
     }
   }

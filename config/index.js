@@ -28,8 +28,8 @@ module.exports = {
         assetsSubDirectory: 'static',
         assetsPublicPath: '/',
         proxyTable: {
-            '/model-spring-lm/**': {
-                target: 'http://192.168.0.105'
+            '/model/**': {
+                target: 'http://192.168.0.113'
             }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"

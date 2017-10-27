@@ -64,7 +64,7 @@
             <x-icon type="ios-list-outline" size="0.5rem" class="icon-notify"></x-icon>
             <h4>联系方式</h4>
           </div>
-          <p>{{contactType}}&nbsp;&nbsp;{{contactInfo}}</p>
+          <p>{{notifyData.contactType}}&nbsp;&nbsp;{{notifyData.contactInfo}}</p>
         </div>
       </div>
       <!-- 上传的图片 -->
@@ -77,7 +77,7 @@
           <div>
             <ul>
               <li v-for="(item,index) in pictures" :key="index">
-                <img :src="'http://192.168.0.105'+item.p_url" alt="">
+                <img :src="'http://192.168.0.113'+item.p_url" alt="">
               </li>
             </ul>
           </div>
@@ -86,13 +86,15 @@
       <!-- 操作栏 -->
       <div class="handlepart">
         <div class="crossbar">
-          <div class="collectbtn">
-            <x-icon type="ios-star" size="0.5rem" class="icon-notify"></x-icon>
-            <span>收藏</span>
+          <div class="collectbtn" @click="commitCollect()">
+            <x-icon type="ios-star" size="0.5rem" :class="collectClass"></x-icon>
+            <span v-if="ifCollect == '未收藏'" :style="{'color':'#919191'}">收藏</span>
+            <span v-else :style="{'color':'#fe3076'}">已收藏</span>
           </div>
           <div class="reportbtn" @click="reportNotify()">
-            <x-icon type="alert-circled" size="0.5rem" class="icon-notify"></x-icon>
-            <span>举报</span>
+            <x-icon type="alert-circled" size="0.5rem" :class="reportClass"></x-icon>
+            <span v-if="ifReport == '未举报'" :style="{'color':'#919191'}">举报</span>
+            <span v-else :style="{'color':'#fe3076'}">已举报</span>
           </div>
           <div>
             <x-icon type="eye" size="0.5rem" class="icon-notify"></x-icon>
@@ -131,6 +133,7 @@
     XDialog
   } from 'vux'
   import VReport from '../../common/report/report' 
+  import qs from 'qs'
   export default {
     components: {
       XHeader,
@@ -141,28 +144,19 @@
       return {
         notifyData:{},
         showReportDialog:false,
-        ifReport:'',
-        ifCollect:'',
+        ifReport:'未举报',
+        ifCollect:'未收藏',
         pictures:[],
-        reportClass:{
-          
-        },
-        collectClass:{
-          
-        }
+        vid:'',
+        uid:''
       }
     },
     computed: {
-      contactType(){
-        console.log(this.notifyData)
-        return this.notifyData.contact.split(':')[0] == 'weixin'?
-              '微信号': this.notifyData.contact.split(':')[0] == 'iphone'?
-              '手机号': this.notifyData.contact.split(':')[0] == 'email'?
-              '邮箱': this.notifyData.contact.split(':')[0] == 'qq'?
-              'QQ号码':'用户未填写'
+      collectClass() {
+        return this.ifCollect == '未收藏'?'icon-notify':'icon-success'
       },
-      contactInfo(){
-        return this.notifyData.contact.split(':')[1]
+      reportClass() {
+        return this.ifReport == '未举报'?'icon-notify':'icon-success'
       }
     },
     methods: {
@@ -174,17 +168,42 @@
         }
       },
       getNotifyData() {
-        this.$http.post('/model-spring-lm/Annunciate/Particulars?vid=3125589')
+        this.$http.post('/model-spring-lm/Annunciate/Particulars?vid=966979034')
         .then((res) => {
           console.log(res)
+          let contact = res.data.annunciate.contact
+          let contactType = contact.split(':')[0] == 'weixin'?
+                            '微信号': contact.split(':')[0] == 'iphone'?
+                            '手机号': contact.split(':')[0] == 'email'?
+                            '邮箱': contact.split(':')[0] == 'qq'?
+                            'QQ号码':'用户未填写'
+          let contactInfo = contact.split(':')[1]
+          res.data.annunciate.contactType = contactType
+          res.data.annunciate.contactInfo = contactInfo
           this.notifyData = res.data.annunciate;
           this.ifCollect = res.data.model_an;
           this.ifReport = res.data.reports;
-          this.pictures = res.data.view;
+          this.pictures = res.data.view; 
+          this.uid = res.data.annunciate.uid;
+          this.vid = res.data.annunciate.vid
         })
       },
+      // 提交举报
       commitReport() {
         this.showReportDialog = false
+      },
+      // 提交收藏
+      commitCollect() {
+        this.$http.post('/model-spring-lm/Annunciate/Collect',qs.stringify({
+          uid:this.uid,
+          vid:this.vid
+        }))
+        .then((res) => {
+           this.ifCollect = res.data.result
+        }).catch((res) =>{
+          console.log(res)
+          
+        })
       }
     },
     created(){
@@ -194,7 +213,7 @@
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .notify-content {
     width: 100%;
     .notifyhead {

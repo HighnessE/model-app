@@ -168,7 +168,9 @@
         }
       },
       getNotifyData() {
-        this.$http.post('/model-spring-lm/Annunciate/Particulars?vid=966979034')
+        this.$http.post('/model/Annunciate/Particulars',qs.stringify({
+          vid:this.vid
+        }))
         .then((res) => {
           console.log(res)
           let contact = res.data.annunciate.contact
@@ -185,7 +187,6 @@
           this.ifReport = res.data.reports;
           this.pictures = res.data.view; 
           this.uid = res.data.annunciate.uid;
-          this.vid = res.data.annunciate.vid
         })
       },
       // 提交举报
@@ -194,7 +195,7 @@
       },
       // 提交收藏
       commitCollect() {
-        this.$http.post('/model-spring-lm/Annunciate/Collect',qs.stringify({
+        this.$http.post('/model/Annunciate/Collect',qs.stringify({
           uid:this.uid,
           vid:this.vid
         }))
@@ -207,6 +208,7 @@
       }
     },
     created(){
+      this.vid = this.$route.params.vid
       this.getNotifyData()
     }
   }

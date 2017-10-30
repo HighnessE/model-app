@@ -4,7 +4,7 @@
     <div id="selectpartment">
         <div id="addrselectbox">
           <div class="showarea">
-            <v-address :localAddr="defaultAddr"></v-address>
+            <v-address :localAddr="defaultAddr" @on-change="getAddr($event)"></v-address>
             <div class="arrowbox">
               <x-icon type="ios-arrow-down" size="0.4rem"></x-icon>
             </div>
@@ -33,49 +33,119 @@
     <x-dialog v-model="showSort" hide-on-blur>
       <select-list :arrList="sortArr" @on-change="selectPrames('sort',$event)"></select-list>
     </x-dialog>
-    <scroller lock-x height="10.5333rem" ref="scrollerBottom" :scroll-bottom-offst="200">
+    <scroller lock-x height="10.5333rem" @on-scroll-bottom="scrollerBottom()" ref="scrollerBottom" :scroll-bottom-offst="200">
       <div id="list-content">
         <ul class="content-part">
-          <li>
-            <a href="javascript:">
+          <li v-if="officialNotify.length != 0" v-for="(item,index) in officialNotify" :key="index">
+            <router-link :to="`/notifyDetail/${item.vid}`">
               <div class="headpart">
                 <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
               </div>
               <div class="maininfopart">
                 <div class="headline">
-                  <h2 class="title">招模特5名</h2>
+                  <h2 class="title">{{item.theme}}</h2>
                   <div class="tagbox">
                     <div class="identifytag">平台推荐</div>
-                    <!-- <div class="identifytag">置顶</div>
-                    <div class="identifytag">满</div> -->
+                    <div v-show="item.enough"class="identifytag">满</div>
                   </div>
                 </div>
                 <div class="mainline">
                   <h2 class="price">
                     <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
-                    <span class="price2">120元</span>
+                    <span class="price2">{{item.price}}</span>
                   </h2>
                 </div>
                 <div class="otherinfo">
-                  <div class="person">男1人</div>
-                  <div class="release">1小時前</div>
+                  <div class="person">{{item.asex}}{{item.number}}人</div>
+                  <div class="release">{{item.release}}</div>
                 </div>
                 <div class="subline">
                   <div class="startjob">
                     <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
-                    <span>1月2号开工</span>
+                    <span v-html="getWorkTime(item.work_time)"></span>
                   </div>
                   <div class="position">
                      <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
-                    <span>北京市區</span>
+                    <span>{{item.site}}</span>
                   </div>
                 </div>
               </div>
-            </a>
+            </router-link>
+          </li>
+          <li v-if="stickNotify.length !=0" v-for="(item,index) in stickNotify" :key="index">
+            <router-link :to="`/notifyDetail/${item.vid}`">
+              <div class="headpart">
+                <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+              </div>
+              <div class="maininfopart">
+                <div class="headline">
+                  <h2 class="title">{{item.theme}}</h2>
+                  <div class="tagbox">
+                    <div class="identifytag">置顶</div>
+                    <div v-show="item.enough"class="identifytag">满</div>
+                  </div>
+                </div>
+                <div class="mainline">
+                  <h2 class="price">
+                    <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
+                    <span class="price2">{{item.price}}</span>
+                  </h2>
+                </div>
+                <div class="otherinfo">
+                  <div class="person">{{item.asex}}{{item.number}}人</div>
+                  <div class="release">{{item.release}}</div>
+                </div>
+                <div class="subline">
+                  <div class="startjob">
+                    <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
+                    <span v-html="getWorkTime(item.work_time)"></span>
+                  </div>
+                  <div class="position">
+                     <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
+                    <span>{{item.site}}</span>
+                  </div>
+                </div>
+              </div>
+            </router-link>
+          </li>
+          <li v-for="(item,index) in normalNotify" :key="index">
+            <router-link :to="`/notifyDetail/${item.vid}`">
+              <div class="headpart">
+                <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+              </div>
+              <div class="maininfopart">
+                <div class="headline">
+                  <h2 class="title">{{item.theme}}</h2>
+                  <div class="tagbox">
+                    <div v-show="item.enough"class="identifytag">满</div>
+                  </div>
+                </div>
+                <div class="mainline">
+                  <h2 class="price">
+                    <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
+                    <span class="price2">{{item.price}}</span>
+                  </h2>
+                </div>
+                <div class="otherinfo">
+                  <div class="person">{{item.asex}}{{item.number}}人</div>
+                  <div class="release">{{item.release}}</div>
+                </div>
+                <div class="subline">
+                  <div class="startjob">
+                    <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
+                    <span v-html="getWorkTime(item.work_time)"></span>
+                  </div>
+                  <div class="position">
+                     <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
+                    <span>{{item.site}}</span>
+                  </div>
+                </div>
+              </div>
+            </router-link>
           </li>
         </ul>
-        <load-more tip="loading"></load-more>
-        <divider>我是有底线的</divider>
+        <load-more tip="loading" v-show="showLoading"></load-more>
+        <divider v-show="showDivider">我是有底线的</divider>
       </div>
     </scroller>
   </div>
@@ -99,21 +169,35 @@ export default {
   },
   data () {
     return {
-      baseList : [],
+      baseList : [],//轮播图数据
       showType:false,
       showSort:false,
       typeArr:["全部"],
       sortArr:['按发布时间','按需求人数'],
       defaultAddr:[],
+      address:'全国',
       type:'',
       sort:'',
-      
+      initParmes:{
+          initAddr:'全国',
+          initType:'全部',
+          initSort:'按发布时间'
+      },
+      normalNotify:[],
+      officialNotify:[],
+      stickNotify:[],
+      onFetching:false,
+      nowPage:1,
+      totalPage:1,
+      showLoading:false,
+      showDivider:false 
     }
   },
   created () {
     this.initPrames()
     this.getBanner()
     this.getTypeList()
+    this.formatTime()
   },
   methods: {
     //获取banner图
@@ -130,31 +214,45 @@ export default {
           }
           bannerList.push(obj)
         })
-        console.log(bannerList)
         this.baseList = bannerList
       })
     },
-    // 获取通告列表
+    // 获取通告数据
     getNotifyList(){
-      
+      let _this = this;
+      this.$http.post('/model/Annunciate/annunciate',qs.stringify({
+        page:1,
+        address:_this.address == '全国'?'':_this.address,
+        type:_this.type === '全部'? '':_this.type,
+        sort:_this.sort === '按发布时间'?'deadline':'number'
+      })).then((res) =>{
+        res.data.page.list.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        res.data.official.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        res.data.stickAnnunciate.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        this.normalNotify = res.data.page.list
+        this.officialNotify = res.data.official
+        this.stickNotify = res.data.stickAnnunciate
+        this.totalPage = res.data.page.totalPage
+      })
     },
     //初始化数据
     initPrames(){
-      let initData = {
-        initAddr : '全国',
-        initType : '全部',
-        initSort : '按发布时间',
-        initProvince :'',
-        initCity : ''
-      }
-      for (let item in initData) {
+      let initParmes = this.initParmes;
+      for (let item in initParmes) {
         if (localStorage.getItem(item)) {
-          initData[item] = localStorage.getItem(item)
+          initParmes[item] = localStorage.getItem(item)
         }
       }
-      this.defaultAddr = initData.initAddr
-      this.type = initData.initType
-      this.sort = initData.initSort
+      this.defaultAddr = initParmes.initAddr
+      // this.address = initParmes.initAddr
+      this.type = initParmes.initType
+      this.sort = initParmes.initSort
       this.getInitData()
     },
     //获取类型图
@@ -167,25 +265,122 @@ export default {
         this.typeArr = this.typeArr.concat(arr)
       })
     },
+    //获取初始化数据的方法
     getInitData(){
+      let _this = this;
       this.$http.post('/model/Annunciate/annunciate',qs.stringify({
         page:1,
-        address:'',
-        type:'',
-        sort:'deadline'
+        // address:_this.initParmes.initAddr == '全国'?'':_this.initParmes.initAddr,
+        address:'深圳',
+        type:_this.initParmes.initType === '全部'? '':_this.initParmes.initType,
+        sort:_this.initParmes.initSort === '按发布时间'?'deadline':'number'
       })).then((res) =>{
-        console.log(res.data.page)
+        console.log(res)
+        res.data.page.list.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        res.data.official.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        res.data.stickAnnunciate.map(item => {
+          item.release = this.formatTime(item.deadline)
+        })
+        this.normalNotify = res.data.page.list
+        this.officialNotify = res.data.official
+        this.stickNotify = res.data.stickAnnunciate
+        this.totalPage = res.data.page.totalPage
       })
     },
+    //获取子组件中的排序值请求数据并存储到本地
     selectPrames(attr,val){
       this[attr] = val
       console.log(this[attr])
       if(attr == 'type'){
-        localStorage.setItem('initType',val)
+        this.getNotifyList()
         this.showType = false
+        this.nowPage = 1
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset({top:0})
+        })
+        localStorage.setItem('initType',val)
       }else if(attr == 'sort'){
-        localStorage.setItem('initSort',val)
+        this.getNotifyList()
         this.showSort = false
+        this.nowPage = 1
+        this.$nextTick(() => {
+          this.$refs.scrollerBottom.reset({top:0})
+        })
+        localStorage.setItem('initSort',val)
+      }
+    },
+    // 计算发布时间和用户查看时间的时间差
+    formatTime(val){
+      let nowTime = new Date().getTime()
+      let releaseTime = new Date(val).getTime()
+      let reduceTime = (nowTime - releaseTime) / 1000
+      if (reduceTime < 60) {
+        return '刚刚'
+      } else if (reduceTime / 60 >= 1 && reduceTime / 60 < 60) {
+        return parseInt(reduceTime / 60) + '分钟前'
+      } else if (reduceTime / 3600 >= 1 && reduceTime / 3600 < 24) {
+        return parseInt(reduceTime / 3600) + '小时前'
+      } else if (reduceTime / (3600 * 24) >= 1 && reduceTime / (3600 * 24) < 7) {
+        return parseInt(reduceTime / (3600 * 24)) + '天前'
+      } else if (reduceTime / (3600 * 24 * 7) >= 1 && reduceTime / (3600 * 24 * 7) < 4) {
+        return parseInt(reduceTime / (3600 * 24 * 7)) + '周前'
+      } else if (reduceTime / (3600 * 24 * 7 * 4) >= 1 && reduceTime / (3600 * 24 * 7 * 4) < 12) {
+        return parseInt(reduceTime / (3600 * 24 * 7 * 4)) + '月前'
+      } else if (reduceTime / (3600 * 24 * 7 * 4 * 12) >= 1) {
+        return parseInt(reduceTime / (3600 * 24 * 7 * 4 * 12)) + '年前'
+      }
+    },
+    // 计算开工日期
+    getWorkTime(val){
+      let month = val.split(' ')[0].split('-')[1]
+      let day = val.split(' ')[0].split('-')[2]
+      return `${month}月${day}日开工`
+    },
+    //接收地址选择器传来的值
+    getAddr(val){
+      console.log(val)
+      this.address = val
+      this.nowPage = 1
+      localStorage.setItem('initAddr',val)
+      this.getNotifyList()
+    },
+    // 下拉加载更多
+    scrollerBottom(){
+      let _this = this
+      if (this.onFetching) {
+        // do nothing
+      } else {
+        this.onFetching = true
+        if(this.nowPage < this.totalPage){
+          this.showLoading = true
+          this.$http.post('/model/Annunciate/annunciate',qs.stringify({
+            page:_this.nowPage++,
+            // address:_this.address == '全国'?'':_this.address,
+            address:'深圳',
+            type:_this.type === '全部'? '':_this.type,
+            sort:_this.sort === '按发布时间'?'deadline':'number'
+          })).then((res) =>{
+            res.data.page.list.map(item => {
+              item.release = this.formatTime(item.deadline)
+            })
+            this.normalNotify = this.normalNotify.concat(res.data.page.list)
+            this.totalPage = res.data.page.totalPage
+            console.log(res.data.page.pageNumber)
+            console.log(res.data)
+            this.$nextTick(() => {
+              this.$refs.scrollerBottom.reset()
+            })
+            this.onFetching = false
+            this.showLoading = false
+          })
+        }else{
+          this.showDivider = true 
+          this.onFetching = false
+        }
       }
     }
   }
@@ -391,9 +586,8 @@ export default {
               margin-top: 0.267rem;
               .startjob, .position {
                 display: flex;
-                div {
-                  width: 0.4rem;
-                  margin-right: 0.1867rem;
+                svg {
+                  margin-right: 0.125rem;
                 }
                 span {
                   color: #929292;

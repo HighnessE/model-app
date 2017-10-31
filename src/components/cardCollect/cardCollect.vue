@@ -229,5 +229,21 @@
       }
     }
   }
+  .nocontent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width:100%;
+        p {
+          font-size: 0.3733rem;
+          color:#919191;
+          margin-top: 0.2667rem;
+        }
+    }
 }
 </style>

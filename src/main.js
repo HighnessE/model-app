@@ -8,7 +8,7 @@ import { remInit } from './base/remInit.js'
 import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { WechatPlugin } from 'vux'
-
+import store from './store'
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
 FastClick.attach(document.body)
@@ -18,6 +18,7 @@ Vue.prototype.$http = axios
     /* eslint-disable no-new */
 new Vue({
     router,
+    store,
     render: h => h(App)
 }).$mount('#app-box')
 //每次页面加载执行（授权）

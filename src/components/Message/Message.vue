@@ -4,63 +4,83 @@
       <!-- 消息列表 -->
     <div class="msgwrap">
         <div class="systemmsg">
-            <a>
+            <router-link to="/Message/1">
                 <div class="img">
                     <x-icon type="ios-cog" size="1.0667rem" class="icon1"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
                         <h4>系统消息</h4>
-                        </div>
-                        <div class="msg">
-                            <p>系统给您推送的消息</p>
+                    </div>
+                    <div class="msg">
+                        <p>系统给您推送的消息</p>
+                        <span v-show="systemCount != 0">{{systemCount}}</span>
                     </div>
                 </div>
-            </a>
+            </router-link>
         </div>
         <div class="thumbsmsg">
-            <a>
+            <router-link to="/Message/2">
                 <div class="img">
                     <x-icon type="thumbsup" size="1.0667rem" class="icon2"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
-                    <h4>点赞消息</h4>
+                        <h4>点赞消息</h4>
                     </div>
                     <div class="msg">
-                    <p>您的被点赞消息</p>
+                        <p>您的被点赞消息</p>
+                        <span v-show="likeCount != 0">{{likeCount}}</span>
                     </div>
                 </div>
-            </a>
+            </router-link>
         </div>
         <div class="leavemsg">
-            <a>
+            <router-link to="/Message/3">
                 <div class="img">
                     <x-icon type="ios-compose" size="1.0667rem" class="icon3"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
                         <h4>留言消息</h4>
-                        </div>
-                        <div class="msg">
-                            <p>其他用户给您的留言</p>
+                    </div>
+                    <div class="msg">
+                        <p>其他用户给您的留言</p>
+                        <span v-show="leaveCount != 0">{{leaveCount}}</span>
                     </div>
                 </div>
-            </a>
+            </router-link>
         </div>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 <script>
 import { XHeader} from 'vux'
+import qs from 'qs'
 export default {
   components: {
     XHeader
   },
-  data () {
+  data (){
     return {
-      
+      systemCount:0,
+      likeCount:0,
+      leaveCount:0
     }
+  },
+  created (){
+      this.getMsgCount()
+  },
+  methods: {
+      getMsgCount(){
+          this.$http.post('/model/Model/ModelCount')
+          .then((res)=>{
+              this.systemCount = res.data.system
+              this.likeCount = res.data.like
+              this.leaveCount = res.data.leave
+          })
+      }
   }
 }
 </script>
@@ -155,7 +175,6 @@ export default {
                 .content {
                     margin-left: 0.3733rem;
                     flex:1;
-
                     .title {
                         display: flex;
                         justify-content:space-between;
@@ -183,15 +202,17 @@ export default {
                             white-space:nowrap;
                         }
                         span {
+                            display: flex;
+                            justify-content:center;
+                            align-items:center;
                             width: 0.5333rem;
                             height: 0.5333rem;
+                            font-size: 0.32rem;
                             margin-right: 0.6133rem;
                             border-radius:50%;
                             background-color: #f44848;
                             color: #fff;
-                            display: flex;
-                            justify-content:center;
-                            align-items:center;
+                            
                         }
                     }
                 }

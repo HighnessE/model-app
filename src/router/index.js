@@ -32,7 +32,11 @@ const routes = [{
 }, {
     path: '/Message',
     meta: {title:'我的消息'},
-    component: Message
+    component: Message,
+    children:[{
+        path:':id',
+        component:MessageList
+    }]
 }, {
     path: '/Center',
     meta: {title:'个人中心'},

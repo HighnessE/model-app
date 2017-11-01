@@ -23,8 +23,8 @@
           </router-link>
         </div>
       </div>
-      <div class="releasebtn" v-if="$route.path == '/Card'" @click="judgeCard"><p>制作名片</p></div>
-      <div class="releasebtn" v-else @click="releaseLayer">发布</div>
+      <div class="releasebtn" v-if="$route.path == '/Card'" @click="$emit('judgeCard')"><p>制作名片</p></div>
+      <div class="releasebtn" v-else @click="$emit('openSelectLayer')">发布</div>
   </div>
 </template>
 <script>
@@ -47,14 +47,6 @@ export default {
         active:require("./images/4.png"),
         quiet:require("./images/4.1.png")
       }
-    }
-  },
-  methods: {
-    releaseLayer(){
-      
-    },
-    judgeCard(){
-
     }
   }
 }

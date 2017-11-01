@@ -45,7 +45,9 @@
                 <div class="headline">
                   <h2 class="title">{{item.theme}}</h2>
                   <div class="tagbox">
-                    <div class="identifytag">平台推荐</div>
+                    <div class="identifytag">
+                      <img src="./goodnotify.png" alt="">
+                    </div>
                     <div v-show="item.enough"class="identifytag">满</div>
                   </div>
                 </div>
@@ -174,7 +176,7 @@ export default {
       showSort:false,
       typeArr:["全部"],
       sortArr:['按发布时间','按需求人数'],
-      defaultAddr:[],
+      defaultAddr:'',
       address:'全国',
       type:'',
       sort:'',

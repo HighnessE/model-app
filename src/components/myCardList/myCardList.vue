@@ -3,7 +3,7 @@
     <x-header>我的名片</x-header>
     <div id="cardlist">
         <ul class="cardlist">
-            <li>            
+            <li v-for="(item,index) in cardArray" :key="index">            
                 <div class="handle">
                     <div class="delete">
                         <x-icon type="ios-trash-outline" size="0.5rem"></x-icon>
@@ -20,19 +20,19 @@
                 </div>
                 <router-link to="/cardDetail" class="cardlink">
                     <div class="imgbox">
-                        <img src="../center/img/avatar.png" alt="">
+                        <img :src="item.picture" alt="">
                     </div>
                     <div class="infobox">
-                        <div class="status"> <span>待审核</span></div>
-                        <div class="baseinfo"><span>赵日天</span><span>湖南</span><span>23岁</span></div>
+                        <div class="status"><span v-show="item.exist == 0">待审核</span></div>
+                        <div class="baseinfo"><span>{{item.name}}</span><span>{{item.city}}</span><span>23岁</span></div>
                         <div class="viewbox">
                             <div class="seen">
                                 <x-icon type="eye" size="0.4rem" ></x-icon>
-                                <span>2</span>
+                                <span>{{item.examine}}</span>
                             </div>
                             <div class="like">
                                 <x-icon type="heart" size="0.4rem" ></x-icon>
-                                <span>33</span>
+                                <span>{{item.attention}}</span>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
             </li>
         </ul>
     </div>
-    <div class="sticktips">
+    <div class="sticktips" v-show="cardArray.length == 0">
         <div class="content">
             <p>小主，创建模特名片即可进驻美约人才库，更多工作主动找上门！还可以一键转发给朋友，推广自己的名片哦！</p>
         </div>
@@ -51,10 +51,27 @@
   </div>
 </template>
 <script>
+import qs from 'qs'
 import { XHeader} from 'vux'
 export default {
    components: {
     XHeader
+  },
+  data(){
+    return {
+      cardArray:[]
+    }
+  },
+  created(){
+    this.getMycard()
+  },
+  methods: {
+    getMycard(){
+      this.$http.post('/model/Work/Wgrouping')
+      .then((res)=>{
+        this.cardArray = res.data
+      })
+    }
   }
 }
 </script>
@@ -109,6 +126,7 @@ export default {
           margin-left: 0.4266666666666667rem;
           .status {
             height: 0.9866666666666667rem;
+            height: 0.9867rem;
             width: 6.24rem;
             display: flex;
             justify-content:flex-end;

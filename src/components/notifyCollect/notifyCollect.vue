@@ -65,8 +65,8 @@
 <script>
   import qs from 'qs' 
   import Vue from 'vue'
-  import  { AlertPlugin } from 'vux'
-  Vue.use(AlertPlugin)
+  import  { ConfirmPlugin } from 'vux'
+  Vue.use(ConfirmPlugin)
   import {
     mapGetters,
     mapActions
@@ -155,18 +155,13 @@
         })
         if(deleteOpt.length > 0) {
           let _this = this
-          this.$vux.alert.show({
-            title:'准备删除通告',
-            content:'确定吗？',
-            onShow() {
-              console.log('Plugin: I\'m showing')
-            },
-            onHide() {
+          this.$vux.confirm.show({
+            title:'确定删除选中通告？',
+            onConfirm () {
               let newArr = []
                deleteOpt.map(item=>{
                  newArr.push(item.vid)
                })
-               console.log(newArr)
               _this.$http.post('/model/Model/DelectCollect',qs.stringify({
                  type:'notify',
                  vid: newArr.join(',')
@@ -185,23 +180,41 @@
 </script>
 
 <style lang="less">
-  .vux-alert {
-    .vux-x-dialog {
-      .weui-dialog {
-        .weui-dialog__hd{
-          .weui-dialog__title {
-            font-size: 0.48rem !important;
-          }
+  // .vux-alert {
+  //   .vux-x-dialog {
+  //     .weui-dialog {
+  //       .weui-dialog__hd{
+  //         .weui-dialog__title {
+  //           font-size: 0.48rem !important;
+  //         }
+  //       }
+  //       .weui-dialog__bd {
+  //           padding: 0 1.6em 0.8em;
+  //           min-height: 1.0667rem !important;
+  //           font-size: 0.4rem !important;
+  //       }
+  //       .weui-dialog__ft {
+  //         line-height: 1.28rem !important;
+  //         font-size: 0.48rem !important;
+  //       }
+  //     }
+  //   }
+  // }
+  .vux-x-dialog {
+    .weui-dialog {
+      .weui-dialog__hd {
+        .weui-dialog__title {
+          font-size: 0.48rem !important;
         }
-        .weui-dialog__bd {
-            padding: 0 1.6em 0.8em;
-            min-height: 1.0667rem !important;
-            font-size: 0.4rem !important;
-        }
+      }
+      .weui-dialog__bd {
+          padding: 0 1.6em 0.8em;
+          min-height: 1.0667rem !important;
+          font-size: 0.4rem !important;
+      }
         .weui-dialog__ft {
           line-height: 1.28rem !important;
           font-size: 0.48rem !important;
-        }
       }
     }
   }

@@ -102,12 +102,95 @@
         </a>
       </li>
     </ul>
-    <div class="nocontent">
+    <div class="nocontent" v-show="collectCard.length == 0">
       <img src="../../base/img/nodata.png">
       <p>暂无数据</p>
     </div>
   </div>
 </template>
+<script>
+import qs from 'qs' 
+import Vue from 'vue'
+import  { ConfirmPlugin } from 'vux'
+Vue.use(ConfirmPlugin)
+import {
+    mapGetters,
+    mapActions
+  } from 'vuex'
+export default {
+  data() {
+    return {
+      collectCard: [],
+      allSelected:false
+    }
+  },
+  created() {
+      this.getCardCollect()
+    },
+    computed: {
+      ...mapGetters([
+        "collectCardGetter"
+      ])
+    },
+    methods: {
+      //获取通告收藏数据
+      getCardCollect() {
+        this.$http.post('/model/Work/WorkMo')
+        .then((res) => {
+        })
+      },
+      //全选
+      allSelect(){
+        this.allSelected = !this.allSelected
+        if(this.allSelected){
+          this.collectCard.map((item)=>{
+            item.active = true
+          })
+        }else {
+          this.collectCard.map((item)=>{
+            item.active = false
+          })
+        }
+        
+      },
+      //单选
+      singleSelect(item){
+        item.active = !item.active
+        let ifAllSelect = this.collectCard.every((item)=>{
+          return item.active === true
+        })
+        this.allSelected = (ifAllSelect === true)?true:false
+      },
+      //点击删除
+      deleteNotify(){
+        let deleteOpt = this.collectCard.filter(item=>{
+          return item.active == 1
+        })
+        if(deleteOpt.length > 0) {
+          let _this = this
+          this.$vux.confirm.show({
+            title:'确定删除选中名片？',
+            onConfirm () {
+              let newArr = []
+               deleteOpt.map(item=>{
+                 newArr.push(item.vid)
+               })
+              _this.$http.post('/model/Model/DelectCollect',qs.stringify({
+                 type:'notify',
+                 vid: newArr.join(',')
+              })).then(res=> {
+                if(res.data.result === 'success'){
+                  _this.getCardCollect()
+                }
+              })
+            }
+          })
+        }
+      }
+    }
+}
+</script>
+
 <style lang="less" scoped>
   #collect-card-list {
     ul {

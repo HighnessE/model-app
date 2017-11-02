@@ -33,6 +33,7 @@
     <x-dialog v-model="showSort" hide-on-blur>
       <select-list :arrList="sortArr" @on-change="selectPrames('sort',$event)"></select-list>
     </x-dialog>
+    <notify-tips></notify-tips>
     <scroller lock-x height="10.5333rem" @on-scroll-bottom="scrollerBottom()" ref="scrollerBottom" :scroll-bottom-offst="200">
       <div id="list-content">
         <ul class="content-part">
@@ -157,6 +158,7 @@
 import { Swiper, ChinaAddressV4Data, LoadMore ,Scroller ,Divider, XDialog} from 'vux'
 import VAddress from '../../common/vuxAddress/vuxAddress'
 import selectList from '../../common/selectLayer/selectLayer'
+import notifyTips from '../../common/goodNotify/goodNotify'
 import { domainAnnu } from '../../base/common.js'
 import qs from 'qs'
 export default {
@@ -167,7 +169,8 @@ export default {
     Scroller,
     Divider,
     XDialog,
-    selectList
+    selectList,
+    notifyTips
   },
   data () {
     return {

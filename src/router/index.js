@@ -16,6 +16,7 @@ import notifyDetail from '@/components/notifyDetail/notifyDetail'
 import releaseNotify from '@/components/releaseNotify/releaseNotify'
 import releaseCard from '@/components/releaseCard/releaseCard'
 import cardDetail from '@/components/cardDetail/cardDetail'
+import stickNotify from '@/components/stickNotify/stickNotify'
 Vue.use(Router)
 
 const routes = [{
@@ -93,6 +94,10 @@ const routes = [{
     path:'/releaseCard',
     meta:{title:'发布名片'},
     component:releaseCard
+}, {
+    path:'/stickNotify',
+    meta:{title:'置顶通告'},
+    component:stickNotify
 }]
 
 export default new Router({

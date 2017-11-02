@@ -144,7 +144,7 @@
       getSelectType() {
         this.$http.get('/model/Detail/TypeAdd').then((res) => {
           let style = res.data[0].map(item => item.type);
-          let type = res.data[2].map(item => item.type);
+          let type = res.data[1].map(item => item.type);
           this.styleArray = this.styleArray.concat(style);
           this.typeArray = this.typeArray.concat(type);
         })

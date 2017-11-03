@@ -8,11 +8,11 @@
     <div class="editcard">
       <!-- 姓名 -->
       <group>
-        <x-input title="姓名" v-model="name" :should-toast-error=false :max="10"></x-input>
+        <x-input title="姓名" v-model="name" :should-toast-error=false :max="10" text-align="right"></x-input>
       </group>
       <!--年龄-->
       <group>
-        <x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3"></x-input>
+        <x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3" text-align="right"></x-input>
       </group>
       <!--地区-->
       <div class="items">
@@ -29,11 +29,11 @@
       <div class="graybar"></div>
       <!--身高-->
       <group>
-        <x-input title="身高/cm" type="number" v-model="height" :should-toast-error=false :max="3"></x-input>
+        <x-input title="身高/cm" type="number" v-model="height" :should-toast-error=false :max="3" text-align="right"></x-input>
       </group>
       <!--体重-->
       <group>
-        <x-input title="体重/kg" type="number" v-model="weight" :should-toast-error=false :max="3"></x-input>
+        <x-input title="体重/kg" type="number" v-model="weight" :should-toast-error=false :max="3" text-align="right"></x-input>
       </group>
       <!--三围-->
       <div class="items">
@@ -49,7 +49,7 @@
       </div>
       <!--鞋码-->
       <group>
-        <x-input title="鞋码" type="number" v-model="shoe" :should-toast-error=false :max="2"></x-input>
+        <x-input title="鞋码" type="number" v-model="shoe" :should-toast-error=false :max="2" text-align="right"></x-input>
       </group>
       <div class="graybar"></div>
       <!--风格标签-->

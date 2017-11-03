@@ -300,6 +300,7 @@
           font-size: 0.373rem;
           line-height: 0.64rem;
           margin-right: 0.133rem;
+          color:#2c2a2a;
         }
         input {
           display: inline-block;

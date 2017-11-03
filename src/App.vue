@@ -72,7 +72,7 @@
 
   .slide-down-enter-active,
   .slide-down-leave-active {
-    transition: all 0.25s;
+    transition: all .25s;
   }
 
   .slide-down-enter,

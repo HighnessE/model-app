@@ -255,7 +255,7 @@ export default {
         }
       }
       this.defaultAddr = initParmes.initAddr
-      // this.address = initParmes.initAddr
+      this.address = initParmes.initAddr
       this.type = initParmes.initType
       this.sort = initParmes.initSort
       this.getInitData()
@@ -275,8 +275,7 @@ export default {
       let _this = this;
       this.$http.post('/model/Annunciate/annunciate',qs.stringify({
         page:1,
-        // address:_this.initParmes.initAddr == '全国'?'':_this.initParmes.initAddr,
-        address:'深圳',
+        address:_this.initParmes.initAddr == '全国'?'':_this.initParmes.initAddr,
         type:_this.initParmes.initType === '全部'? '':_this.initParmes.initType,
         sort:_this.initParmes.initSort === '按发布时间'?'deadline':'number'
       })).then((res) =>{
@@ -348,9 +347,9 @@ export default {
     //接收地址选择器传来的值
     getAddr(val){
       console.log(val)
-      this.address = val
+      this.address = val.slice(1)
       this.nowPage = 1
-      localStorage.setItem('initAddr',val)
+      localStorage.setItem('initAddr',val.slice(1))
       this.getNotifyList()
     },
     // 下拉加载更多
@@ -364,8 +363,7 @@ export default {
           this.showLoading = true
           this.$http.post('/model/Annunciate/annunciate',qs.stringify({
             page:_this.nowPage++,
-            // address:_this.address == '全国'?'':_this.address,
-            address:'深圳',
+            address:_this.address == '全国'?'':_this.address,
             type:_this.type === '全部'? '':_this.type,
             sort:_this.sort === '按发布时间'?'deadline':'number'
           })).then((res) =>{

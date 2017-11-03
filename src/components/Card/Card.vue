@@ -178,7 +178,8 @@
               item.workJob = item.workJob.split(' / ').slice(0,-1)
           })  
           this.normalCard = res.data.work
-          this.stickCard = res.data.stickWork  
+          this.stickCard = res.data.stickWork
+          console.log(1);
         })
       },
       //获取子组件中的排序值请求数据并存储到本地

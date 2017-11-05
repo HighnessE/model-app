@@ -179,7 +179,6 @@
           })  
           this.normalCard = res.data.work
           this.stickCard = res.data.stickWork
-          console.log(1);
         })
       },
       //获取子组件中的排序值请求数据并存储到本地

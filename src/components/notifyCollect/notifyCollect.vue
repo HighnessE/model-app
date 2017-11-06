@@ -180,26 +180,6 @@
 </script>
 
 <style lang="less">
-  // .vux-alert {
-  //   .vux-x-dialog {
-  //     .weui-dialog {
-  //       .weui-dialog__hd{
-  //         .weui-dialog__title {
-  //           font-size: 0.48rem !important;
-  //         }
-  //       }
-  //       .weui-dialog__bd {
-  //           padding: 0 1.6em 0.8em;
-  //           min-height: 1.0667rem !important;
-  //           font-size: 0.4rem !important;
-  //       }
-  //       .weui-dialog__ft {
-  //         line-height: 1.28rem !important;
-  //         font-size: 0.48rem !important;
-  //       }
-  //     }
-  //   }
-  // }
   .vux-x-dialog {
     .weui-dialog {
       .weui-dialog__hd {

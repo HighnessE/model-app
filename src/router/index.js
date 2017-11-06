@@ -20,86 +20,90 @@ import stickNotify from '@/components/stickNotify/stickNotify'
 Vue.use(Router)
 
 const routes = [{
-    path: '/',
-    redirect: '/Home'
+	path: '/',
+	redirect: '/Home'
 }, {
-    path: '/Home',
-    meta: {title:'最新通告'},
-    component: Home
+	path: '/Home',
+	meta: { title: '最新通告' },
+	component: Home
 }, {
-    path: '/Card',
-    meta: {title:'模特名片'},
-    component: Card
+	path: '/Card',
+	meta: { title: '模特名片' },
+	component: Card
 }, {
-    path: '/Message',
-    meta: {title:'我的消息'},
-    component: Message,
-    children:[{
-        path:':id',
-        component:MessageList
-    }]
+	path: '/Message',
+	meta: { title: '我的消息' },
+	component: Message,
+	children: [{
+		path: ':id',
+		component: MessageList
+	}]
 }, {
-    path: '/Center',
-    meta: {title:'个人中心'},
-    component: Center
+	path: '/Center',
+	meta: { title: '个人中心' },
+	component: Center
 }, {
-    path: '/MsgList',
-    meta: {title:'我的消息'},
-    component: MessageList
+	path: '/MsgList',
+	meta: { title: '我的消息' },
+	component: MessageList
 }, {
-    path: '/MsgDetail',
-    meta: {title:'我的消息'},
-    component: MessageDetail
+	path: '/MsgDetail',
+	meta: { title: '我的消息' },
+	component: MessageDetail
 }, {
-    path: '/myCardList',
-    meta: {title:'我的名片'},
-    component: myCardList
+	path: '/myCardList',
+	meta: { title: '我的名片' },
+	component: myCardList
 }, {
-    path: '/myCollect',
-    component: myCollect,
-    children: [{
-        path: 'notifyCollect',
-        meta: {title:'通告收藏'},
-        component: notifyCollect
-    }, {
-        path: 'cardCollect',
-        meta: {title:'名片收藏'},
-        component: cardCollect
-    }, {
-        path: '/',
-        redirect: 'notifyCollect',
-        component: notifyCollect
-    }]
+	path: '/myCollect',
+	component: myCollect,
+	children: [{
+		path: 'notifyCollect',
+		meta: { title: '通告收藏' },
+		component: notifyCollect
+	}, {
+		path: 'cardCollect',
+		meta: { title: '名片收藏' },
+		component: cardCollect
+	}, {
+		path: '/',
+		redirect: 'notifyCollect',
+		component: notifyCollect
+	}]
 }, {
-    path: '/Setup',
-    meta: {title:'设置与隐私'},
-    component: Setup
+	path: '/Setup',
+	meta: { title: '设置与隐私' },
+	component: Setup
 }, {
-    path: '/Contact',
-    meta: {title:'联系我们'},
-    component: Contact
+	path: '/Contact',
+	meta: { title: '联系我们' },
+	component: Contact
 }, {
-    path: '/releaseNotify',
-    meta: {title:'发布通告'},
-    component: releaseNotify
+	path: '/releaseNotify',
+	meta: { title: '发布通告' },
+	component: releaseNotify
 }, {
-    path: '/notifyDetail/:vid',
-    meta: {title:'通告详情'},
-    component: notifyDetail
+	path: '/notifyDetail/:vid',
+	meta: { title: '通告详情' },
+	component: notifyDetail
 }, {
-    path:'/cardDetail',
-    meta:{title:'名片详情'},
-    component:cardDetail
+	path: '/cardDetail',
+	meta: { title: '名片详情' },
+	component: cardDetail
 }, {
-    path:'/releaseCard',
-    meta:{title:'发布名片'},
-    component:releaseCard
+	path: '/releaseCard',
+	meta: { title: '发布名片' },
+	component: releaseCard
 }, {
-    path:'/stickNotify',
-    meta:{title:'置顶通告'},
-    component:stickNotify
+	path: '/stickNotify',
+	meta: { title: '置顶通告' },
+	component: stickNotify
+}, {
+	path: '/CardTemplate',
+	meta: { title: '选择模板' },
+    component: resolve => require(['../components/CardTemplate/CardTemplate'], resolve)
 }]
 
 export default new Router({
-    routes
+	routes
 })

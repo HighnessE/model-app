@@ -213,6 +213,7 @@ import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
 import selectButton from '../../common/selectButton/selectButton'
 import singleSelectButton from '../../common/singleSelectButton/singleSelectButton'
+import bwhList from '../../assets/bwhList'
 export default {
 	components: {
 		XHeader,
@@ -253,7 +254,8 @@ export default {
 			showStyleDialog: false,
 			showOfferDialog: false,
 			showNotifyDialog: false,
-
+			// 三围列表
+			bwhList: bwhList,
 		}
 	},
 	methods: {

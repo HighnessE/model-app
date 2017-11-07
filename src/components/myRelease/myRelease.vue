@@ -17,7 +17,7 @@
           </div>
           <div class="maininfopart">
             <div class="headline">
-              <h2 class="title"></h2>
+              <h2 class="title">{{item.theme}}</h2>
               <div class="identifytag">官方推荐</div>
               <div class="identifytag">置顶</div>
               <div class="identifytag">待置顶</div>
@@ -80,7 +80,9 @@ import qs from 'qs'
       },
       data() {
           return {
-              stickNotify:[],
+              stickNotify:[{
+                theme:'广东招男神'
+              }],
               normalNotify:[]
           }
       }

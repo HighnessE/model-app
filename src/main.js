@@ -1,7 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import FastClick from 'fastclick'
+// import FastClick from 'fastclick'
 import App from './App'
 import router from './router'
 import { remInit } from './base/remInit.js'
@@ -11,7 +11,7 @@ import { WechatPlugin } from 'vux'
 import store from './store'
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
-FastClick.attach(document.body)
+// FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
@@ -21,6 +21,7 @@ new Vue({
     store,
     render: h => h(App)
 }).$mount('#app-box')
+
 //每次页面加载执行（授权）
 router.beforeEach((to,from,next) => {
     document.title = to.meta.title || '美约通告'

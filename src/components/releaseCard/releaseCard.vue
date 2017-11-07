@@ -36,17 +36,9 @@
 				<x-input title="体重/kg" type="number" v-model="weight" :should-toast-error=false :max="3" text-align="right" placeholder="（必填）"></x-input>
 			</group>
 			<!--三围-->
-			<div class="items">
-				<div class="itemwrap">
-					<div class="itemtype">
-						<span>三围</span>
-					</div>
-					<div class="itemhandle">
-						<popup-picker :data="bwhList" :columns="3" v-model="bwh" show-name></popup-picker>
-						<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
-					</div>
-				</div>
-			</div>
+			<group>
+				<popup-picker title="三围" :data="bwhList" v-model="bwh"></popup-picker>
+			</group>
 			<!--鞋码-->
 			<group>
 				<x-input title="鞋码" type="number" v-model="shoe" :should-toast-error=false :max="2" text-align="right" placeholder="（必填）"></x-input>
@@ -233,7 +225,7 @@ export default {
 			age: '',
 			height: '',
 			weight: '',
-			bwh: '',
+			bwh: ['85', '60', '85'],
 			shoe: '',
 			resume: '',
 			self: '',
@@ -261,10 +253,10 @@ export default {
 	},
 	computed: {
 		styleTagVal(){
-			return styleTag.join(' / ')
+			return this.styleTag.join(' / ')
 		},
 		workTagVal(){
-			return workTag.join(' / ')
+			return this.workTag.join(' / ')
 		}
 	},
 	methods: {
@@ -291,8 +283,18 @@ export default {
 		},
 		// 跳转到创建模卡页面
 		jumpToCardTemplate() {
-			console.log(this.name, 'this.bwh', this.weight, this.height, this.shoe);
+			this.$store.commit('UPDATE_MODEL_CARD_DATA', {
+				name: this.name,
+				bwh: this.bwh.join('/'),
+				weight: this.weight,
+				height: this.height,
+				shoe: this.shoe
+			});
+			this.$router.push({ path: '/CardTemplate' });
 		}
+	},
+	mounted () {
+		
 	}
 }
 

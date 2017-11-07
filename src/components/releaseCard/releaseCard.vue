@@ -42,7 +42,7 @@
 						<span>三围</span>
 					</div>
 					<div class="itemhandle">
-						<v-address></v-address>
+						<popup-picker :data="bwhList" :columns="3" v-model="bwh" show-name></popup-picker>
 						<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 					</div>
 				</div>
@@ -207,7 +207,7 @@ import {
 	Group,
 	XTextarea,
 	XDialog,
-	Picker
+	PopupPicker
 } from 'vux';
 import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
@@ -225,7 +225,7 @@ export default {
 		VAddress,
 		selectButton,
 		singleSelectButton,
-		Picker
+		PopupPicker
 	},
 	data() {
 		return {
@@ -233,6 +233,7 @@ export default {
 			age: '',
 			height: '',
 			weight: '',
+			bwh: '',
 			shoe: '',
 			resume: '',
 			self: '',

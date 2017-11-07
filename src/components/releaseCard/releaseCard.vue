@@ -59,7 +59,7 @@
 						<span>风格标签</span>
 					</div>
 					<div class="itemhandle" @click="showStyleDialog=!showStyleDialog">
-						<input type="text" placeholder="选择2~5个" :value="styleTag.join(' / ')" readonly>
+						<input type="text" placeholder="选择2~5个" :value="styleTagVal" readonly>
 						<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 					</div>
 				</div>
@@ -71,7 +71,7 @@
 						<span>工作标签</span>
 					</div>
 					<div class="itemhandle" @click="showWorkDialog=!showWorkDialog">
-						<input type="text" placeholder="选择2~5个" :value="workTag.join(' / ')" readonly>
+						<input type="text" placeholder="选择2~5个" :value="workTagVal" readonly>
 						<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 					</div>
 				</div>
@@ -257,6 +257,14 @@ export default {
 			showNotifyDialog: false,
 			// 三围列表
 			bwhList: bwhList,
+		}
+	},
+	computed: {
+		styleTagVal(){
+			return styleTag.join(' / ')
+		},
+		workTagVal(){
+			return workTag.join(' / ')
 		}
 	},
 	methods: {

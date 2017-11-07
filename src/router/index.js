@@ -17,6 +17,7 @@ import releaseNotify from '@/components/releaseNotify/releaseNotify'
 import releaseCard from '@/components/releaseCard/releaseCard'
 import cardDetail from '@/components/cardDetail/cardDetail'
 import stickNotify from '@/components/stickNotify/stickNotify'
+import myRelease from '@/components/myRelease/myRelease'
 Vue.use(Router)
 
 const routes = [{

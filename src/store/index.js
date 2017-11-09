@@ -4,27 +4,40 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-    editCollectNotify:false,
-    editCollectCard:false
+    editCollectNotify: false,
+    editCollectCard: false,
+    modelCardData: {
+        name: '',
+        bwh: '',
+        weight: '',
+        height: '',
+        shoe: ''
+    }
 }
 
 const mutations = {
     //收藏页面编辑按钮切换
     toggleCollectNotify(state) {
-        state.editCollectNotify = !state.editCollectNotify 
+        state.editCollectNotify = !state.editCollectNotify
     },
     toggleCollectCard(state) {
-        state.editCollectCard = !state.editCollectCard 
+        state.editCollectCard = !state.editCollectCard
     },
+    UPDATE_MODEL_CARD_DATA(state, dataObj) {
+        state.modelCardData = dataObj
+    }
 }
 
 const getters = {
-    collectNotifyGetter:state => {
+    collectNotifyGetter: state => {
         return state.editCollectNotify
     },
-    collectCardGetter:state => {
+    collectCardGetter: state => {
         return state.editCollectCard
     },
+    modelCardDataGetter: state => {
+        return state.modelCardData
+    }
 }
 
 const actions = {
@@ -34,6 +47,9 @@ const actions = {
     collectCardAction(context) {
         context.commit('toggleCollectCard')
     },
+    updateModelCardDataAction(context) {
+        context.commit('UPDATE_MODEL_CARD_DATA')
+    }
 }
 
 export default new Vuex.Store({

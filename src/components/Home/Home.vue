@@ -33,13 +33,27 @@
     <x-dialog v-model="showSort" hide-on-blur>
       <select-list :arrList="sortArr" @on-change="selectPrames('sort',$event)"></select-list>
     </x-dialog>
-    <notify-tips></notify-tips>
+    <!-- 优质通告提示弹窗 -->
+    <transition enter-active-class="fadeIn" leave-active-class="fadeOut">
+      <div class="notifytipwrap animated" v-show="showGoodModal">
+          <div class="notifytip " v-show="showGoodModal">
+            <div class="infotip">
+              <h4>此类为优质通告，须付费才能查看哦</h4>
+              <p>（付费后可重复查看）</p>
+            </div>
+            <div class="handletip">
+              <button @click="gotoPay()">立即查看</button>
+              <button @click="showGoodModal = false">返回</button>
+            </div>
+          </div>
+      </div>
+  </transition>
     <scroller lock-x height="10.5333rem" @on-scroll-bottom="scrollerBottom()" ref="scrollerBottom" :scroll-bottom-offst="200">
       <div id="list-content">
         <ul class="content-part">
           <template v-if="officialNotify.length">
             <li v-for="(item,index) in officialNotify" :key="index">
-              <router-link :to="`/notifyDetail/${item.vid}`">
+              <a href="javascript:;" @click="judgeIfOfficial(item.vid,item.official)">
                 <div class="headpart">
                   <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
                 </div>
@@ -72,7 +86,7 @@
                     </div>
                   </div>
                 </div>
-              </router-link>
+              </a>
             </li>
           </template>
           <template v-if="stickNotify.length">
@@ -167,7 +181,6 @@
   } from 'vux'
   import VAddress from '../../common/vuxAddress/vuxAddress'
   import selectList from '../../common/selectLayer/selectLayer'
-  import notifyTips from '../../common/goodNotify/goodNotify'
   import {
     domainAnnu
   } from '../../base/common.js'
@@ -181,13 +194,13 @@
       Divider,
       XDialog,
       selectList,
-      notifyTips
     },
     data() {
       return {
         baseList: [], //轮播图数据
         showType: false,
         showSort: false,
+        showGoodModal: false,
         typeArr: ["全部"],
         sortArr: ['按发布时间', '按需求人数'],
         defaultAddr: '',
@@ -428,6 +441,25 @@
             this.onFetching = false
           }
         }
+      },
+      //判断是否为官方通告
+      judgeIfOfficial(vid, official) {
+        this.$http.post('model/Annunciate/judge', qs.stringify({
+          vid: vid,
+          official: official
+        })).then(res => {
+          console.log(res)
+          if (res.data.money) {
+            this.showGoodModal = true
+            console.log(this.showGoodModal)
+          } else {
+            this.$router.push(`/notifyDetail/${vid}`)
+          }
+        })
+      },
+      //跳转到官方通告支付
+      gotoPay(){
+        this.$router.push('/payment')
       }
     }
   }
@@ -556,6 +588,61 @@
         }
         .arrowbox {
           flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  .notifytipwrap {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999999;
+    .notifytip {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      width: 90%;
+      box-sizing: border-box;
+      border-radius: 0.16rem;
+      text-align: center;
+      overflow: hidden;
+      .infotip {
+        padding: 0.6933rem 0.64rem 0.48rem 0.64rem; //border-bottom: 0.0267rem solid #919191;
+        h4 {
+          line-height: 0.8rem;
+          font-size: 0.4533rem;
+          color: #333;
+        }
+        p {
+          margin-top: 0.16rem;
+          color: #919191;
+          font-size: 0.3733rem;
+        }
+      }
+      .handletip {
+        width: 100%;
+        display: flex;
+        button {
+          background: #fff;
+          font-size: 0.4267rem;
+          color: #333;
+          text-align: center;
+          line-height: 1.52rem;
+          outline: none;
+          border: none;
+          border-radius: 0;
+          width: 50%;
+          box-sizing: border-box;
+        }
+        button:first-child {
+          color: #365aa4;
+          border-right: 0.0267rem solid #eee;
         }
       }
     }

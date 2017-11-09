@@ -15,27 +15,71 @@
                 <span class="title">消息通知</span>
                 <div class="switchWrap">
                     <span>私信提醒</span>
-                    <v-switch></v-switch>
+                    <v-switch @on-change="privateRemind($event)" :init="Guestbook"></v-switch>
                 </div>
             </div>
             <div class="thumbsWrap">
                 <div class="switchWrap">
                     <span>点赞提醒</span>
-                    <v-switch></v-switch>
-                </div>
-                
+                    <v-switch @on-change="LikeRemind($event)" :init="praise"></v-switch>
+                </div> 
             </div>
         </div>
     </div>
   </div>
 </template>
 <script>
+import qs from 'qs'
 import { XHeader} from 'vux'
 import VSwitch from '../../common/switch/switch'
 export default {
-   components: {
+  components: {
     XHeader,
     VSwitch
+  },
+  data(){
+      return {
+          Guestbook:false,
+          praise:false
+      }
+  },
+  created(){
+      this.getSystemStatus()
+  },
+  methods: {
+    //接收私信提醒的值
+    privateRemind(val){
+        this.Guestbook = val
+        this.$http.post('/model/Work/WorkSetting',qs.stringify({
+            Guestbook:this.Guestbook === true?1:0,
+            praise:this.praise === true?1:0
+        })).then(res=>{
+            console.log(res)
+        })
+        console.log(val)
+    },
+    //接收点赞提醒的值
+    LikeRemind(val){
+        this.praise = val
+        this.$http.post('/model/Work/WorkSetting',qs.stringify({
+            Guestbook:this.Guestbook === true?1:0,
+            praise:this.praise === true?1:0
+        })).then(res=>{
+            console.log(res)
+        })
+        console.log(val)
+    },
+    //获取初始状态
+    getSystemStatus(){
+        this.$http.post('/model/Work/WorkSystem')
+        .then((res) => {
+            console.log(res.data)
+            this.Guestbook = (res.data.Guestbook === 1)?true:false
+            this.praise = (res.data.praise ===  1)?true:false
+            console.log(this.Guestbook)
+            console.log(this.praise)
+        })
+    }
   }
 }
 </script>

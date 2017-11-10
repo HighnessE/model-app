@@ -1,6 +1,10 @@
 <template>
   <div class="card-detail">
-      <x-header>名片详情<a slot="right"><x-icon type="ios-home-outline" size="0.6rem" class="icon-home"></x-icon></a></x-header>
+    <x-header>名片详情
+      <a slot="right">
+        <x-icon type="ios-home-outline" size="0.6rem" class="icon-home"></x-icon>
+      </a>
+    </x-header>
     <!-- 头部banner -->
     <div class="card-banner">
       <div class="banner">
@@ -8,8 +12,8 @@
       </div>
       <div class="header">
         <div class="headerimg">
-          <img src="./img/modelbanner.jpg">
-          <div class="nickname">highnesse</div>
+          <img :src="userImg">
+          <div class="nickname">{{username}}</div>
         </div>
       </div>
       <div class="todobox">
@@ -32,27 +36,27 @@
         </div>
       </div>
       <div class="baseinfo">
-        <span>小妮子</span>
-        <span>23岁</span>
-        <span>广州</span>
+        <span>{{cardInfo.name}}</span>
+        <span>{{cardInfo.age}}</span>
+        <span>{{cardInfo.city}}</span>
       </div>
       <div class="baseinfobox">
         <div class="wrapbox">
           <div class="items">
             <img src="./img/myheight.png" alt="">
-            <p>168cm</p>
+            <p>{{cardInfo.stature}}cm</p>
           </div>
           <div class="items">
             <img src="./img/myweight.png" alt="">
-            <p>45kg</p>
+            <p>{{cardInfo.weight}}kg</p>
           </div>
           <div class="items">
             <img src="./img/mysanwei.png" alt="">
-            <p>88-62-89</p>
+            <p>{{cardInfo.surround}}</p>
           </div>
           <div class="items">
             <img src="./img/myfoot.png" alt="">
-            <p>36码</p>
+            <p>{{cardInfo.shoe}}码</p>
           </div>
         </div>
       </div>
@@ -71,10 +75,7 @@
             <span>风格标签：</span>
           </div>
           <div class="dd">
-            <span>清晰</span>
-            <span>清晰</span>
-            <span>清晰</span>
-            <span>清晰</span>
+            <span v-for="(item,index) in cardInfo.workJob" :key="index">{{item}}</span>
           </div>
         </div>
         <div>
@@ -82,10 +83,7 @@
             <span>工作标签：</span>
           </div>
           <div class="dd">
-            <span>哈哈</span>
-            <span>清晰</span>
-            <span>清晰</span>
-            <span>清晰</span>
+            <span v-for="(item,index) in cardInfo.workType" :key="index">{{item}}</span>
           </div>
         </div>
         <div>
@@ -93,7 +91,7 @@
             <span>工作履历：</span>
           </div>
           <div class="dd">
-            <p class="word">describ我是一个兵descr是一个兵descr是一个兵descr是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵</p>
+            <p class="word">{{cardInfo.work}}</p>
           </div>
         </div>
         <div>
@@ -101,7 +99,7 @@
             <span>工作报价：</span>
           </div>
           <div class="dd">
-            <span>offer</span>
+            <span>{{cardInfo.offer}}</span>
           </div>
         </div>
         <div>
@@ -109,7 +107,7 @@
             <span>个人描述：</span>
           </div>
           <div class="dd">
-            <p class="word">describ我是一个兵descr是一个兵descr是一个兵descr是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵describ我是一个兵</p>
+            <p class="word">{{cardInfo.describ}}</p>
           </div>
         </div>
       </div>
@@ -126,28 +124,28 @@
     </div>
     <!-- 更多名片 -->
     <div class="more-card">
-      <a href="modelcard.html">
+      <router-link to="/Card">
         <div class="wrapbox">
           <img src="./img/morenotify2.png">
           <span>查看更多</span>
         </div>
-      </a>
+      </router-link>
     </div>
     <!-- 操作按钮 -->
     <div class="handlebars">
       <div class="handle-wrap">
-        <a href="javascript:;">
+        <a href="javascript:;" @click.prevent="showLeavemsgDialog = true">
           <div>
             <img src="./img/ask.png">
             <p>联系TA</p>
           </div>
         </a>
-        <a href="javascript:;">
+        <a href="javascript:;" @click.prevent="collectCard()">
           <div>
             <p>收藏名片</p>
           </div>
         </a>
-        <a href="javascript:;">
+        <a href="javascript:;" @click.prevent="donateModel()">
           <div>
             <img src="./img/donate.png">
             <p>打赏TA</p>
@@ -158,19 +156,118 @@
         </div>
       </div>
     </div>
+    <!-- 留言弹窗 -->
+    <transition enter-active-class="fadeIn" leave-active-class="fadeOut">
+      <div class="leavemsglayer animated" v-show="showLeavemsgDialog">
+        <div class="wrapbox">
+          <div class="contentbox">
+            <group title="填写您对他说的话：">
+              <x-textarea :max="140" v-model="leavemsg" placeholder="说点什么吧~" autosize></x-textarea>
+            </group>
+          </div>
+          <div class="desbtn">
+            <span class="cancle" @click="showLeavemsgDialog =false">取消</span>
+            <span class="confirm" @click="sendMsg()">确定</span>
+          </div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
-import { XHeader } from 'vux'
+  import qs from 'qs'
+  import {
+    Group,
+    XHeader,
+    XTextarea
+  } from 'vux'
   export default {
-      components: {
-          XHeader
+    components: {
+      Group,
+      XHeader,
+      XTextarea
+    },
+    data() {
+      return {
+        report: '',
+        like: '',
+        collect: '',
+        userImg: '',
+        username: '',
+        cardInfo: {},
+        pictures: [],
+        leavemsg: '',
+        showLeavemsgDialog:false
       }
+    },
+    methods: {
+      getCardInfo() {
+        this.$http.post('/model/Work/WorkXX', qs.stringify({
+          id: 142
+        })).then(res => {
+          console.log(res)
+          let card = res.data
+          card.work.workJob = card.work.workJob.split(' / ').slice(0, -1)
+          card.work.workType = card.work.workType.split(' / ').slice(0, -1)
+          this.report = card.Reports
+          this.like = card.like
+          this.collect = card.modelMo
+          this.cardInfo = card.work
+          this.userImg = card.model.hurl
+          this.username = card.model.name
+          this.pictures = card.workpicture
+        })
+      },
+      collectCard() {
+        console.log(e)
+      },
+      donateModel() {
+        console.log(r)
+      },
+      sendMsg() {
+        if(this.leavemsg !== ''){
+          this.$http.post('/model/Work/LeaveAMessage',qs.stringify({
+            wid:this.cardInfo.wid,
+            message:this.leavemsg
+          })).then(res=> {
+            console.log(res)
+            this.showLeavemsgDialog = false
+          })
+        }else {
+          alert('你好像什么都没说啊...')
+        }
+      }
+    },
+    created() {
+      this.getCardInfo()
+    }
   };
 
 </script>
-<style lang="less" scoped>
+<style lang="less">
   .card-detail {
+    .weui-cells {
+      font-size: 0.4rem !important;
+      color: #382e2e !important;
+      margin-top: 0 !important;
+      .weui-cell {
+        padding: 0.4135rem 0.4267rem !important;
+      }
+      .weui-icon {
+        padding-left: 0.1333rem !important;
+      }
+      .weui-icon-clear {
+        font-size: 0.3733rem !important;
+      }
+    }
+    .vux-input-icon.weui-icon-warn:before,
+    .vux-input-icon.weui-icon-success:before {
+      font-size: 0.56rem !important;
+    } //公共样式
+    .weui-dialog {
+      width: 9.0933rem !important;
+      max-width: none !important;
+    }
     .card-banner {
       position: relative;
       width: 100%;
@@ -241,7 +338,7 @@ import { XHeader } from 'vux'
           }
         }
         .icon-default {
-            fill:#eee;
+          fill: #eee;
         }
       }
     }
@@ -336,7 +433,7 @@ import { XHeader } from 'vux'
       .workdetails {
         margin: 0 0.5066666666666667rem 0 1.2533333333333334rem;
         padding: 0.18666666666666668rem 0;
-        > div {
+        >div {
           display: flex;
           justify-content: flex-start;
           width: 100%;
@@ -363,11 +460,12 @@ import { XHeader } from 'vux'
               margin: 0;
             }
           }
-          .dt.resume,.dt.self {
-              align-self: flex-start;
+          .dt.resume,
+          .dt.self {
+            align-self: flex-start;
           }
           p.word {
-              width: 6.24rem;
+            width: 6.24rem;
             color: #909090;
             font-size: 0.4rem !important;
             display: -webkit-box;
@@ -527,6 +625,59 @@ import { XHeader } from 'vux'
             display: block;
             width: 0.8266666666666667rem;
             height: 0.8266666666666667rem;
+          }
+        }
+      }
+    }
+    .leavemsglayer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10;
+      .wrapbox {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        background: #fff;
+        border-radius: 0.16rem;
+        .contentbox {
+          .weui-cells__title {
+            margin-top: 0.77em;
+            margin-bottom: 0.3em;
+            padding-left: 0.4rem !important;
+            padding-right: 0.4rem !important;
+            color: #000;
+            font-size: 0.4267rem !important;
+          }
+        }
+        .desbtn {
+          height: 1.3333333333333333rem;
+          background-color: #ff2f77;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 0 0 0.16rem 0.16rem;
+          span {
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            font-size: 0.4533333333333333rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          span.cancle {
+            background-color: #e0e0e0;
+            border-radius:  0 0 0 0.16rem;
+          }
+          span.confirm {
+            background-color: #fe3076;
+            border-radius:  0 0 0.16rem 0;
           }
         }
       }

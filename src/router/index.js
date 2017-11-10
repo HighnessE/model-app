@@ -88,7 +88,7 @@ const routes = [{
 	meta: { title: '通告详情' },
 	component: notifyDetail
 }, {
-	path: '/cardDetail',
+	path: '/cardDetail/:id',
 	meta: { title: '名片详情' },
 	component: cardDetail
 }, {

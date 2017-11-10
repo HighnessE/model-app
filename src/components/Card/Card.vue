@@ -58,7 +58,7 @@
       <div id="card-content">
         <ul class="content-part">
           <li v-for="(item,index) in normalCard" :key="index">
-            <a href="javascript:;">
+            <router-link :to="`/cardDetail/${item.id}`">
               <div class="img">
                 <img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=759276231,3928522476&fm=11&gp=0.jpg">
               </div>
@@ -71,20 +71,10 @@
                 <span class="weight">{{item.weight}}kg</span>
                 <span class="bwh">{{item.surround}}</span>
               </div>
-              <div class="wrap">
-                <div class="seen">
-                  <x-icon type="eye" size="0.48rem" class="icon" style="fill:#fff"></x-icon>
-                  <span>{{item.examine}}</span>
-                </div>
-                <div class="like">
-                  <x-icon type="heart" size="0.38rem" class="icon" style="fill:#fff"></x-icon>
-                  <span>{{item.attention}}</span>
-                </div>
-              </div>
               <div class="typetag">
                 <span class="btn" v-for="(item,index) in item.workJob" :key="index">{{item}}</span>
               </div>
-            </a>
+            </router-link>
           </li>
         </ul>
         <load-more tip="loading"></load-more>
@@ -174,6 +164,7 @@
           workType:'私房拍摄',
           rank:'times'
         })).then((res) => {
+          console.log(res)
           res.data.work.map(item => {
               item.workJob = item.workJob.split(' / ').slice(0,-1)
           })  
@@ -391,34 +382,7 @@
               margin-right: 0.3rem;
               font-size: 0.3733rem;
             }
-          } //点赞那一栏
-          .wrap {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            top: 0.175rem;
-            left: 0.1rem;
-            width: 100%;
-            .seen {
-              margin-right: 0.4533rem;
-            }
-            .seen,
-            .like {
-              display: flex; //justify-content:flex-start;
-              align-items: center;
-              img {
-                display: block;
-                width: 0.4267rem;
-                height: 0.32rem;
-                margin-left: 0.1rem;
-              }
-              span {
-                margin-left: 0.1rem;
-                font-size: 0.3733rem;
-                color: #fff;
-              }
-            }
-          }
+          } 
           .typetag {
             display: flex;
             position: absolute;

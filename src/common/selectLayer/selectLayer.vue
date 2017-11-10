@@ -1,9 +1,6 @@
 <template>
     <ul class="popup-content">
         <li class="popup-item" v-for="(item,index) in arrList" :key='index' @click="selectItem(index)">
-            <div>
-                <x-icon type="ios-circle-outline" size="0.4rem"></x-icon>
-            </div>
             <p>{{item}}</p>
         </li>
     </ul>
@@ -26,29 +23,25 @@ export default {
 </script>
 <style lang="less">
 .popup-content {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
     background: #fff;
-    // border-radius:0.16rem;
+    padding: 0.29333333333333333rem 0 0 0.29333333333333333rem;
     .popup-item {
-      height: 1.1733333333333333rem;
-      font-size: 0.37333333333333335rem;
-      color: #555555;
       display: flex;
+      justify-content: center;
       align-items: center;
-      > div {
-        width: 0.4rem;
-        margin-left: 0.64rem;
-      }
+      width: 2.3rem;
+      height: 1.1466666666666667rem;
+      border-radius:0.13333333333333333rem;
+      margin-bottom: 0.29333333333333333rem;
+      margin-right: 0.26666666666666666rem;
+      background: #5FC1A8;
       > p {
-        margin-left: 0.3466666666666667rem;
-        font-size: 0.37333333333333335rem;
-        color: #555555;
+        font-size: 0.4rem;
+        color: #333333;
       }
-      > p.active {
-        color: #ef4545;
-      }
-    }
-    .popup-item:active, .popup-item:hover {
-      background: #eee;
     }
 }
 </style>

@@ -1,24 +1,28 @@
 <template>
   <div :class="switchClass" @click="toggleClass()">
-    <button class="switchbtn" :style="{'left':switchClass.active == true?'0.96rem':'0'}"></button>
+    <button class="switchbtn" :style="{'left':switchClass.active === true?'0.96rem':'0'}"></button>
   </div>
 </template>
 <script>
 export default {
+  props:['init'],  
   data(){
       return {
           switchClass: {
               switch:true,
-              active:false
-          },
-          judge:false
+              active:this.init
+          }
       }
-  },  
+  },
+  watch:{
+      init(){
+          this.switchClass.active = this.init
+      }
+  },
   methods:{
       toggleClass(){
           this.switchClass.active = !this.switchClass.active;
-          this.judge = this.switchClass.active?true:false
-          this.$emit('on-change',this.judge)
+          this.$emit('on-change',this.switchClass.active)
       }
   }
 }
@@ -49,12 +53,4 @@ export default {
 .active {
     background: #f7a109;
 }
-// @keyframes switch-run {
-//     0%{
-//         left:0;
-//     }
-//     100%{
-//         left:0.96rem;
-//     }
-// }
 </style>

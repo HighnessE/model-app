@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import qs from 'qs' 
+  import qs from 'qs' 
   import Vue from 'vue'
   import  { ConfirmPlugin,XHeader } from 'vux'
   Vue.use(ConfirmPlugin)

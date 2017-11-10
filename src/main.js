@@ -9,6 +9,7 @@ import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { WechatPlugin } from 'vux'
 import store from './store'
+import './assets/animate.css'
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
 // FastClick.attach(document.body)

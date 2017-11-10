@@ -172,6 +172,7 @@
     domainAnnu
   } from '../../base/common.js'
   import qs from 'qs'
+  import _ from 'lodash'
   export default {
     components: {
       Swiper,

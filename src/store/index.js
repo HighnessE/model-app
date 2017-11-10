@@ -24,7 +24,7 @@ const mutations = {
         state.editCollectCard = !state.editCollectCard
     },
     UPDATE_MODEL_CARD_DATA(state, dataObj) {
-        state.modelCardData = dataObj
+        Object.assign(state.modelCardData, dataObj)
     }
 }
 

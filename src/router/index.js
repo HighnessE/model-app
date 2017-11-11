@@ -104,6 +104,10 @@ const routes = [{
 	path: '/CardTemplate',
 	meta: { title: '选择模板' },
     component: resolve => require(['../components/CardTemplate/CardTemplate'], resolve)
+}, {
+	path: '/CardChooseImages/:template',
+	meta: { title: '选择图片' },
+    component: resolve => require(['../components/CardChooseImages/CardChooseImages'], resolve)
 }]
 
 export default new Router({

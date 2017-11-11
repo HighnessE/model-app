@@ -26,7 +26,7 @@
 				<span>{{imagesAllowUpload}}</span>
 				张图片
 			</p>
-			<button>确定</button>
+			<router-link :to="`/CardChooseImages/${templateChosen}`">确定</router-link>
 		</footer>
 	</div>
 </template>
@@ -43,26 +43,32 @@ export default {
 				{
 					name: '5图插入式资料栏',
 					checked: true,
-					imagesAllow: '5'
+					imagesAllow: '5',
+					type: '5'
 				},
 				{
 					name: '7图底部式资料栏',
 					checked: false,
-					imagesAllow: '7'
+					imagesAllow: '7',
+					type: '7'
 				},
 				{
 					name: '9图侧边栏式资料栏',
 					checked: false,
-					imagesAllow: '9'
+					imagesAllow: '9',
+					type: '9'
 				},
 				{
 					name: '11图环绕式资料栏',
 					checked: false,
-					imagesAllow: '11'
+					imagesAllow: '11',
+					type: '11'
 				}
 			],
 			// 可上传图片数
-			imagesAllowUpload: '5'
+			imagesAllowUpload: '5',
+			// 选中的模板类型
+			templateChosen: '5'
 		}
 	},
 	methods: {
@@ -72,6 +78,7 @@ export default {
 				if (index == flag) {
 					item.checked = true;
 					this.imagesAllowUpload = item.imagesAllow;
+					this.templateChosen = item.type;
 				} else {
 					item.checked = false;
 				}
@@ -145,7 +152,10 @@ body {
 	p {
 		margin-left: 0.5313rem;
 	}
-	button {
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 3.125rem;
 		height: 100%;
 		font-size: 0.4688rem;

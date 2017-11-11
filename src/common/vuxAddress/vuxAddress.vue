@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import { Group, Datetime, XAddress, ChinaAddressV4Data, Value2nameFilter as value2name} from 'vux'
 export default {
   components: {

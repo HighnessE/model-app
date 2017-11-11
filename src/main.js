@@ -10,13 +10,17 @@ import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { WechatPlugin } from 'vux'
 import store from './store'
 import './assets/animate.css'
+import 'vue-croppa/dist/vue-croppa.css'
+import Croppa from 'vue-croppa'
+
+Vue.use(Croppa)
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
 // FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-    /* eslint-disable no-new */
+/* eslint-disable no-new */
 new Vue({
     router,
     store,
@@ -24,7 +28,7 @@ new Vue({
 }).$mount('#app-box')
 
 //每次页面加载执行（授权）
-router.beforeEach((to,from,next) => {
+router.beforeEach((to, from, next) => {
     document.title = to.meta.title || '美约通告'
     next()
 })

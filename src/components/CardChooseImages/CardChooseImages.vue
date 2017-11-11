@@ -1,5 +1,5 @@
 <template>
-	<div id="CardChooseImages">
+	<div id="CardChooseImages" ref="CardChooseImages">
 		<!-- 头部 -->
 		<x-header>选择模卡图片</x-header>
 
@@ -8,7 +8,10 @@
 			<div class="picturebox">
 				<div class="contentbox">
 					<div class="top">
-						<div class="left imgList"><img class="previewResult0" src="./imgs/five-one.jpg" /></div>
+						<!--<div class="left imgList"><img class="previewResult0" src="./imgs/five-one.jpg" /></div>-->
+						<div class="left imgList">
+							<croppa v-model="myCroppa0" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+						</div>
 						<div class="msg-pull">
 							<span id="name"></span>
 							<span id="height"></span>
@@ -19,38 +22,29 @@
 							<span id="shoes"></span>
 						</div>
 						<div class="middle">
-							<div class="mbox imgList"><img class="previewResult1" src="./imgs/five-two.jpg" /></div>
-							<div class="mbox imgList"><img class="previewResult2" src="./imgs/five-two.jpg" /></div>
+							<div class="mbox imgList">
+								<croppa v-model="myCroppa1" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+							</div>
+							<div class="mbox imgList">
+								<croppa v-model="myCroppa2" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+							</div>
 						</div>
 						<div class="last">
-							<div class="rbox imgList"><img class="previewResult3" src="./imgs/five-two.jpg" /></div>
-							<div class="rbox imgList"><img class="previewResult4" src="./imgs/five-two.jpg" /></div>
+							<div class="rbox imgList">
+								<croppa v-model="myCroppa3" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+							</div>
+							<div class="rbox imgList">
+								<croppa v-model="myCroppa4" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="operatingbox">
 				<p>提示：要修改某张图片只需点击相应位置的图片即可</p>
-				<button type="button" class="selectbtn">
-					<div class="filter"></div>
-					选择图片
-					<input type="file" id="file" accept="image/*" @change="onUpload" /></button>
-				<button type="button" class="confirmbtn">确认完成</button>
-			</div>
-			<div class="filter-wrapper" style="position:absolute;width:100%;height:100%;background: rgba(255,255,255,1);top:0;left:0;display:none">
-				<p style="position:absolute;font-size: 14px;width:100%;top:50%;left:50%;transform: translate(-50%,-50%);text-align: center;">您暂未选择图片，请选择要裁剪的图片</p>
-			</div>
-			<!-- <img id="previewResult" /> -->
-			<div class="app" id="uploadPage">
-				<div class="bar">
-					<a id="getFile">使用</a>
-				</div>
-				<div class="main container">
-					<img id="image" src="" alt="">
-				</div>
+				<button type="button" class="confirmbtn" :style="{ 'background-color': isAllowSubmitCard ? '#efa616' : '' }" @click="upLoadCard">确认完成</button>
 			</div>
 		</div>
-
 	</div>
 </template>
 <script>
@@ -61,23 +55,63 @@ export default {
 	},
 	data() {
 		return {
-
+			// 屏幕宽度
+			screenWidth: 200,
+			// croppa 绑定的数据对象
+			myCroppa0: {},
+			myCroppa1: {},
+			myCroppa2: {},
+			myCroppa3: {},
+			myCroppa4: {},
+			// 是否允许提交到制作模卡接口
+			isAllowSubmitCard: false
 		}
 	},
 	methods: {
-		onUpload(e) {
-			var formData = new FormData();
-			formData.append('file', e.target.files[0]);
-			formData.append('type', 'test');
-			console.log(formData);
-			console.log(e.target.files[0]);
+		upLoadCard() {
+			if (this.isAllowSubmitCard) {
+				// console.log(this.myCroppa0.generateDataUrl())
+				console.log(this.$route.params.template);
+				// axios({
+				// 	methods: 'POST',
+				// 	url: '/Work/joint',
+				// 	data: {
+				// 		type: this.$params.template ? this.$params.template : '',
+				// 		modelName: modelName,
+				// 		modelHeight: this.,
+				// 		modelWeight: modelWeight,
+				// 		modelBust: modelBust,
+				// 		modelWaist: modelWaist,
+				// 		modelHips: modelHips,
+				// 		modelShoes: modelShoes
+				// 	}
+				// });
+			} else {
+				
+			}
+		},
+		handleCroppaFileChoose() {
+			setTimeout(() => {
+				if (this.myCroppa0.imageSet && this.myCroppa1.imageSet && this.myCroppa2.imageSet && this.myCroppa3.imageSet && this.myCroppa4.imageSet) {
+					this.isAllowSubmitCard = true
+				}
+			}, 500);
 		}
+	},
+	computed: {
+
+	},
+	mounted() {
+		this.screenWidth = this.$refs.CardChooseImages.clientWidth
 	}
 }
 </script>
 <style lang="less" scoped>
 #CardChooseImages {
-	// 五图模板
+	// croppa
+	.croppa-container {
+		display: block;
+	} // 五图模板
 	.five-images-template {
 		.header {
 			background: #fe3076;

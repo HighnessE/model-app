@@ -4,9 +4,9 @@
       <!-- 消息列表 -->
     <div class="msgwrap">
         <div class="systemmsg">
-            <router-link to="/Message/1">
+            <router-link to="/Message/Module/1">
                 <div class="img">
-                    <x-icon type="ios-cog" size="1.0667rem" class="icon1"></x-icon>
+                    <x-icon type="ios-cog" size="1.0667rem" style="fill:#ff9090"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
@@ -20,9 +20,9 @@
             </router-link>
         </div>
         <div class="thumbsmsg">
-            <router-link to="/Message/2">
+            <router-link to="/Message/Module/2">
                 <div class="img">
-                    <x-icon type="thumbsup" size="1.0667rem" class="icon2"></x-icon>
+                    <x-icon type="thumbsup" size="1.0667rem" style="fill:#7ea2ff"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
@@ -36,9 +36,9 @@
             </router-link>
         </div>
         <div class="leavemsg">
-            <router-link to="/Message/3">
+            <router-link to="/Message/Module/3">
                 <div class="img">
-                    <x-icon type="ios-compose" size="1.0667rem" class="icon3"></x-icon>
+                    <x-icon type="ios-compose" size="1.0667rem" style="fill:#f8d373"></x-icon>
                 </div>
                 <div class="content">
                     <div class="title">
@@ -76,9 +76,10 @@ export default {
       getMsgCount(){
           this.$http.post('/model/Model/ModelCount')
           .then((res)=>{
+              console.log(res)
               this.systemCount = res.data.system
               this.likeCount = res.data.like
-              this.leaveCount = res.data.leave
+              this.leaveCount = res.data.news
           })
       }
   }
@@ -217,15 +218,6 @@ export default {
                     }
                 }
             }
-        }
-        .icon1 {
-            fill:#ff9090;
-        }
-        .icon2 {
-            fill:#7ea2ff;
-        }
-        .icon3 {
-            fill:#f8d373;
         }
     }
 }

@@ -83,7 +83,6 @@ export default {
         font-size: 0.37333333333333335rem;
         width:3.0933333333333333rem;
         height:0.9866666666666667rem;
-        background-size:3.0933333333333333rem 0.9866666666666667rem;
         color: #1dbb9b;
       }
     }

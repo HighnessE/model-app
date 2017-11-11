@@ -8,10 +8,12 @@ import { remInit } from './base/remInit.js'
 import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { WechatPlugin } from 'vux'
+import VueScroller from 'vue-scroller'
 import store from './store'
 import './assets/animate.css'
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
+Vue.use(VueScroller)
 // FastClick.attach(document.body)
 
 Vue.config.productionTip = false

@@ -25,6 +25,10 @@
           <x-icon type="alert-circled" size="0.5rem" class="icon-default"></x-icon>
           <span>举报</span>
         </div>
+        <div class="seen">
+          <x-icon type="eye" size="0.6rem" class="icon-default"></x-icon>
+          <span>{{cardInfo.examine}}</span>
+        </div>
       </div>
     </div>
     <!-- 个人资料 -->
@@ -197,7 +201,7 @@
         cardInfo: {},
         pictures: [],
         leavemsg: '',
-        showLeavemsgDialog:false
+        showLeavemsgDialog: false
       }
     },
     methods: {
@@ -225,15 +229,15 @@
         console.log(r)
       },
       sendMsg() {
-        if(this.leavemsg !== ''){
-          this.$http.post('/model/Work/LeaveAMessage',qs.stringify({
-            wid:this.cardInfo.wid,
-            message:this.leavemsg
-          })).then(res=> {
+        if (this.leavemsg !== '') {
+          this.$http.post('/model/Work/LeaveAMessage', qs.stringify({
+            wid: this.cardInfo.wid,
+            message: this.leavemsg
+          })).then(res => {
             console.log(res)
             this.showLeavemsgDialog = false
           })
-        }else {
+        } else {
           alert('你好像什么都没说啊...')
         }
       }
@@ -246,28 +250,6 @@
 </script>
 <style lang="less">
   .card-detail {
-    .weui-cells {
-      font-size: 0.4rem !important;
-      color: #382e2e !important;
-      margin-top: 0 !important;
-      .weui-cell {
-        padding: 0.4135rem 0.4267rem !important;
-      }
-      .weui-icon {
-        padding-left: 0.1333rem !important;
-      }
-      .weui-icon-clear {
-        font-size: 0.3733rem !important;
-      }
-    }
-    .vux-input-icon.weui-icon-warn:before,
-    .vux-input-icon.weui-icon-success:before {
-      font-size: 0.56rem !important;
-    } //公共样式
-    .weui-dialog {
-      width: 9.0933rem !important;
-      max-width: none !important;
-    }
     .card-banner {
       position: relative;
       width: 100%;
@@ -315,7 +297,7 @@
         position: absolute;
         top: 0.32rem;
         right: 0;
-        .like {
+        .like,.report,.seen {
           display: flex;
           align-items: center;
           height: 0.6667rem;
@@ -326,16 +308,8 @@
             color: #fff;
           }
         }
-        .report {
-          display: flex;
-          align-items: center;
-          height: 0.6667rem;
-          margin-right: 0.37333333333333335rem;
-          span {
-            font-size: 0.37333333333333335rem;
-            margin-left: 0.18666666666666668rem;
-            color: #fff;
-          }
+        .seen {
+          margin-right: 0.33rem;
         }
         .icon-default {
           fill: #eee;
@@ -654,6 +628,20 @@
             color: #000;
             font-size: 0.4267rem !important;
           }
+          .weui-cells {
+            font-size: 0.4rem !important;
+            color: #382e2e !important;
+            margin-top: 0 !important;
+            .weui-cell {
+              padding: 0.4135rem 0.4267rem !important;
+            }
+            .weui-icon {
+              padding-left: 0.1333rem !important;
+            }
+            .weui-icon-clear {
+              font-size: 0.3733rem !important;
+            }
+          }
         }
         .desbtn {
           height: 1.3333333333333333rem;
@@ -673,11 +661,11 @@
           }
           span.cancle {
             background-color: #e0e0e0;
-            border-radius:  0 0 0 0.16rem;
+            border-radius: 0 0 0 0.16rem;
           }
           span.confirm {
             background-color: #fe3076;
-            border-radius:  0 0 0.16rem 0;
+            border-radius: 0 0 0.16rem 0;
           }
         }
       }

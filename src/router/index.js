@@ -5,6 +5,7 @@ import Card from '@/components/card/card'
 import Message from '@/components/message/message'
 import MessageList from '@/components/messageList/messageList'
 import MessageDetail from '@/components/messageDetail/messageDetail'
+import MsgLeave from '@/components/messageLeave/messageLeave'
 import myCardList from '@/components/myCardList/myCardList'
 import myCollect from '@/components/myCollect/myCollect'
 import notifyCollect from '@/components/notifyCollect/notifyCollect'
@@ -36,7 +37,7 @@ const routes = [{
 	meta: { title: '我的消息' },
 	component: Message,
 	children: [{
-		path: ':id',
+		path: '/Message/Module/:Module',
 		component: MessageList
 	}]
 }, {
@@ -44,13 +45,13 @@ const routes = [{
 	meta: { title: '个人中心' },
 	component: Center
 }, {
-	path: '/MsgList',
-	meta: { title: '我的消息' },
-	component: MessageList
-}, {
 	path: '/MsgDetail',
 	meta: { title: '我的消息' },
 	component: MessageDetail
+}, {
+	path: '/MsgLeave/userId/:cid',
+	meta: { title: '我的消息' },
+	component: MsgLeave
 }, {
 	path: '/myCardList',
 	meta: { title: '我的名片' },

@@ -7,11 +7,13 @@ const state = {
     editCollectNotify: false,
     editCollectCard: false,
     modelCardData: {
-        name: '',
-        bwh: '',
-        weight: '',
-        height: '',
-        shoe: ''
+        modelName: '',
+        modelWeight: '',
+        modelHeight: '',
+        modelShoes: '',
+        modelBust: '',
+        modelWaist: '',
+        modelHips: ''
     }
 }
 

@@ -284,11 +284,13 @@ export default {
 		// 跳转到创建模卡页面
 		jumpToCardTemplate() {
 			this.$store.commit('UPDATE_MODEL_CARD_DATA', {
-				name: this.name,
-				bwh: this.bwh.join('/'),
-				weight: this.weight,
-				height: this.height,
-				shoe: this.shoe
+				modelName: this.name,
+				modelWeight: this.weight,
+				modelHeight: this.height,
+				modelShoes: this.shoe,
+				modelBust: this.bwh[0],
+				modelWaist: this.bwh[1],
+				modelHips: this.bwh[2]
 			});
 			this.$router.push({ path: '/CardTemplate' });
 		}

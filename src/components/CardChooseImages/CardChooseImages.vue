@@ -43,7 +43,7 @@
 					<a class="get-file" @click="useImage">使用</a>
 				</div>
 				<div class="main container">
-					<croppa v-model="myCroppa1" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" accept="image/*" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>
+					<croppa v-model="myCroppa" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" accept="image/*" :show-remove-button="false"></croppa>
 				</div>
 			</div>
 			<!--<croppa v-model="myCroppa1" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" accept="image/png" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>-->

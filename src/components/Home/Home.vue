@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="home" v-infinite-scroll="LoadMore" infinite-scroll-distance="10" infinite-scroll-immediate-check="false">
     <swiper :list="baseList" :aspect-ratio="175/375"></swiper>
     <div id="selectpartment">
       <div id="addrselectbox">
@@ -36,98 +36,60 @@
     <!-- 优质通告提示弹窗 -->
     <transition enter-active-class="fadeIn" leave-active-class="fadeOut">
       <div class="notifytipwrap animated" v-show="showGoodModal">
-          <div class="notifytip " v-show="showGoodModal">
-            <div class="infotip">
-              <h4>此类为优质通告，须付费才能查看哦</h4>
-              <p>（付费后可重复查看）</p>
-            </div>
-            <div class="handletip">
-              <button @click="gotoPay()">立即查看</button>
-              <button @click="showGoodModal = false">返回</button>
-            </div>
+        <div class="notifytip " v-show="showGoodModal">
+          <div class="infotip">
+            <h4>此类为优质通告，须付费才能查看哦</h4>
+            <p>（付费后可重复查看）</p>
           </div>
+          <div class="handletip">
+            <button @click="gotoPay()">立即查看</button>
+            <button @click="showGoodModal = false">返回</button>
+          </div>
+        </div>
       </div>
-  </transition>
-    <scroller lock-x height="10.5333rem" @on-scroll-bottom="scrollerBottom()" ref="scrollerBottom" :scroll-bottom-offst="200">
-      <div id="list-content">
-        <ul class="content-part">
-          <template v-if="officialNotify.length">
-            <li v-for="(item,index) in officialNotify" :key="index">
-              <a href="javascript:;" @click="judgeIfOfficial(item.vid,item.official)">
-                <div class="headpart">
-                  <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
-                </div>
-                <div class="maininfopart">
-                  <div class="headline">
-                    <h2 class="title">{{item.theme}}</h2>
-                    <div class="tagbox">
-                      <img src="./goodnotify.png" alt="">
-                      <div v-show="item.enough" class="identifytag">满</div>
-                    </div>
-                  </div>
-                  <div class="mainline">
-                    <h2 class="price">
-                      <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
-                      <span class="price2">{{item.price}}</span>
-                    </h2>
-                  </div>
-                  <div class="otherinfo">
-                    <div class="person">{{item.asex}}{{item.number}}人</div>
-                    <div class="release">{{item.release}}</div>
-                  </div>
-                  <div class="subline">
-                    <div class="startjob">
-                      <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
-                      <span v-html="getWorkTime(item.work_time)"></span>
-                    </div>
-                    <div class="position">
-                      <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
-                      <span>{{item.site}}</span>
-                    </div>
+    </transition>
+    <div id="list-content">
+      <ul class="content-part">
+        <template v-if="officialNotify.length">
+          <li v-for="(item,index) in officialNotify" :key="index">
+            <a href="javascript:;" @click="judgeIfOfficial(item.vid,item.official)">
+              <div class="headpart">
+                <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+              </div>
+              <div class="maininfopart">
+                <div class="headline">
+                  <h2 class="title">{{item.theme}}</h2>
+                  <div class="tagbox">
+                    <img src="./goodnotify.png" alt="">
+                    <div v-show="item.enough" class="identifytag">满</div>
                   </div>
                 </div>
-              </a>
-            </li>
-          </template>
-          <template v-if="stickNotify.length">
-            <li v-for="(item,index) in stickNotify" :key="index">
-              <router-link :to="`/notifyDetail/${item.vid}`">
-                <div class="headpart">
-                  <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+                <div class="mainline">
+                  <h2 class="price">
+                    <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
+                    <span class="price2">{{item.price}}</span>
+                  </h2>
                 </div>
-                <div class="maininfopart">
-                  <div class="headline">
-                    <h2 class="title">{{item.theme}}</h2>
-                    <div class="tagbox">
-                      <div class="identifytag">置顶</div>
-                      <div v-show="item.enough" class="identifytag">满</div>
-                    </div>
+                <div class="otherinfo">
+                  <div class="person">{{item.asex}}{{item.number}}人</div>
+                  <div class="release">{{item.release}}</div>
+                </div>
+                <div class="subline">
+                  <div class="startjob">
+                    <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
+                    <span v-html="getWorkTime(item.work_time)"></span>
                   </div>
-                  <div class="mainline">
-                    <h2 class="price">
-                      <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
-                      <span class="price2">{{item.price}}</span>
-                    </h2>
-                  </div>
-                  <div class="otherinfo">
-                    <div class="person">{{item.asex}}{{item.number}}人</div>
-                    <div class="release">{{item.release}}</div>
-                  </div>
-                  <div class="subline">
-                    <div class="startjob">
-                      <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
-                      <span v-html="getWorkTime(item.work_time)"></span>
-                    </div>
-                    <div class="position">
-                      <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
-                      <span>{{item.site}}</span>
-                    </div>
+                  <div class="position">
+                    <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
+                    <span>{{item.site}}</span>
                   </div>
                 </div>
-              </router-link>
-            </li>
-          </template>
-          <li v-for="(item,index) in normalNotify" :key="index">
+              </div>
+            </a>
+          </li>
+        </template>
+        <template v-if="stickNotify.length">
+          <li v-for="(item,index) in stickNotify" :key="index">
             <router-link :to="`/notifyDetail/${item.vid}`">
               <div class="headpart">
                 <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
@@ -136,6 +98,7 @@
                 <div class="headline">
                   <h2 class="title">{{item.theme}}</h2>
                   <div class="tagbox">
+                    <div class="identifytag">置顶</div>
                     <div v-show="item.enough" class="identifytag">满</div>
                   </div>
                 </div>
@@ -162,264 +125,294 @@
               </div>
             </router-link>
           </li>
-        </ul>
-        <load-more tip="loading" v-show="showLoading"></load-more>
-        <divider v-show="showDivider">我是有底线的</divider>
-      </div>
-    </scroller>
+        </template>
+        <li v-for="(item,index) in normalNotify" :key="index">
+          <router-link :to="`/notifyDetail/${item.vid}`">
+            <div class="headpart">
+              <img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+            </div>
+            <div class="maininfopart">
+              <div class="headline">
+                <h2 class="title">{{item.theme}}</h2>
+                <div class="tagbox">
+                  <div v-show="item.enough" class="identifytag">满</div>
+                </div>
+              </div>
+              <div class="mainline">
+                <h2 class="price">
+                  <x-icon type="social-yen" size="0.4rem" class="icon-color"></x-icon>
+                  <span class="price2">{{item.price}}</span>
+                </h2>
+              </div>
+              <div class="otherinfo">
+                <div class="person">{{item.asex}}{{item.number}}人</div>
+                <div class="release">{{item.release}}</div>
+              </div>
+              <div class="subline">
+                <div class="startjob">
+                  <x-icon type="ios-clock-outline" size="0.4rem"></x-icon>
+                  <span v-html="getWorkTime(item.work_time)"></span>
+                </div>
+                <div class="position">
+                  <x-icon type="ios-location-outline" size="0.4rem"></x-icon>
+                  <span>{{item.site}}</span>
+                </div>
+              </div>
+            </div>
+          </router-link>
+        </li>
+      </ul>
+      <load-more tip="loading" v-show="showLoading"></load-more>
+      <divider v-show="showDivider">我是有底线的</divider>
+    </div>
   </div>
 </template>
 
 <script>
-  import {
+import {
+  Swiper,
+  ChinaAddressV4Data,
+  LoadMore,
+  Divider,
+  XDialog
+} from 'vux'
+import infiniteScroll from 'vue-infinite-scroll'
+import VAddress from '../../common/vuxAddress/vuxAddress'
+import selectList from '../../common/selectLayer/selectLayer'
+import {
+  domainAnnu
+} from '../../base/common.js'
+import qs from 'qs'
+import _ from 'lodash'
+export default {
+  components: {
     Swiper,
-    ChinaAddressV4Data,
+    VAddress,
     LoadMore,
-    Scroller,
     Divider,
-    XDialog
-  } from 'vux'
-  import VAddress from '../../common/vuxAddress/vuxAddress'
-  import selectList from '../../common/selectLayer/selectLayer'
-  import {
-    domainAnnu
-  } from '../../base/common.js'
-  import qs from 'qs'
-  import _ from 'lodash'
-  export default {
-    components: {
-      Swiper,
-      VAddress,
-      LoadMore,
-      Scroller,
-      Divider,
-      XDialog,
-      selectList,
+    XDialog,
+    selectList,
+  },
+  data() {
+    return {
+      baseList: [], //轮播图数据
+      showType: false,
+      showSort: false,
+      showGoodModal: false,
+      typeArr: ["全部"],
+      sortArr: ['按发布时间', '按需求人数'],
+      defaultAddr: '',
+      address: '全国',
+      type: '',
+      sort: '',
+      initParmes: {
+        initAddr: '全国',
+        initType: '全部',
+        initSort: '按发布时间'
+      },
+      normalNotify: [],
+      officialNotify: [],
+      stickNotify: [],
+      onFetching: true,  //给个状态禁止连续触发下拉事件
+      nowPage: 1,
+      totalPage: 1,
+      showLoading: false, //是否加载
+      showDivider: false //是否到底部
+    }
+  },
+  created() {
+    this.initPrames()
+    this.getBanner()
+    this.getTypeList()
+    this.formatTime()
+  },
+  methods: {
+    //获取banner图
+    getBanner() {
+      this.$http.get('/model/Annunciate/Banner').then((res) => {
+        let bannerList = []
+        res.data.map(function(item) {
+          let obj = {
+            url: item.BannerURL,
+            img: item.BannerPicture,
+            title: '',
+            id: item.ID
+          }
+          bannerList.push(obj)
+        })
+        this.baseList = bannerList
+      })
     },
-    data() {
-      return {
-        baseList: [], //轮播图数据
-        showType: false,
-        showSort: false,
-        showGoodModal: false,
-        typeArr: ["全部"],
-        sortArr: ['按发布时间', '按需求人数'],
-        defaultAddr: '',
-        address: '全国',
-        type: '',
-        sort: '',
-        initParmes: {
-          initAddr: '全国',
-          initType: '全部',
-          initSort: '按发布时间'
-        },
-        normalNotify: [],
-        officialNotify: [],
-        stickNotify: [],
-        onFetching: false,
-        nowPage: 1,
-        totalPage: 1,
-        showLoading: false,
-        showDivider: false
+    // 获取通告数据
+    getNotifyList() {
+      let _this = this;
+      this.$http.post('/model/Annunciate/annunciate', qs.stringify({
+        page: 1,
+        address: _this.address == '全国' ? '' : _this.address,
+        type: _this.type === '全部' ? '' : _this.type,
+        sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
+      })).then((res) => {
+        console.log(res)
+        if (res.data.page) {
+          res.data.page.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.official.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.stickAnnunciate.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          this.normalNotify = res.data.page.list
+          this.officialNotify = res.data.official
+          this.stickNotify = res.data.stickAnnunciate
+          this.totalPage = res.data.page.totalPage
+        } else {
+          res.data.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+            this.normalNotify = res.data.list
+            this.totalPage = res.data.totalPage
+          })
+        }
+      })
+    },
+    //初始化数据
+    initPrames() {
+      let initParmes = this.initParmes;
+      for (let item in initParmes) {
+        if (localStorage.getItem(item)) {
+          initParmes[item] = localStorage.getItem(item)
+        }
+      }
+      this.defaultAddr = initParmes.initAddr
+      this.address = initParmes.initAddr
+      this.type = initParmes.initType
+      this.sort = initParmes.initSort
+      this.getInitData()
+    },
+    //获取类型图
+    getTypeList() {
+      this.$http.get('/model/Annunciate/typeList')
+        .then((res) => {
+          let arr = res.data.map(function(item) {
+            return item.antype
+          })
+          this.typeArr = this.typeArr.concat(arr)
+        })
+    },
+    //获取初始化数据的方法
+    getInitData() {
+      let _this = this;
+      this.$http.post('/model/Annunciate/annunciate', qs.stringify({
+        page: 1,
+        address: _this.initParmes.initAddr == '全国' ? '' : _this.initParmes.initAddr,
+        type: _this.initParmes.initType === '全部' ? '' : _this.initParmes.initType,
+        sort: _this.initParmes.initSort === '按发布时间' ? 'deadline' : 'number'
+      })).then((res) => {
+        console.log(res)
+        if (res.data.page) {
+          res.data.page.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.official.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.stickAnnunciate.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          this.normalNotify = res.data.page.list
+          this.officialNotify = res.data.official
+          this.stickNotify = res.data.stickAnnunciate
+          this.totalPage = res.data.page.totalPage
+        } else {
+          res.data.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+            this.normalNotify = res.data.list
+            this.totalPage = res.data.totalPage
+          })
+        }
+      })
+    },
+    //获取子组件中的排序值请求数据并存储到本地
+    selectPrames(attr, val) {
+      this[attr] = val
+      console.log(this[attr])
+      if (attr == 'type') {
+        this.getNotifyList()
+        this.showType = false
+        this.nowPage = 1
+        this.onFetching = true
+        this.showDivider = false
+        localStorage.setItem('initType', val)
+      } else if (attr == 'sort') {
+        this.getNotifyList()
+        this.showSort = false
+        this.nowPage = 1
+        this.onFetching = true
+        this.showDivider = false
+        localStorage.setItem('initSort', val)
       }
     },
-    created() {
-      this.initPrames()
-      this.getBanner()
-      this.getTypeList()
-      this.formatTime()
+    // 计算发布时间和用户查看时间的时间差
+    formatTime(val) {
+      let nowTime = new Date().getTime()
+      let releaseTime = new Date(val).getTime()
+      let reduceTime = (nowTime - releaseTime) / 1000
+      if (reduceTime < 60) {
+        return '刚刚'
+      } else if (reduceTime / 60 >= 1 && reduceTime / 60 < 60) {
+        return parseInt(reduceTime / 60) + '分钟前'
+      } else if (reduceTime / 3600 >= 1 && reduceTime / 3600 < 24) {
+        return parseInt(reduceTime / 3600) + '小时前'
+      } else if (reduceTime / (3600 * 24) >= 1 && reduceTime / (3600 * 24) < 7) {
+        return parseInt(reduceTime / (3600 * 24)) + '天前'
+      } else if (reduceTime / (3600 * 24 * 7) >= 1 && reduceTime / (3600 * 24 * 7) < 4) {
+        return parseInt(reduceTime / (3600 * 24 * 7)) + '周前'
+      } else if (reduceTime / (3600 * 24 * 7 * 4) >= 1 && reduceTime / (3600 * 24 * 7 * 4) < 12) {
+        return parseInt(reduceTime / (3600 * 24 * 7 * 4)) + '月前'
+      } else if (reduceTime / (3600 * 24 * 7 * 4 * 12) >= 1) {
+        return parseInt(reduceTime / (3600 * 24 * 7 * 4 * 12)) + '年前'
+      }
     },
-    methods: {
-      //获取banner图
-      getBanner() {
-        this.$http.get('/model/Annunciate/Banner').then((data) => {
-          let res = data.data
-          let bannerList = []
-          res.map(function (item) {
-            let obj = {
-              url: item.BannerURL,
-              img: item.BannerPicture,
-              title: '',
-              id: item.ID
-            }
-            bannerList.push(obj)
-          })
-          this.baseList = bannerList
-        })
-      },
-      // 获取通告数据
-      getNotifyList() {
-        let _this = this;
-        this.$http.post('/model/Annunciate/annunciate', qs.stringify({
-          page: 1,
-          address: _this.address == '全国' ? '' : _this.address,
-          type: _this.type === '全部' ? '' : _this.type,
-          sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
-        })).then((res) => {
-          console.log(res)
-          if (res.data.page) {
-            res.data.page.list.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            res.data.official.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            res.data.stickAnnunciate.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            this.normalNotify = res.data.page.list
-            this.officialNotify = res.data.official
-            this.stickNotify = res.data.stickAnnunciate
-            this.totalPage = res.data.page.totalPage
-          } else {
-            res.data.list.map(item => {
-              item.release = this.formatTime(item.deadline)
-              this.normalNotify = res.data.list
-              this.totalPage = res.data.totalPage
-            })
-          }
-        })
-      },
-      //初始化数据
-      initPrames() {
-        let initParmes = this.initParmes;
-        for (let item in initParmes) {
-          if (localStorage.getItem(item)) {
-            initParmes[item] = localStorage.getItem(item)
-          }
-        }
-        this.defaultAddr = initParmes.initAddr
-        this.address = initParmes.initAddr
-        this.type = initParmes.initType
-        this.sort = initParmes.initSort
-        this.getInitData()
-      },
-      //获取类型图
-      getTypeList() {
-        this.$http.get('/model/Annunciate/typeList')
-          .then((res) => {
-            let arr = res.data.map(function (item) {
-              return item.antype
-            })
-            this.typeArr = this.typeArr.concat(arr)
-          })
-      },
-      //获取初始化数据的方法
-      getInitData() {
-        let _this = this;
-        this.$http.post('/model/Annunciate/annunciate', qs.stringify({
-          page: 1,
-          address: _this.initParmes.initAddr == '全国' ? '' : _this.initParmes.initAddr,
-          type: _this.initParmes.initType === '全部' ? '' : _this.initParmes.initType,
-          sort: _this.initParmes.initSort === '按发布时间' ? 'deadline' : 'number'
-        })).then((res) => {
-          console.log(res)
-          if (res.data.page) {
-            res.data.page.list.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            res.data.official.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            res.data.stickAnnunciate.map(item => {
-              item.release = this.formatTime(item.deadline)
-            })
-            this.normalNotify = res.data.page.list
-            this.officialNotify = res.data.official
-            this.stickNotify = res.data.stickAnnunciate
-            this.totalPage = res.data.page.totalPage
-          } else {
-            res.data.list.map(item => {
-              item.release = this.formatTime(item.deadline)
-              this.normalNotify = res.data.list
-              this.totalPage = res.data.totalPage
-            })
-          }
-        })
-      },
-      //获取子组件中的排序值请求数据并存储到本地
-      selectPrames(attr, val) {
-        this[attr] = val
-        console.log(this[attr])
-        if (attr == 'type') {
-          this.getNotifyList()
-          this.showType = false
-          this.nowPage = 1
-          this.$nextTick(() => {
-            this.$refs.scrollerBottom.reset({
-              top: 0
-            })
-          })
-          localStorage.setItem('initType', val)
-        } else if (attr == 'sort') {
-          this.getNotifyList()
-          this.showSort = false
-          this.nowPage = 1
-          this.$nextTick(() => {
-            this.$refs.scrollerBottom.reset({
-              top: 0
-            })
-          })
-          localStorage.setItem('initSort', val)
-        }
-      },
-      // 计算发布时间和用户查看时间的时间差
-      formatTime(val) {
-        let nowTime = new Date().getTime()
-        let releaseTime = new Date(val).getTime()
-        let reduceTime = (nowTime - releaseTime) / 1000
-        if (reduceTime < 60) {
-          return '刚刚'
-        } else if (reduceTime / 60 >= 1 && reduceTime / 60 < 60) {
-          return parseInt(reduceTime / 60) + '分钟前'
-        } else if (reduceTime / 3600 >= 1 && reduceTime / 3600 < 24) {
-          return parseInt(reduceTime / 3600) + '小时前'
-        } else if (reduceTime / (3600 * 24) >= 1 && reduceTime / (3600 * 24) < 7) {
-          return parseInt(reduceTime / (3600 * 24)) + '天前'
-        } else if (reduceTime / (3600 * 24 * 7) >= 1 && reduceTime / (3600 * 24 * 7) < 4) {
-          return parseInt(reduceTime / (3600 * 24 * 7)) + '周前'
-        } else if (reduceTime / (3600 * 24 * 7 * 4) >= 1 && reduceTime / (3600 * 24 * 7 * 4) < 12) {
-          return parseInt(reduceTime / (3600 * 24 * 7 * 4)) + '月前'
-        } else if (reduceTime / (3600 * 24 * 7 * 4 * 12) >= 1) {
-          return parseInt(reduceTime / (3600 * 24 * 7 * 4 * 12)) + '年前'
-        }
-      },
-      // 计算开工日期
-      getWorkTime(val) {
-        let month = val.split(' ')[0].split('-')[1]
-        let day = val.split(' ')[0].split('-')[2]
-        return `${month}月${day}日开工`
-      },
-      //接收地址选择器传来的值
-      getAddr(val) {
-        console.log(val)
-        this.address = val.slice(1)
-        this.nowPage = 1
-        localStorage.setItem('initAddr', val.slice(1))
-        this.getNotifyList()
-      },
-      // 下拉加载更多
-      scrollerBottom() {
-        let _this = this
-        if (this.onFetching) {
-          // do nothing
-        } else {
-          this.onFetching = true
-          if (this.nowPage < this.totalPage) {
-            this.showLoading = true
-            this.$http.post('/model/Annunciate/annunciate', qs.stringify({
-              page: _this.nowPage++,
-              address: _this.address == '全国' ? '' : _this.address,
-              type: _this.type === '全部' ? '' : _this.type,
-              sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
-            })).then((res) => {
-              //如果是全国
+    // 计算开工日期
+    getWorkTime(val) {
+      let month = val.split(' ')[0].split('-')[1]
+      let day = val.split(' ')[0].split('-')[2]
+      return `${month}月${day}日开工`
+    },
+    //接收地址选择器传来的值
+    getAddr(val) {
+      console.log(val)
+      this.address = val.slice(1)
+      this.nowPage = 1
+      this.getNotifyList()
+      this.showDivider = false
+      this.onFetching = true
+      localStorage.setItem('initAddr', val.slice(1))
+    },
+    // 下拉加载更多
+    LoadMore() {
+      let _this = this
+      if (this.onFetching) {
+        if (this.nowPage < this.totalPage) {
+          this.showLoading = true
+          this.onFetching = false
+          this.$http.post('/model/Annunciate/annunciate', qs.stringify({
+            page: _this.nowPage++,
+            address: _this.address == '全国' ? '' : _this.address,
+            type: _this.type === '全部' ? '' : _this.type,
+            sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
+          })).then((res) => {
+            //如果是全国
+            setTimeout(() => {
               if (res.data.page) {
                 res.data.page.list.map(item => {
                   item.release = this.formatTime(item.deadline)
                 })
                 this.normalNotify = this.normalNotify.concat(res.data.page.list)
                 this.totalPage = res.data.page.totalPage
+                this.showLoading = false
+                this.onFetching = true
                 console.log(res.data.page.pageNumber)
                 console.log(res.data)
               } else {
@@ -428,103 +421,104 @@
                 })
                 this.normalNotify = this.normalNotify.concat(res.data.list)
                 this.totalPage = res.data.totalPage
+                this.showLoading = false
+                this.onFetching = true
                 console.log(res.data.pageNumber)
                 console.log(res.data)
               }
-              this.$nextTick(() => {
-                this.$refs.scrollerBottom.reset()
-              })
-              this.onFetching = false
-              this.showLoading = false
-            })
-          } else {
-            this.showDivider = true
-            this.onFetching = false
-          }
+              
+            }, 800)
+          })
+        } else {
+          this.showDivider = true
+          this.onFetching = false
         }
-      },
-      //判断是否为官方通告
-      judgeIfOfficial(vid, official) {
-        this.$http.post('model/Annunciate/judge', qs.stringify({
-          vid: vid,
-          official: official
-        })).then(res => {
-          console.log(res)
-          if (res.data.money) {
-            this.showGoodModal = true
-            console.log(this.showGoodModal)
-          } else {
-            this.$router.push(`/notifyDetail/${vid}`)
-          }
-        })
-      },
-      //跳转到官方通告支付
-      gotoPay(){
-        this.$router.push('/payment')
       }
+    },
+    //判断是否为官方通告
+    judgeIfOfficial(vid, official) {
+      this.$http.post('model/Annunciate/judge', qs.stringify({
+        vid: vid,
+        official: official
+      })).then(res => {
+        console.log(res)
+        if (res.data.money) {
+          this.showGoodModal = true
+          console.log(this.showGoodModal)
+        } else {
+          this.$router.push(`/notifyDetail/${vid}`)
+        }
+      })
+    },
+    //跳转到官方通告支付
+    gotoPay() {
+      this.$router.push('/payment')
     }
   }
+}
 
 </script>
 
 <style lang="less">
-  //覆盖vux组件样式
-  .vux-slider>.vux-swiper>.vux-swiper-item>a>.vux-swiper-desc {
-    font-size: 0.4267rem !important;
-    padding: 0.5333rem 1.3333rem 0.32rem 0.3467rem !important;
-  }
+//覆盖vux组件样式
+.vux-slider>.vux-swiper>.vux-swiper-item>a>.vux-swiper-desc {
+  font-size: 0.4267rem !important;
+  padding: 0.5333rem 1.3333rem 0.32rem 0.3467rem !important;
+}
 
-  .vux-slider>.vux-indicator>a>.vux-icon-dot,
-  .vux-slider .vux-indicator-right>a>.vux-icon-dot {
-    width: 0.16rem !important;
-    height: 0.16rem !important;
-    border-radius: 0.08rem !important;
-  }
+.vux-slider>.vux-indicator>a>.vux-icon-dot,
+.vux-slider .vux-indicator-right>a>.vux-icon-dot {
+  width: 0.16rem !important;
+  height: 0.16rem !important;
+  border-radius: 0.08rem !important;
+}
 
-  .vux-slider>.vux-indicator,
-  .vux-slider .vux-indicator-right {
-    right: 0.4rem !important;
-    bottom: 0.2667rem !important;
-  }
+.vux-slider>.vux-indicator,
+.vux-slider .vux-indicator-right {
+  right: 0.4rem !important;
+  bottom: 0.2667rem !important;
+}
 
-  .x-address .vux-cell-box .weui-cell {
-    padding: 0 !important;
-    .weui-cell__hd {
-      display: none !important;
-    }
+.x-address .vux-cell-box .weui-cell {
+  padding: 0 !important;
+  .weui-cell__hd {
+    display: none !important;
   }
+}
 
-  .vux-divider {
-    font-size: 0.3733rem !important;
-  }
+.vux-divider {
+  font-size: 0.3733rem !important;
+}
 
-  .weui-loadmore {
-    width: 65%;
-    margin: 0.8em auto !important;
-    line-height: 1.6em;
-    font-size: 0.3733rem !important;
-    text-align: center;
-  }
+.weui-loadmore {
+  width: 65%;
+  margin: 0.8em auto !important;
+  line-height: 1.6em;
+  font-size: 0.3733rem !important;
+  text-align: center;
+}
 
-  .weui-loading {
-    width: 0.5333rem !important;
-    height: 0.5333rem !important;
-  }
+.weui-loading {
+  width: 0.5333rem !important;
+  height: 0.5333rem !important;
+}
 
-  .weui-dialog {
-    position: fixed;
-    z-index: 5000;
-    width: 80%;
-    max-width: 8rem !important;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    background-color: #FFFFFF;
-    text-align: center;
-    border-radius: 0.08rem !important;
-    overflow: hidden;
-  } //页面本身样式
+.weui-dialog {
+  position: fixed;
+  z-index: 5000;
+  width: 80%;
+  max-width: 8rem !important;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #FFFFFF;
+  text-align: center;
+  border-radius: 0.08rem !important;
+  overflow: hidden;
+} //页面本身样式
+#home {
+  padding-bottom: 1.3333rem;
   #selectpartment {
     display: flex;
     justify-content: space-between;
@@ -757,5 +751,5 @@
       }
     }
   }
-
+}
 </style>

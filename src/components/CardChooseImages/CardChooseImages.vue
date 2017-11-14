@@ -131,20 +131,19 @@ export default {
 		}
 	},
 	methods: {
+		// 上传模卡
 		upLoadCard() {
-			// this.$http.post('/model/Work/test', {
-			// 	a: ['1', '2', '3']
-			// }).then((response) => {
-			// 	var res = response.data;
-			// 	console.log(res);
-			// });
-			this.$http({
-				methods: 'POST',
-				url: '/model/Work/test',
-				params: qs.stringify({
-					a: ['1', '2', '3']
+			var obj = {
+				a: JSON.stringify({
+					'0': 1,
+					'1': 2
 				})
-			}).then((response)=>{
+			}
+			this.$http({
+				method: 'POST',
+				url: '/model/Work/test',
+				data: qs.stringify(obj)
+			}).then((response) => {
 				var res = response.data;
 				console.log(res);
 			});
@@ -177,6 +176,8 @@ export default {
 		editImage() {
 			// 打开编辑图片面板
 			this.isShowEditPanel = true;
+			// 保存历史记录使得返回键不会回跳页面
+			history.pushState(null, '模板', location.href);
 			// 计算 croppa 宽高和缩放比例
 			this.computeCroppaSize();
 
@@ -276,7 +277,9 @@ export default {
 		...mapGetters(['modelCardDataGetter'])
 	},
 	mounted() {
-
+		window.onpopstate = () => {
+			this.isShowEditPanel = false
+		}
 	}
 }
 </script>

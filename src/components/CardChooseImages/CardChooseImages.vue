@@ -132,17 +132,33 @@ export default {
 	},
 	methods: {
 		upLoadCard() {
-			if (this.isAllowSubmitCard) {
-				this.$http.post('/model/Work/joint', qs.stringify({
-					type: this.templateType,
-					...this.modelCardDataGetter
-				})).then((response) => {
-					var res = response.data;
-					console.log(res);
-				});
-			} else {
-				alert('您还有图片是空着的');
-			}
+			// this.$http.post('/model/Work/test', {
+			// 	a: ['1', '2', '3']
+			// }).then((response) => {
+			// 	var res = response.data;
+			// 	console.log(res);
+			// });
+			this.$http({
+				methods: 'POST',
+				url: '/model/Work/test',
+				params: qs.stringify({
+					a: ['1', '2', '3']
+				})
+			}).then((response)=>{
+				var res = response.data;
+				console.log(res);
+			});
+			// if (this.isAllowSubmitCard) {
+			// 	this.$http.post('/model/Work/joint', qs.stringify({
+			// 		type: this.templateType,
+			// 		...this.modelCardDataGetter
+			// 	})).then((response) => {
+			// 		var res = response.data;
+			// 		console.log(res);
+			// 	});
+			// } else {
+			// 	alert('您还有图片是空着的');
+			// }
 		},
 		// 选择需要编辑的图片
 		chooseImageToEdit(templateArray, index) {
@@ -166,8 +182,8 @@ export default {
 
 			// 添加图片状态
 			// if (!this.imageEditing.imageChosen) {
-				// 打开选择文件框
-				this.myCroppa.chooseFile();
+			// 打开选择文件框
+			this.myCroppa.chooseFile();
 			// 编辑图片状态
 			// } else {
 
@@ -194,7 +210,7 @@ export default {
 				}, 'image/jpeg', 0.8)
 
 				// 缓存传给后台的 base64 字符串
-				// imageEditingObject.base64Image = base64Url;
+				imageEditingObject.base64Image = base64Url;
 
 				// 改变图片选中状态
 				imageEditingObject.imageChosen = true;

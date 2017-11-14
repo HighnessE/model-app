@@ -10,6 +10,10 @@
 			<group>
 				<x-input title="姓名" v-model="name" :should-toast-error=false :max="10" text-align="right" placeholder="（必填）"></x-input>
 			</group>
+			<!-- 性别 -->
+			<group>
+				<selector title="性别" :options="['女', '男']" v-model="gender" placeholder="（必填）"></selector>
+			</group>
 			<!--年龄-->
 			<group>
 				<x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3" text-align="right" placeholder="（必填）"></x-input>
@@ -199,7 +203,10 @@ import {
 	Group,
 	XTextarea,
 	XDialog,
-	PopupPicker
+	PopupPicker,
+	// Checker,
+	// CheckerItem
+	Selector
 } from 'vux';
 import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
@@ -217,11 +224,15 @@ export default {
 		VAddress,
 		selectButton,
 		singleSelectButton,
-		PopupPicker
+		PopupPicker,
+		// Checker,
+		// CheckerItem
+		Selector
 	},
 	data() {
 		return {
 			name: '',
+			gender: '',
 			age: '',
 			height: '',
 			weight: '',
@@ -252,10 +263,10 @@ export default {
 		}
 	},
 	computed: {
-		styleTagVal(){
+		styleTagVal() {
 			return this.styleTag.join(' / ')
 		},
-		workTagVal(){
+		workTagVal() {
 			return this.workTag.join(' / ')
 		}
 	},
@@ -295,8 +306,8 @@ export default {
 			this.$router.push({ path: '/CardTemplate' });
 		}
 	},
-	mounted () {
-		
+	mounted() {
+
 	}
 }
 

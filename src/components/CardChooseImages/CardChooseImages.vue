@@ -141,7 +141,7 @@ export default {
 					console.log(res);
 				});
 			} else {
-
+				alert('您还有图片是空着的');
 			}
 		},
 		// 选择需要编辑的图片
@@ -161,12 +161,17 @@ export default {
 		editImage() {
 			// 打开编辑图片面板
 			this.isShowEditPanel = true;
-
-			// 打开选择文件框
-			this.myCroppa.chooseFile();
-
 			// 计算 croppa 宽高和缩放比例
 			this.computeCroppaSize();
+
+			// 添加图片状态
+			// if (!this.imageEditing.imageChosen) {
+				// 打开选择文件框
+				this.myCroppa.chooseFile();
+			// 编辑图片状态
+			// } else {
+
+			// }
 		},
 		// 使用图片
 		useImage() {

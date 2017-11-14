@@ -15,6 +15,7 @@
     "vue": "^2.2.2",
     "vue-awesome-swiper": "^2.6.7",
     "vue-croppa": "^1.1.2",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^2.2.0",
     "vue-scroller": "^2.2.4",
     "vuex": "^2.1.1",

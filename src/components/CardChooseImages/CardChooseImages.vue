@@ -3,21 +3,21 @@
 		<!-- 头部 -->
 		<x-header>选择模卡图片</x-header>
 
-		<!-- 五图模板 -->
-		<div class="five-images-template">
-			<div class="picturebox">
+		<div class="template">
+			<!-- 五图模板 -->
+			<div class="five-images-picturebox" v-if="this.templateType == '5'">
 				<div class="contentbox">
 					<div class="top">
 						<!--<div class="left imgList"><img class="previewResult0" src="./imgs/five-one.jpg" /></div>-->
 						<div class="left imgList" :class="{ 'previewResult1': templateData5[0].isChecked }"><img :src="templateData5[0].initImage" @click="chooseImageToEdit(templateData5, 0)" /></div>
 						<div class="msg-pull">
-							<span id="name"></span>
-							<span id="height"></span>
-							<span id="weight"></span>
-							<span id="bust"></span>
-							<span id="waist"></span>
-							<span id="hips"></span>
-							<span id="shoes"></span>
+							<span id="name">{{modelCardDataGetter.modelName}}</span>
+							<span id="height">{{modelCardDataGetter.modelHeight}}</span>
+							<span id="weight">{{modelCardDataGetter.modelWeight}}</span>
+							<span id="bust">{{modelCardDataGetter.modelBust}}</span>
+							<span id="waist">{{modelCardDataGetter.modelWaist}}</span>
+							<span id="hips">{{modelCardDataGetter.modelHips}}</span>
+							<span id="shoes">{{modelCardDataGetter.modelShoes}}</span>
 						</div>
 						<div class="middle">
 							<div class="mbox imgList" :class="{ 'previewResult1': templateData5[1].isChecked }"><img :src="templateData5[1].initImage" @click="chooseImageToEdit(templateData5, 1)" /></div>
@@ -30,6 +30,97 @@
 					</div>
 				</div>
 			</div>
+			<!-- 七图模板 -->
+			<div class="seven-images-picturebox" v-if="this.templateType == '7'">
+				<div class="contentbox">
+					<div class="top">
+						<div class="left imgList" :class="{ 'previewResult1': templateData7[0].isChecked }"><img :src="templateData7[0].initImage" @click="chooseImageToEdit(templateData7, 0)" /></div>
+						<div class="mid">
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData7[1].isChecked }"><img :src="templateData7[1].initImage" @click="chooseImageToEdit(templateData7, 1)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData7[2].isChecked }"><img :src="templateData7[2].initImage" @click="chooseImageToEdit(templateData7, 2)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData7[3].isChecked }"><img :src="templateData7[3].initImage" @click="chooseImageToEdit(templateData7, 3)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData7[4].isChecked }"><img :src="templateData7[4].initImage" @click="chooseImageToEdit(templateData7, 4)" /></div>
+						</div>
+						<div class="right">
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData7[5].isChecked }"><img :src="templateData7[5].initImage" @click="chooseImageToEdit(templateData7, 5)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData7[6].isChecked }"><img :src="templateData7[6].initImage" @click="chooseImageToEdit(templateData7, 6)" /></div>
+						</div>
+					</div>
+					<div class="bottom msgbox">
+						<span id="name">{{modelCardDataGetter.modelName}}</span>
+						<span id="height">{{modelCardDataGetter.modelHeight}}</span>
+						<span id="weight">{{modelCardDataGetter.modelWeight}}</span>
+						<span id="bust">{{modelCardDataGetter.modelBust}}</span>
+						<span id="waist">{{modelCardDataGetter.modelWaist}}</span>
+						<span id="hips">{{modelCardDataGetter.modelHips}}</span>
+						<span id="shoes">{{modelCardDataGetter.modelShoes}}</span>
+					</div>
+				</div>
+			</div>
+			<!-- 九图模板 -->
+			<div class="nine-images-picturebox" v-if="this.templateType == '9'">
+				<div class="msg-left">
+					<span id="name">{{modelCardDataGetter.modelName}}</span>
+					<span id="height">{{modelCardDataGetter.modelHeight}}</span>
+					<span id="weight">{{modelCardDataGetter.modelWeight}}</span>
+					<span id="bust">{{modelCardDataGetter.modelBust}}</span>
+					<span id="waist">{{modelCardDataGetter.modelWaist}}</span>
+					<span id="hips">{{modelCardDataGetter.modelHips}}</span>
+					<span id="shoes">{{modelCardDataGetter.modelShoes}}</span>
+				</div>
+				<div class="contentbox sevenTP nineTP eleventTP fiveTp">
+					<div class="top">
+						<div class="left imgList" :class="{ 'previewResult1': templateData9[0].isChecked }"><img :src="templateData9[0].initImage" @click="chooseImageToEdit(templateData9, 0)" /></div>
+						<div class="mid">
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData9[1].isChecked }"><img :src="templateData9[1].initImage" @click="chooseImageToEdit(templateData9, 1)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData9[2].isChecked }"><img :src="templateData9[2].initImage" @click="chooseImageToEdit(templateData9, 2)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData9[3].isChecked }"><img :src="templateData9[3].initImage" @click="chooseImageToEdit(templateData9, 3)" /></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData9[4].isChecked }"><img :src="templateData9[4].initImage" @click="chooseImageToEdit(templateData9, 4)" /></div>
+						</div>
+						<div class="right">
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData9[5].isChecked }"><img :src="templateData9[5].initImage" @click="chooseImageToEdit(templateData9, 5)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData9[6].isChecked }"><img :src="templateData9[6].initImage" @click="chooseImageToEdit(templateData9, 6)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData9[7].isChecked }"><img :src="templateData9[7].initImage" @click="chooseImageToEdit(templateData9, 7)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData9[8].isChecked }"><img :src="templateData9[8].initImage" @click="chooseImageToEdit(templateData9, 8)" /></div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!-- 十一模板 -->
+			<div class="eleven-images-picturebox" v-if="this.templateType == '11'">
+				<div class="contentbox">
+					<div class="top">
+						<div class="pull-top">
+							<div class="msg-top">{{modelCardDataGetter.modelName}}</div>
+							<div class="msg-middle imgList" :class="{ 'previewResult1': templateData11[0].isChecked }"><img :src="templateData11[0].initImage" @click="chooseImageToEdit(templateData11, 0)"></div>
+							<div class="msg-bottom">
+								<span id="height">{{modelCardDataGetter.modelHeight}}</span>
+								<span id="weight">{{modelCardDataGetter.modelWeight}}</span>
+								<span id="bust">{{modelCardDataGetter.modelBust}}</span>
+								<span id="waist">{{modelCardDataGetter.modelWaist}}</span>
+								<span id="hips">{{modelCardDataGetter.modelHips}}</span>
+								<span id="shoes">{{modelCardDataGetter.modelShoes}}</span>
+							</div>
+						</div>
+						<div class="mid">
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData11[1].isChecked }"><img :src="templateData11[1].initImage" @click="chooseImageToEdit(templateData11, 1)"></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData11[2].isChecked }"><img :src="templateData11[2].initImage" @click="chooseImageToEdit(templateData11, 2)"></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData11[3].isChecked }"><img :src="templateData11[3].initImage" @click="chooseImageToEdit(templateData11, 3)"></div>
+							<div class="mbox imgList" :class="{ 'previewResult1': templateData11[4].isChecked }"><img :src="templateData11[4].initImage" @click="chooseImageToEdit(templateData11, 4)"></div>
+						</div>
+						<div class="sixItem">
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[5].isChecked }"><img :src="templateData11[5].initImage" @click="chooseImageToEdit(templateData11, 5)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[6].isChecked }"><img :src="templateData11[6].initImage" @click="chooseImageToEdit(templateData11, 6)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[7].isChecked }"><img :src="templateData11[7].initImage" @click="chooseImageToEdit(templateData11, 7)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[8].isChecked }"><img :src="templateData11[8].initImage" @click="chooseImageToEdit(templateData11, 8)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[9].isChecked }"><img :src="templateData11[9].initImage" @click="chooseImageToEdit(templateData11, 9)" /></div>
+							<div class="rbox imgList" :class="{ 'previewResult1': templateData11[10].isChecked }"><img :src="templateData11[10].initImage" @click="chooseImageToEdit(templateData11, 10)" /></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="operatingbox">
 				<p>提示：要修改某张图片只需点击相应位置的图片即可</p>
 				<button type="button" class="selectbtn" @click="editImage">编辑图片</button>
@@ -48,6 +139,7 @@
 			</div>
 			<!--<croppa v-model="myCroppa1" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" accept="image/png" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>-->
 		</div>
+
 	</div>
 </template>
 <script>
@@ -70,7 +162,7 @@ export default {
 			// 是否允许提交到制作模卡接口
 			isAllowSubmitCard: false,
 			// 选中正在编辑的图片
-			imageEditing: {},
+			imageEditing: { tag: true },
 			// 是否展示编辑图片窗口
 			isShowEditPanel: false,
 			// 模板类型
@@ -127,37 +219,316 @@ export default {
 					height: 624,
 					aspectRatio: 297 / 208
 				},
+			],
+			// 七图模板数据
+			templateData7: [
+				{
+					imageId: '7-0',
+					isChecked: false,
+					initImage: require('./imgs/seven-one.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 894,
+					height: 1251,
+					aspectRatio: 298 / 417
+				},
+				{
+					imageId: '7-1',
+					isChecked: false,
+					initImage: require('./imgs/seven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 623,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '7-2',
+					isChecked: false,
+					initImage: require('./imgs/seven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 623,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '7-3',
+					isChecked: false,
+					initImage: require('./imgs/seven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 623,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '7-4',
+					isChecked: false,
+					initImage: require('./imgs/seven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 623,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '7-5',
+					isChecked: false,
+					initImage: require('./imgs/seven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 890,
+					height: 623,
+					aspectRatio: 298 / 208
+				},
+				{
+					imageId: '7-6',
+					isChecked: false,
+					initImage: require('./imgs/seven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 890,
+					height: 623,
+					aspectRatio: 298 / 208
+				}
+			],
+			// 九图模板数据
+			templateData9: [
+				{
+					imageId: '9-0',
+					isChecked: false,
+					initImage: require('./imgs/nine-one.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 894,
+					height: 1251,
+					aspectRatio: 298 / 417
+				},
+				{
+					imageId: '9-1',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-2',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-3',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-4',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-5',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-6',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-7',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '9-8',
+					isChecked: false,
+					initImage: require('./imgs/nine-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				}
+			],
+			// 十一图模板数据
+			templateData11: [
+				{
+					imageId: '11-0',
+					isChecked: false,
+					initImage: require('./imgs/eleven-one.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 990,
+					height: 984,
+					aspectRatio: 330 / 328
+				},
+				{
+					imageId: '11-1',
+					isChecked: false,
+					initImage: require('./imgs/eleven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '11-2',
+					isChecked: false,
+					initImage: require('./imgs/eleven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '11-3',
+					isChecked: false,
+					initImage: require('./imgs/eleven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '11-4',
+					isChecked: false,
+					initImage: require('./imgs/eleven-two.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 624,
+					aspectRatio: 148 / 208
+				},
+				{
+					imageId: '11-5',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				},
+				{
+					imageId: '11-6',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				},
+				{
+					imageId: '11-7',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				},
+				{
+					imageId: '11-8',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				},
+				{
+					imageId: '11-9',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				},
+				{
+					imageId: '11-10',
+					isChecked: false,
+					initImage: require('./imgs/eleven-three.jpg'),
+					base64Image: '',
+					imageChosen: false,
+					width: 443,
+					height: 411,
+					aspectRatio: 150 / 138
+				}
 			]
 		}
 	},
 	methods: {
 		// 上传模卡
 		upLoadCard() {
-			var obj = {
-				a: JSON.stringify({
-					'0': 1,
-					'1': 2
-				})
-			}
-			this.$http({
-				method: 'POST',
-				url: '/model/Work/test',
-				data: qs.stringify(obj)
-			}).then((response) => {
-				var res = response.data;
-				console.log(res);
-			});
-			// if (this.isAllowSubmitCard) {
-			// 	this.$http.post('/model/Work/joint', qs.stringify({
-			// 		type: this.templateType,
-			// 		...this.modelCardDataGetter
-			// 	})).then((response) => {
-			// 		var res = response.data;
-			// 		console.log(res);
-			// 	});
-			// } else {
-			// 	alert('您还有图片是空着的');
+			// var obj = {
+			// 	a: JSON.stringify({
+			// 		'0': 1,
+			// 		'1': 2
+			// 	})
 			// }
+			// this.$http({
+			// 	method: 'POST',
+			// 	url: '/model/Work/test',
+			// 	data: qs.stringify(obj)
+			// }).then((response) => {
+			// 	var res = response.data;
+			// 	console.log(res);
+			// });
+			if (this.isAllowSubmitCard) {
+				this.$http.post('/model/Work/joint', qs.stringify({
+					type: this.templateType,
+					...this.modelCardDataGetter
+				})).then((response) => {
+					var res = response.data;
+					console.log(res);
+				});
+			} else {
+				alert('您还有图片是空着的');
+			}
 		},
 		// 选择需要编辑的图片
 		chooseImageToEdit(templateArray, index) {
@@ -174,21 +545,25 @@ export default {
 		},
 		// 编辑图片
 		editImage() {
-			// 打开编辑图片面板
-			this.isShowEditPanel = true;
-			// 保存历史记录使得返回键不会回跳页面
-			history.pushState(null, '模板', location.href);
-			// 计算 croppa 宽高和缩放比例
-			this.computeCroppaSize();
+			if (this.imageEditing.tag) {
+				alert('请选择要填充的位置！');
+			} else {
+				// 打开编辑图片面板
+				this.isShowEditPanel = true;
+				// 保存历史记录使得返回键不会回跳页面
+				history.replaceState(null, null, location.href);
+				// 计算 croppa 宽高和缩放比例
+				this.computeCroppaSize();
 
-			// 添加图片状态
-			// if (!this.imageEditing.imageChosen) {
-			// 打开选择文件框
-			this.myCroppa.chooseFile();
-			// 编辑图片状态
-			// } else {
+				// 添加图片状态
+				// if (!this.imageEditing.imageChosen) {
+				// 打开选择文件框
+				this.myCroppa.chooseFile();
+				// 编辑图片状态
+				// } else {
 
-			// }
+				// }
+			}
 		},
 		// 使用图片
 		useImage() {
@@ -289,8 +664,8 @@ export default {
 	height: 100%; // croppa
 	.croppa-container {
 		display: block;
-	} // 五图模板
-	.five-images-template {
+	}
+	.template {
 		.header {
 			background: #fe3076;
 			height: 1.3125rem;
@@ -311,8 +686,8 @@ export default {
 				color: #fff;
 				font-size: 0.4375rem;
 			}
-		}
-		.picturebox {
+		} // 五图模板
+		.five-images-picturebox {
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -345,7 +720,7 @@ export default {
 						background-size: 100% 100%;
 						span {
 							color: #fff;
-							font-size: 0.25rem;
+							font-size: 0.2133rem;
 						}
 						#name {
 							position: absolute;
@@ -416,11 +791,368 @@ export default {
 						}
 					}
 				}
-				.previewResult1 {
-					border: 1px solid red !important
+			}
+		} // 七图
+		.seven-images-picturebox {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin-top: 1.4375rem;
+			.contentbox {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				.top {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					.left {
+						width: 33.1%;
+						height: 100%;
+						border: 1px solid #000;
+						box-sizing: border-box;
+						img {
+							display: block;
+							width: 100%;
+							height: 100%;
+						}
+					}
+					.mid {
+						width: 33%;
+						height: 100%;
+						background-color: #cccccc;
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						box-sizing: border-box;
+						.mbox {
+							width: 50%;
+							height: 50%;
+							border: 1px solid #000000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+					.right {
+						background-color: #dddddd;
+						width: 33%;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						flex-direction: column;
+						box-sizing: border-box;
+						.rbox {
+							width: 100%;
+							height: 50%;
+							border: 1px solid #000000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+				}
+				.bottom {
+					width: 100%;
+					height: 0.7138873396542108rem;
+					box-sizing: border-box;
+					border: 1px solid #000;
+					background-color: #e3e3e3;
+				}
+				.msgbox {
+					position: relative;
+					background: url("./imgs/sevenbg.jpg") no-repeat;
+					background-size: 100% 100%;
+					#name {
+						position: absolute;
+						top: 40%;
+						left: 4%;
+					}
+					#height {
+						position: absolute;
+						top: 55%;
+						left: 20%;
+					}
+					#weight {
+						position: absolute;
+						top: 55%;
+						left: 33%;
+					}
+					#bust {
+						position: absolute;
+						top: 55%;
+						left: 46%;
+					}
+					#waist {
+						position: absolute;
+						top: 55%;
+						left: 57%;
+					}
+					#hips {
+						position: absolute;
+						top: 55%;
+						left: 70%;
+					}
+					#shoes {
+						position: absolute;
+						top: 55%;
+						left: 82%;
+					}
+					span {
+						color: #fff;
+						font-size: 0.2133rem;
+					}
+				}
+			}
+		} // 九图
+		.nine-images-picturebox {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 1.2267rem;
+			.msg-left {
+				position: relative;
+				background: url(./imgs/ninebg.jpg) no-repeat;
+				background-size: 100% 100%;
+				width: 1.1rem;
+				height: 4.1067rem;
+				box-sizing: border-box;
+				#name {
+					position: absolute;
+					top: 10%;
+					left: 11%;
+				}
+				#height {
+					position: absolute;
+					top: 26%;
+					left: 11%;
+				}
+				#weight {
+					position: absolute;
+					top: 37%;
+					left: 11%;
+				}
+				#bust {
+					position: absolute;
+					top: 49%;
+					left: 11%;
+				}
+				#waist {
+					position: absolute;
+					top: 61%;
+					left: 11%;
+				}
+				#hips {
+					position: absolute;
+					top: 72%;
+					left: 11%;
+				}
+				#shoes {
+					position: absolute;
+					top: 84%;
+					left: 11%;
+				}
+				span {
+					color: #fff;
+					font-size: 0.2133rem;
+				}
+			}
+			.contentbox {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				width: 88.2%;
+				height: 100%;
+				box-sizing: border-box;
+				.top {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					height: 100%;
+					.left {
+						width: 33.3%;
+						height: 100%;
+						border: 1px solid #000;
+						box-sizing: border-box;
+						img {
+							display: block;
+							width: 100%;
+							height: 100%;
+						}
+					}
+					.mid {
+						width: 33.3%;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						.mbox {
+							width: 50%;
+							height: 50%;
+							border: 1px solid #000000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+					.right {
+						width: 33.3%;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						.rbox {
+							width: 50%;
+							height: 50%;
+							border: 1px solid #000000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								width: 100%;
+								height: 100%;
+							}
+						}
+					}
+				}
+			}
+		} // 十一图
+		.eleven-images-picturebox {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 1.2267rem;
+			.contentbox {
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				width: 100%;
+				.top {
+					display: flex;
+					justify-content: center;
+					width: 100%;
+					.pull-top {
+						width: 34%;
+						height: 100%;
+						border: 1px solid #000;
+						box-sizing: border-box;
+						.msg-top {
+							width: 100%;
+							height: 10%;
+							line-height: 0.6667rem;
+							font-size: 0.2133rem;
+							border-bottom: 1px solid #000;
+							text-align: center;
+							background: #000;
+							color: #fff;
+						}
+						.msg-middle {
+							width: 100%;
+							height: 79%;
+							img {
+								display: block;
+								width: 100%;
+								height: 100%;
+							}
+						}
+						.msg-bottom {
+							position: relative;
+							background: url(./imgs/elevenbg.jpg) no-repeat;
+							background-size: 100% 100%;
+							display: flex;
+							width: 3.3733rem;
+							height: 0.5867rem;
+							border-top: 1px solid #000;
+							#height {
+								position: absolute;
+								top: 55%;
+								left: 4%;
+							}
+							#weight {
+								position: absolute;
+								top: 55%;
+								left: 23%;
+							}
+							#bust {
+								position: absolute;
+								top: 55%;
+								left: 41%;
+							}
+							#waist {
+								position: absolute;
+								top: 55%;
+								left: 56%;
+							}
+							#hips {
+								position: absolute;
+								top: 55%;
+								left: 72%;
+							}
+							#shoes {
+								position: absolute;
+								top: 55%;
+								left: 85%;
+							}
+							span {
+								color: #fff;
+								font-size: 0.2133rem;
+							}
+						}
+					}
+					.mid {
+						width: 33%;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						.mbox {
+							width: 50%;
+							height: 50%;
+							box-sizing: border-box;
+							border: 1px solid #000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								height: 100%;
+								width: 100%;
+							}
+						}
+					}
+					.sixItem {
+						width: 33%;
+						height: 100%;
+						display: flex;
+						justify-content: center;
+						flex-wrap: wrap;
+						.rbox {
+							display: block;
+							width: 50%;
+							height: 33.3%;
+							border: 1px solid #000;
+							box-sizing: border-box;
+							img {
+								display: block;
+								height: 100%;
+								width: 100%;
+							}
+						}
+					}
 				}
 			}
 		}
+		.previewResult1 {
+			border: 1px solid red !important
+		}
+
 		.operatingbox {
 			width: 10rem;
 			margin: 0.2813rem auto 0rem;

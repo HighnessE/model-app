@@ -12,9 +12,11 @@ import Center from '@/components/center/center'
 import Setup from '@/components/setup/setup'
 import Contact from '@/components/contact/contact'
 import notifyDetail from '@/components/notifyDetail/notifyDetail'
+import myNotifyDetail from '@/components/myNotifyDetail/myNotifyDetail'
 import releaseNotify from '@/components/releaseNotify/releaseNotify'
 import releaseCard from '@/components/releaseCard/releaseCard'
 import cardDetail from '@/components/cardDetail/cardDetail'
+import myCardDetail from '@/components/myCardDetail/myCardDetail'
 import stickNotify from '@/components/stickNotify/stickNotify'
 import myRelease from '@/components/myRelease/myRelease'
 Vue.use(Router)
@@ -75,14 +77,21 @@ const routes = [{
 	meta: { title: '通告详情' },
 	component: notifyDetail
 }, {
+	path: '/myNotifyDetail/:vid',
+	meta: { title: '通告详情' },
+	component: myNotifyDetail
+}, {
 	path: '/myRelease',
 	meta: { title: '我的发布' },
 	component: myRelease
-},
-{
+}, {
 	path: '/cardDetail/:id',
 	meta: { title: '名片详情' },
 	component: cardDetail
+}, {
+	path: '/myCardDetail/:id',
+	meta: { title: '名片详情' },
+	component: myCardDetail
 }, {
 	path: '/releaseCard',
 	meta: { title: '发布名片' },

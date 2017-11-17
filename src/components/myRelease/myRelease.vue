@@ -13,7 +13,7 @@
                     <p>满员：</p>
                     <v-switch size="small" :init="item.enough===1?true:false" @on-change="sendEnoughEvent($event,item)"></v-switch>
                 </div>
-                <router-link class="releaselink" :to="`/notifyDetail/${item.vid}`">
+                <router-link class="releaselink" :to="`/myNotifyDetail/${item.vid}`">
                     <div class="headpart">
                         <img alt="">
                     </div>

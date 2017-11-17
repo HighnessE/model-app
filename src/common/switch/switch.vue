@@ -1,11 +1,19 @@
 <template>
   <div :class="switchClass" @click="toggleClass()">
-    <button class="switchbtn" :style="{'left':switchClass.active === true?'0.96rem':'0'}"></button>
+    <button class="switchbtn" :style="{'left':switchClass.active === true && size === 'big'?'0.96rem':switchClass.active === true && size === 'small'?'0.68rem':'0'}"></button>
   </div>
 </template>
 <script>
 export default {
-  props:['init'],  
+  props:{
+      init:{
+          type:Boolean
+      },
+      size:{
+          type:String,
+          default:'big'
+      }
+  },  
   data(){
       return {
           switchClass: {

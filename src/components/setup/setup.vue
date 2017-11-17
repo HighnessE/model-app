@@ -5,10 +5,10 @@
     <div class="contentwrap">
         <div class="rule">
             <span>平台规则</span>
-            <a href="javascript:">
+            <router-link to="/platformRules">
                 <span>点击查看</span>
                 <x-icon type="chevron-right" size="0.4rem" class="icon"></x-icon>
-            </a>
+            </router-link>
         </div>
         <div class="notice">
             <div class="msgWrap">

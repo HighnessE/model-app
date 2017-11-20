@@ -8,15 +8,15 @@ import MessageDetail from '@/components/messageDetail/messageDetail'
 import MsgLeave from '@/components/messageLeave/messageLeave'
 import myCardList from '@/components/myCardList/myCardList'
 import myCollect from '@/components/myCollect/myCollect'
-import notifyCollect from '@/components/notifyCollect/notifyCollect'
-import cardCollect from '@/components/cardCollect/cardCollect'
 import Center from '@/components/center/center'
 import Setup from '@/components/setup/setup'
 import Contact from '@/components/contact/contact'
 import notifyDetail from '@/components/notifyDetail/notifyDetail'
+import myNotifyDetail from '@/components/myNotifyDetail/myNotifyDetail'
 import releaseNotify from '@/components/releaseNotify/releaseNotify'
 import releaseCard from '@/components/releaseCard/releaseCard'
 import cardDetail from '@/components/cardDetail/cardDetail'
+import myCardDetail from '@/components/myCardDetail/myCardDetail'
 import stickNotify from '@/components/stickNotify/stickNotify'
 import myRelease from '@/components/myRelease/myRelease'
 Vue.use(Router)
@@ -58,20 +58,8 @@ const routes = [{
 	component: myCardList
 }, {
 	path: '/myCollect',
-	component: myCollect,
-	children: [{
-		path: 'notifyCollect',
-		meta: { title: '通告收藏' },
-		component: notifyCollect
-	}, {
-		path: 'cardCollect',
-		meta: { title: '名片收藏' },
-		component: cardCollect
-	}, {
-		path: '/',
-		redirect: 'notifyCollect',
-		component: notifyCollect
-	}]
+	meta: { title: '我的收藏' },
+	component: myCollect
 }, {
 	path: '/Setup',
 	meta: { title: '设置与隐私' },
@@ -89,9 +77,21 @@ const routes = [{
 	meta: { title: '通告详情' },
 	component: notifyDetail
 }, {
+	path: '/myNotifyDetail/:vid',
+	meta: { title: '通告详情' },
+	component: myNotifyDetail
+}, {
+	path: '/myRelease',
+	meta: { title: '我的发布' },
+	component: myRelease
+}, {
 	path: '/cardDetail/:id',
 	meta: { title: '名片详情' },
 	component: cardDetail
+}, {
+	path: '/myCardDetail/:id',
+	meta: { title: '名片详情' },
+	component: myCardDetail
 }, {
 	path: '/releaseCard',
 	meta: { title: '发布名片' },
@@ -108,6 +108,10 @@ const routes = [{
 	path: '/CardChooseImages/:template',
 	meta: { title: '选择图片' },
     component: resolve => require(['../components/CardChooseImages/CardChooseImages'], resolve)
+}, {
+	path: '/platformRules',
+	meta: { title: '平台规则' },
+    component: resolve => require(['../components/platformRules/platformRules'], resolve)
 }]
 
 export default new Router({

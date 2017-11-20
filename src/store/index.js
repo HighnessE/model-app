@@ -18,10 +18,11 @@ const state = {
 }
 
 const mutations = {
-    //收藏页面编辑按钮切换
+    //通告收藏页面编辑按钮切换
     toggleCollectNotify(state) {
         state.editCollectNotify = !state.editCollectNotify
     },
+    //名片收藏页面编辑按钮切换
     toggleCollectCard(state) {
         state.editCollectCard = !state.editCollectCard
     },
@@ -43,6 +44,7 @@ const getters = {
 }
 
 const actions = {
+    //点击编辑按钮触发的事件，下同
     collectNotifyAction(context) {
         context.commit('toggleCollectNotify')
     },

@@ -7,13 +7,13 @@ import router from './router'
 import { remInit } from './base/remInit.js'
 import axios from 'axios'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-import { WechatPlugin } from 'vux'
+import { WechatPlugin,ConfirmPlugin } from 'vux'
 import infiniteScroll from 'vue-infinite-scroll'
 import store from './store'
 import './assets/animate.css'
 import 'vue-croppa/dist/vue-croppa.css'
 import Croppa from 'vue-croppa'
-
+Vue.use(ConfirmPlugin)
 Vue.use(Croppa)
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)

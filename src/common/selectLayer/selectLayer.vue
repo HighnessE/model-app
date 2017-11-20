@@ -26,6 +26,7 @@ export default {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    width: 100%;
     background: #fff;
     padding: 0.29333333333333333rem 0 0 0.29333333333333333rem;
     .popup-item {
@@ -40,7 +41,7 @@ export default {
       background: #5FC1A8;
       > p {
         font-size: 0.4rem;
-        color: #333333;
+        color: #fff;
       }
     }
 }

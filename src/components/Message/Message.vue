@@ -42,10 +42,10 @@
                 </div>
                 <div class="content">
                     <div class="title">
-                        <h4>留言消息</h4>
+                        <h4>私信消息</h4>
                     </div>
                     <div class="msg">
-                        <p>其他用户给您的留言</p>
+                        <p>其他用户给您的私信</p>
                         <span v-show="leaveCount != 0">{{leaveCount}}</span>
                     </div>
                 </div>

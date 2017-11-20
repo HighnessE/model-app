@@ -243,39 +243,6 @@ export default {
         this.baseList = bannerList
       })
     },
-    // 获取通告数据
-    getNotifyList() {
-      let _this = this;
-      this.$http.post('/model/Annunciate/annunciate', qs.stringify({
-        page: 1,
-        address: _this.address == '全国' ? '' : _this.address,
-        type: _this.type === '全部' ? '' : _this.type,
-        sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
-      })).then((res) => {
-        console.log(res)
-        if (res.data.page) {
-          res.data.page.list.map(item => {
-            item.release = this.formatTime(item.deadline)
-          })
-          res.data.official.map(item => {
-            item.release = this.formatTime(item.deadline)
-          })
-          res.data.stickAnnunciate.map(item => {
-            item.release = this.formatTime(item.deadline)
-          })
-          this.normalNotify = res.data.page.list
-          this.officialNotify = res.data.official
-          this.stickNotify = res.data.stickAnnunciate
-          this.totalPage = res.data.page.totalPage
-        } else {
-          res.data.list.map(item => {
-            item.release = this.formatTime(item.deadline)
-            this.normalNotify = res.data.list
-            this.totalPage = res.data.totalPage
-          })
-        }
-      })
-    },
     //初始化数据
     initPrames() {
       let initParmes = this.initParmes;
@@ -290,7 +257,7 @@ export default {
       this.sort = initParmes.initSort
       this.getInitData()
     },
-    //获取类型图
+    //获取类型数据
     getTypeList() {
       this.$http.get('/model/Annunciate/typeList')
         .then((res) => {
@@ -390,15 +357,49 @@ export default {
       this.onFetching = true
       localStorage.setItem('initAddr', val.slice(1))
     },
+    // 获取通告数据
+    getNotifyList() {
+      let _this = this;
+      this.$http.post('/model/Annunciate/annunciate', qs.stringify({
+        page: 1,
+        address: _this.address == '全国' ? '' : _this.address,
+        type: _this.type === '全部' ? '' : _this.type,
+        sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
+      })).then((res) => {
+        console.log(res)
+        if (res.data.page) {
+          res.data.page.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.official.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          res.data.stickAnnunciate.map(item => {
+            item.release = this.formatTime(item.deadline)
+          })
+          this.normalNotify = res.data.page.list
+          this.officialNotify = res.data.official
+          this.stickNotify = res.data.stickAnnunciate
+          this.totalPage = res.data.page.totalPage
+        } else {
+          res.data.list.map(item => {
+            item.release = this.formatTime(item.deadline)
+            this.normalNotify = res.data.list
+            this.totalPage = res.data.totalPage
+          })
+        }
+      })
+    },
     // 下拉加载更多
     LoadMore() {
       let _this = this
       if (this.onFetching) {
         if (this.nowPage < this.totalPage) {
+          this.nowPage++
           this.showLoading = true
           this.onFetching = false
           this.$http.post('/model/Annunciate/annunciate', qs.stringify({
-            page: _this.nowPage++,
+            page: _this.nowPage,
             address: _this.address == '全国' ? '' : _this.address,
             type: _this.type === '全部' ? '' : _this.type,
             sort: _this.sort === '按发布时间' ? 'deadline' : 'number'
@@ -506,7 +507,7 @@ export default {
 .weui-dialog {
   position: fixed;
   z-index: 5000;
-  width: 80%;
+  width: 80% !important;
   max-width: 8rem !important;
   top: 50%;
   left: 50%;

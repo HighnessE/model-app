@@ -18,7 +18,7 @@
               <span>置顶</span>
             </div>
           </div>
-          <router-link to="/cardDetail" class="cardlink">
+          <router-link :to="`/myCardDetail/${item.id}`" class="cardlink">
             <div class="imgbox">
               <img :src="item.picture" alt="">
             </div>

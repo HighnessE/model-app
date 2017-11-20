@@ -1,6 +1,6 @@
 <template>
   <div class="card-detail">
-    <x-header>名片详情
+    <x-header>我的名片
       <a slot="right">
         <x-icon type="ios-home-outline" size="0.6rem" class="icon-home"></x-icon>
       </a>

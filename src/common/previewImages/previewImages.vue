@@ -1,5 +1,5 @@
 <<template>
-	<swiper :options="swiperOption" ref="mySwiperA">
+	<swiper :options="swiperOption" ref="mySwiper">
 		<!-- 幻灯内容 -->
 		<swiper-slide>
 			<img style="width:100%" src="./img/0da3fbe.jpg">
@@ -20,18 +20,19 @@ export default {
 		return {
 			swiperOption: {
 				notNextTick: true,
-				grabCursor: true,
-				setWrapperSize: true,
-				autoHeight: true,
-				pagination: '.swiper-pagination',
-				paginationClickable: true,
 				observeParents: true,
 				// 懒加载
 				lazyLoading: true,
 				lazyLoadingInPrevNext: true,
 			}
 		}
-	}
+	},
+    //定义这个sweiper对象  
+    computed: {
+        swiper() {
+            return this.$refs.mySwiper.swiper;
+        }
+    },
 }
 </script>
 <style lang="less" scoped>

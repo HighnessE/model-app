@@ -112,6 +112,10 @@ const routes = [{
 	path: '/platformRules',
 	meta: { title: '平台规则' },
     component: resolve => require(['../components/platformRules/platformRules'], resolve)
+}, {
+	path: '/preview',
+	meta: { title: 'preview' },
+    component: resolve => require(['../common/previewImages/previewImages'], resolve)
 }]
 
 export default new Router({

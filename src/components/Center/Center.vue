@@ -64,16 +64,22 @@
     },
     created(){
         this.getCenterData()
+		this.getMessageNumber()
     },
     methods: {
         getCenterData(){
             this.$http.post('/model/Model/ModelMessage')
             .then((res) => {
-                this.nickname = res.data.model.name
-                this.userUrl = res.data.model.hurl
-                this.msgNumber = res.data.count
+                this.nickname = res.data.name
+                this.userUrl = res.data.hurl
             })
-        }
+        },
+		getMessageNumber(){
+			this.$http.post('/model/Model/ModelCount')
+			.then(res=>{
+				this.msgNumber = res.data.count
+			})
+		}
     }
   }
 

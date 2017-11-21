@@ -73,6 +73,10 @@ const routes = [{
 	meta: { title: '发布通告' },
 	component: releaseNotify
 }, {
+	path: '/editNotify/:vid',
+	meta: { title: '发布通告' },
+	component: resolve => require(['../components/editNotify/editNotify'], resolve)
+}, {
 	path: '/notifyDetail/:vid',
 	meta: { title: '通告详情' },
 	component: notifyDetail

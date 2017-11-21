@@ -16,7 +16,7 @@
           <div class="nickname">{{username}}</div>
         </div>
       </div>
-      <div class="todobox">
+      <!--<div class="todobox">
         <div class="like">
           <x-icon type="heart" size="0.5rem" class="icon-default"></x-icon>
           <span>点赞</span>
@@ -29,7 +29,7 @@
           <x-icon type="eye" size="0.6rem" class="icon-default"></x-icon>
           <span>{{cardInfo.examine}}</span>
         </div>
-      </div>
+      </div>-->
     </div>
     <!-- 个人资料 -->
     <div class="person-wrap">
@@ -133,10 +133,10 @@
           <x-icon type="ios-photos-outline" size="0.6rem" style="fill:#382e2e"></x-icon>
           <span>我的模卡</span>
         </div>
-        <div class="downcard">
+        <!--<div class="downcard">
           <x-icon type="ios-download-outline" size="0.55rem" style="fill:#5863a7"></x-icon>
           <span>下载</span>
-        </div>
+        </div>-->
       </div>
       <div class="picbox">
         <ul>
@@ -154,7 +154,7 @@
       </router-link>
     </div>
     <!-- 操作按钮 -->
-    <div class="handlebars">
+    <!--<div class="handlebars">
       <div class="handle-wrap">
         <a href="javascript:;" @click.prevent="showLeavemsgDialog = true">
           <div>
@@ -177,9 +177,9 @@
           <img src="./img/collect_footer.png">
         </div>
       </div>
-    </div>
+    </div>-->
     <!-- 留言弹窗 -->
-    <transition enter-active-class="fadeIn" leave-active-class="fadeOut">
+    <!--<transition enter-active-class="fadeIn" leave-active-class="fadeOut">
       <div class="leavemsglayer animated" v-show="showLeavemsgDialog">
         <div class="wrapbox">
           <div class="contentbox">
@@ -193,7 +193,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition>-->
   </div>
 </template>
 <script>
@@ -610,172 +610,172 @@ export default {
       }
     }
   }
-  .handlebars {
-    width: 8.5333rem;
-    position: fixed;
-    bottom: 0.4rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9;
-    .handle-wrap {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      height: 1.1733333333333333rem;
-      background: #ff5050;
-      border-radius: 1.0667rem;
-      a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 8;
-        &>div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 0.8533333333333334rem;
-          width: 100%;
-          img {
-            display: block;
-            width: 0.5866666666666667rem;
-            height: 0.5866666666666667rem;
-          }
-          p {
-            font-size: 0.32rem;
-            color: #fff;
-            text-align: center;
-          }
-        }
-      }
-      a:nth-child(1) {
-        position: relative;
-        justify-content: flex-start;
-        width: 2.1866666666666665rem;
-        div {
-          position: relative;
-          border-right: 0.02666666666666667rem solid #fff;
-          width: 2.2133333333333334rem;
-          z-index: 7;
-          p {
-            width: 1.0666666666666667rem;
-            margin-left: 0.18666666666666668rem;
-            margin-right: 0.37333333333333335rem;
-          }
-        }
-      }
-      a:nth-child(2) {
-        width: 2.9066666666666667rem;
-        div {
-          align-items: flex-end;
-          p {
-            margin-bottom: 0.09333333333333334rem;
-          }
-        }
-      }
-      a:nth-child(3) {
-        width: 2.1866666666666665rem;
-        div {
-          position: relative;
-          width: 2.2133333333333334rem;
-          border-left: 0.02666666666666667rem solid #fff;
-          z-index: 7;
-          img {
-            margin-left: 0.37333333333333335rem;
-          }
-          p {
-            width: 1.0666666666666667rem;
-            margin-left: 0.16rem;
-          }
-        }
-      }
-      .circle {
-        position: absolute;
-        top: -0.5866666666666667rem;
-        left: 50%;
-        height: 1.1733333333333333rem;
-        width: 1.1733333333333333rem;
-        transform: translateX(-50%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        background-color: #ff5050;
-        img {
-          display: block;
-          width: 0.8266666666666667rem;
-          height: 0.8266666666666667rem;
-        }
-      }
-    }
-  }
-  .leavemsglayer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    .wrapbox {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      background: #fff;
-      border-radius: 0.16rem;
-      .contentbox {
-        .weui-cells__title {
-          margin-top: 0.77em;
-          margin-bottom: 0.3em;
-          padding-left: 0.4rem !important;
-          padding-right: 0.4rem !important;
-          color: #000;
-          font-size: 0.4267rem !important;
-        }
-        .weui-cells {
-          font-size: 0.4rem !important;
-          color: #382e2e !important;
-          margin-top: 0 !important;
-          .weui-cell {
-            padding: 0.4135rem 0.4267rem !important;
-          }
-          .weui-icon {
-            padding-left: 0.1333rem !important;
-          }
-          .weui-icon-clear {
-            font-size: 0.3733rem !important;
-          }
-        }
-      }
-      .desbtn {
-        height: 1.3333333333333333rem;
-        background-color: #ff2f77;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 0 0 0.16rem 0.16rem;
-        span {
-          width: 100%;
-          height: 100%;
-          color: #fff;
-          font-size: 0.4533333333333333rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-        span.cancle {
-          background-color: #e0e0e0;
-          border-radius: 0 0 0 0.16rem;
-        }
-        span.confirm {
-          background-color: #fe3076;
-          border-radius: 0 0 0.16rem 0;
-        }
-      }
-    }
-  }
+  // .handlebars {
+  //   width: 8.5333rem;
+  //   position: fixed;
+  //   bottom: 0.4rem;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   z-index: 9;
+  //   .handle-wrap {
+  //     position: relative;
+  //     display: flex;
+  //     justify-content: center;
+  //     height: 1.1733333333333333rem;
+  //     background: #ff5050;
+  //     border-radius: 1.0667rem;
+  //     a {
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+  //       position: relative;
+  //       z-index: 8;
+  //       &>div {
+  //         display: flex;
+  //         justify-content: center;
+  //         align-items: center;
+  //         height: 0.8533333333333334rem;
+  //         width: 100%;
+  //         img {
+  //           display: block;
+  //           width: 0.5866666666666667rem;
+  //           height: 0.5866666666666667rem;
+  //         }
+  //         p {
+  //           font-size: 0.32rem;
+  //           color: #fff;
+  //           text-align: center;
+  //         }
+  //       }
+  //     }
+  //     a:nth-child(1) {
+  //       position: relative;
+  //       justify-content: flex-start;
+  //       width: 2.1866666666666665rem;
+  //       div {
+  //         position: relative;
+  //         border-right: 0.02666666666666667rem solid #fff;
+  //         width: 2.2133333333333334rem;
+  //         z-index: 7;
+  //         p {
+  //           width: 1.0666666666666667rem;
+  //           margin-left: 0.18666666666666668rem;
+  //           margin-right: 0.37333333333333335rem;
+  //         }
+  //       }
+  //     }
+  //     a:nth-child(2) {
+  //       width: 2.9066666666666667rem;
+  //       div {
+  //         align-items: flex-end;
+  //         p {
+  //           margin-bottom: 0.09333333333333334rem;
+  //         }
+  //       }
+  //     }
+  //     a:nth-child(3) {
+  //       width: 2.1866666666666665rem;
+  //       div {
+  //         position: relative;
+  //         width: 2.2133333333333334rem;
+  //         border-left: 0.02666666666666667rem solid #fff;
+  //         z-index: 7;
+  //         img {
+  //           margin-left: 0.37333333333333335rem;
+  //         }
+  //         p {
+  //           width: 1.0666666666666667rem;
+  //           margin-left: 0.16rem;
+  //         }
+  //       }
+  //     }
+  //     .circle {
+  //       position: absolute;
+  //       top: -0.5866666666666667rem;
+  //       left: 50%;
+  //       height: 1.1733333333333333rem;
+  //       width: 1.1733333333333333rem;
+  //       transform: translateX(-50%);
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+  //       border-radius: 50%;
+  //       background-color: #ff5050;
+  //       img {
+  //         display: block;
+  //         width: 0.8266666666666667rem;
+  //         height: 0.8266666666666667rem;
+  //       }
+  //     }
+  //   }
+  // }
+  // .leavemsglayer {
+  //   position: fixed;
+  //   top: 0;
+  //   left: 0;
+  //   bottom: 0;
+  //   width: 100%;
+  //   background: rgba(0, 0, 0, 0.5);
+  //   z-index: 10;
+  //   .wrapbox {
+  //     position: absolute;
+  //     top: 40%;
+  //     left: 50%;
+  //     transform: translate(-50%, -50%);
+  //     width: 90%;
+  //     background: #fff;
+  //     border-radius: 0.16rem;
+  //     .contentbox {
+  //       .weui-cells__title {
+  //         margin-top: 0.77em;
+  //         margin-bottom: 0.3em;
+  //         padding-left: 0.4rem !important;
+  //         padding-right: 0.4rem !important;
+  //         color: #000;
+  //         font-size: 0.4267rem !important;
+  //       }
+  //       .weui-cells {
+  //         font-size: 0.4rem !important;
+  //         color: #382e2e !important;
+  //         margin-top: 0 !important;
+  //         .weui-cell {
+  //           padding: 0.4135rem 0.4267rem !important;
+  //         }
+  //         .weui-icon {
+  //           padding-left: 0.1333rem !important;
+  //         }
+  //         .weui-icon-clear {
+  //           font-size: 0.3733rem !important;
+  //         }
+  //       }
+  //     }
+  //     .desbtn {
+  //       height: 1.3333333333333333rem;
+  //       background-color: #ff2f77;
+  //       display: flex;
+  //       justify-content: center;
+  //       align-items: center;
+  //       border-radius: 0 0 0.16rem 0.16rem;
+  //       span {
+  //         width: 100%;
+  //         height: 100%;
+  //         color: #fff;
+  //         font-size: 0.4533333333333333rem;
+  //         display: flex;
+  //         justify-content: center;
+  //         align-items: center;
+  //       }
+  //       span.cancle {
+  //         background-color: #e0e0e0;
+  //         border-radius: 0 0 0 0.16rem;
+  //       }
+  //       span.confirm {
+  //         background-color: #fe3076;
+  //         border-radius: 0 0 0.16rem 0;
+  //       }
+  //     }
+  //   }
+  // }
   
 }
 </style>

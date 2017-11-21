@@ -247,6 +247,8 @@ export default {
 				type: 1
 			}, {
 				type: 2
+			},{
+				type:3
 			}],
 			styleArr: [{
 				type: 3
@@ -332,10 +334,10 @@ export default {
 	.vux-input-icon.weui-icon-success:before {
 		font-size: 0.56rem !important;
 	} //公共样式
-	.weui-dialog {
-		width: 9.0933rem !important;
-		max-width: none !important;
-	}
+	// .weui-dialog {
+	// 	width: 9.0933rem !important;
+	// 	max-width: none !important;
+	// }
 	.items {
 		.itemwrap {
 			height: 1.3867rem;
@@ -590,7 +592,7 @@ export default {
 	}
 	.dialog-offer {
 		.contentwrap {
-			width: 9.0933rem;
+			width: 8rem;
 			background: #f6f6f6;
 			border-radius: 0.16rem;
 			.headwrap {

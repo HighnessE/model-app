@@ -46,14 +46,14 @@
 </script>
 <style lang="less" scoped>
   .contentwrap {
-    width: 9.0933rem;
+    width: 100%;
     background: #fff;
     border-radius: 0.16rem;
     .headwrap {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 9.0933rem;
+      width: 100%;
       height: 1.4133rem;
       background-color: #f6f6f6;
       border-radius: 0.16rem;
@@ -81,8 +81,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 2.64rem;
-        height: 1.1467rem;
+        width: 2.3rem;
+        height: 1.1466666666666667rem;
         border-radius: 0.1333rem;
         margin-bottom: 0.2933rem;
         margin-right: 0.2667rem;

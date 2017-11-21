@@ -5,7 +5,7 @@
       <ul class="cardlist">
         <li v-for="(item,index) in cardArray" :key="index">
           <div class="handle">
-            <div class="delete" @click="delCard(item)">
+            <div class="delete" @click="delCard(item,index)">
               <x-icon type="ios-trash-outline" size="0.5rem"></x-icon>
               <span>删除</span>
             </div>
@@ -81,8 +81,14 @@
             console.log(this.cardArray)
           })
       },
-      delCard(item){
-
+      delCard(item,index){
+        this.$http.post('/model/Work/WDelete',qs.stringify({
+          id:item.id
+        })).then(res=>{
+          if(res.result === 'success'){
+            this.cardArray.splice(index,1)
+          }
+        })
       },
       editCard(item){
 

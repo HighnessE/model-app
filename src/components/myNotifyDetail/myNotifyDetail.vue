@@ -2,7 +2,7 @@
   <div id="notify-detail">
     <x-header>通告详情
       <a slot="right">
-        <button id="editnotify">修改</button>
+        <button id="editnotify" @click="$router.push(`/editnotify/${vid}`)">修改</button>
       </a>
     </x-header>
     <div class="notify-content">
@@ -88,7 +88,7 @@
         </div>
       </div>
       <!-- 操作栏 -->
-      <div class="handlepart">
+      <!--<div class="handlepart">
         <div class="crossbar">
           <div class="collectbtn" @click="commitCollect()">
             <x-icon type="ios-star" size="0.5rem" :class="collectClass"></x-icon>
@@ -105,7 +105,7 @@
             <span>{{notifyData.hit}}</span>
           </div>
         </div>
-      </div>
+      </div>-->
       <!-- 跳转栏 -->
       <div class="jumppart">
         <a href="/home" class="crossjump">
@@ -123,11 +123,11 @@
         </div>
       </div>
       <!-- 举报弹窗 -->
-      <x-dialog class="report-dialog" v-model="showReportDialog" hide-on-blur>
+      <!--<x-dialog class="report-dialog" v-model="showReportDialog" hide-on-blur>
         <v-report>
           <button class="reportsubmit" @click="commitReport()">提交</button>
         </v-report>
-      </x-dialog>
+      </x-dialog>-->
     </div>
   </div>
 </template>
@@ -148,29 +148,29 @@
       return {
         notifyData:{},
         showReportDialog:false,
-        ifReport:'未举报',
-        ifCollect:'未收藏',
+        // ifReport:'未举报',
+        // ifCollect:'未收藏',
         pictures:[],
         vid:'',
         uid:''
       }
     },
-    computed: {
-      collectClass() {
-        return this.ifCollect == '未收藏'?'icon-notify':'icon-success'
-      },
-      reportClass() {
-        return this.ifReport == '未举报'?'icon-notify':'icon-success'
-      }
-    },
+    // computed: {
+    //   collectClass() {
+    //     return this.ifCollect == '未收藏'?'icon-notify':'icon-success'
+    //   },
+    //   reportClass() {
+    //     return this.ifReport == '未举报'?'icon-notify':'icon-success'
+    //   }
+    // },
     methods: {
       // 点击举报事件
-      reportNotify() {
-        let reportTag = this.ifReport;
-        if (reportTag === '未举报') {
-          this.showReportDialog = true;
-        }
-      },
+      // reportNotify() {
+      //   let reportTag = this.ifReport;
+      //   if (reportTag === '未举报') {
+      //     this.showReportDialog = true;
+      //   }
+      // },
       getNotifyData() {
         this.$http.post('/model/Annunciate/Particulars',qs.stringify({
           vid:this.vid
@@ -194,22 +194,22 @@
         })
       },
       // 提交举报
-      commitReport() {
-        this.showReportDialog = false
-      },
+      // commitReport() {
+      //   this.showReportDialog = false
+      // },
       // 提交收藏
-      commitCollect() {
-        this.$http.post('/model/Annunciate/Collect',qs.stringify({
-          uid:this.uid,
-          vid:this.vid
-        }))
-        .then((res) => {
-           this.ifCollect = res.data.result
-        }).catch((res) =>{
-          console.log(res)
+      // commitCollect() {
+      //   this.$http.post('/model/Annunciate/Collect',qs.stringify({
+      //     uid:this.uid,
+      //     vid:this.vid
+      //   }))
+      //   .then((res) => {
+      //      this.ifCollect = res.data.result
+      //   }).catch((res) =>{
+      //     console.log(res)
           
-        })
-      }
+      //   })
+      // }
     },
     created(){
       this.vid = this.$route.params.vid

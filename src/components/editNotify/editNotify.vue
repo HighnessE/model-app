@@ -263,10 +263,10 @@
       .vux-input-icon.weui-icon-success:before {
         font-size: 0.56rem !important;
       } //公共样式
-      .weui-dialog {
-        width: 9.0933rem !important;
-        max-width: none !important;
-      } // 日历组件
+      // .weui-dialog {
+      //   width: 9.0933rem !important;
+      //   max-width: none !important;
+      // } // 日历组件
       
       .items {
         .itemwrap {

@@ -137,9 +137,7 @@
 					<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality"></croppa>
 				</div>
 			</div>
-			<!--<croppa v-model="myCroppa1" :width="screenWidth * 28.5 / 100" :height="screenWidth * 419 / 1015 / 2" accept="image/png" :show-remove-button="false" @file-choose="handleCroppaFileChoose"></croppa>-->
 		</div>
-
 	</div>
 </template>
 <script>

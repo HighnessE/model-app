@@ -6,6 +6,17 @@
 			</a>
 		</x-header>
 		<div class="editcard">
+			<!-- 上传头像 -->
+			<div class="items">
+				<div class="item-upload-picture">
+					<div class="itemtype">
+						<span>上传头像</span>
+					</div>
+					<div class="itemhandle" @click="editImage">
+						<img src="./bg.jpg">
+					</div>
+				</div>
+			</div>
 			<!-- 姓名 -->
 			<group>
 				<x-input title="姓名" v-model="name" :should-toast-error=false :max="10" text-align="right" placeholder="（必填）"></x-input>
@@ -194,6 +205,14 @@
 				</single-select-button>
 			</x-dialog>
 		</div>
+		<div class="app" id="uploadPage" :style="{ 'display': isShowEditPanel ? 'block' : 'none' }">
+			<div class="bar">
+				<a class="get-file" @click="useImage">使用</a>
+			</div>
+			<div class="main container">
+				<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality" :prevent-white-space="true"></croppa>
+			</div>
+		</div>
 	</div>
 </template>
 <script>
@@ -260,6 +279,14 @@ export default {
 			showNotifyDialog: false,
 			// 三围列表
 			bwhList: bwhList,
+			// 是否展示编辑图片窗口
+			isShowEditPanel: false,
+			// croppa 绑定的数据对象
+			myCroppa: {},
+			// 正在编辑的 croppa 宽高和缩放比
+			croppaWidth: 200,
+			croppaHeight: 200,
+			croppaQuality: 1
 		}
 	},
 	computed: {
@@ -304,10 +331,82 @@ export default {
 				modelHips: this.bwh[2]
 			});
 			this.$router.push({ path: '/CardTemplate' });
+		},
+		// 计算 croppa 宽高和缩放比例
+		computeCroppaSize() {
+			var appElement = document.getElementById('app'),
+				screenWidth = appElement.clientWidth;
+			this.croppaWidth = screenWidth;
+			this.croppaHeight = screenWidth;
+			this.croppaQuality = 400 / screenWidth;
+		},
+		// 编辑图片
+		editImage() {
+			// 打开编辑图片面板
+			this.isShowEditPanel = true;
+			// 保存历史记录使得返回键不会回跳页面
+			history.replaceState(null, null, location.href);
+			// 计算 croppa 宽高和缩放比例
+			this.computeCroppaSize();
+
+			// 添加图片状态
+			this.myCroppa.chooseFile();
+		},
+		// 使用图片
+		useImage() {
+			// 关闭编辑图片面板
+			this.isShowEditPanel = false;
+
+			// 拦截器：防止没有选择图片就对 croppa 对象操作导致错误
+			if (this.myCroppa.imageSet) {
+				// 存放展示图片的链接 blob 和上传图片的链接 base64
+				// 获取当前正在编辑的模板数组
+				var templateEditingObject = this[`templateData${this.templateType}`];
+				// 生成 base64 字符串
+				var base64Url = this.myCroppa.generateDataUrl('image/jpeg', 0.8);
+				// 在模板数据对象中匹配到正在编辑的对象
+				var imageEditingObject = templateEditingObject[_.findKey(templateEditingObject, { 'imageId': this.imageEditing.imageId })];
+				// 生成 blob 地址并传入模板数据对象的展示位置
+				this.myCroppa.generateBlob((blob) => {
+					var url = URL.createObjectURL(blob);
+					imageEditingObject.initImage = url;
+				}, 'image/jpeg', 0.8)
+
+				// 缓存传给后台的 base64 字符串
+				imageEditingObject.base64Image = base64Url;
+
+				// 改变图片选中状态
+				imageEditingObject.imageChosen = true;
+
+				// 判断是否选择完所有图片
+				templateEditingObject.forEach((item, index) => {
+					if (item.imageChosen == '') {
+						this.isAllowSubmitCard = false;
+						return
+					} else {
+						this.isAllowSubmitCard = true;
+					}
+				});
+
+				// 上传图片到服务器
+				this.$http.post('/model/Work/workpicture', qs.stringify({
+					type: this.templateType,
+					id: this.imageEditing.imageId.split('-')[1],
+					picture: base64Url
+				})).then((response) => {
+					var res = response.data;
+					console.log(res);
+				});
+			} else {
+				alert('没有选择图片');
+			}
+
+			// 删除 croppa 中图片
+			this.myCroppa.remove();
 		}
 	},
 	mounted() {
-
+		
 	}
 }
 
@@ -376,6 +475,31 @@ export default {
 				span {
 					font-size: 0.4rem;
 					color: #909090;
+				}
+			}
+		}
+		.item-upload-picture {
+			height: 2.1333rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			background-color: #fff;
+			.itemtype,
+			.itemhandle {
+				height: 100%;
+			}
+			.itemtype {
+				display: flex;
+				align-items: center;
+				span {
+					font-size: 0.4rem;
+					color: #382e2e;
+					margin-left: 0.4267rem;
+				}
+			}
+			.itemhandle {
+				img {
+					height: 100%;
 				}
 			}
 		}
@@ -671,6 +795,43 @@ export default {
 					font-size: 0.4533rem;
 				}
 			}
+		}
+	}
+	#uploadPage {
+		height: 100%;
+		position: absolute;
+		display: none;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 100;
+		.bar {
+			color: white;
+			background: #fe3076;
+			height: 1.2267rem;
+			line-height: 1.2267rem;
+			position: relative;
+			z-index: 999;
+			display: flex;
+			justify-content: flex-end;
+			.get-file {
+				margin-right: 0.375rem;
+				height: 1.3125rem;
+				font-size: 0.48rem;
+				color: #fef4e9;
+			}
+		}
+		.main {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 1.3125rem;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: #fff;
 		}
 	}
 }

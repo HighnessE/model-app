@@ -134,7 +134,7 @@
 					<a class="get-file" @click="useImage">使用</a>
 				</div>
 				<div class="main container">
-					<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality"></croppa>
+					<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality" :prevent-white-space="true"></croppa>
 				</div>
 			</div>
 		</div>
@@ -1214,9 +1214,7 @@ export default {
 				bottom: 0;
 				left: 0;
 				right: 0;
-				background-color: #fff; // .croppa-container {
-				// 	align-self: auto;
-				// }
+				background-color: #fff;
 			}
 		}
 

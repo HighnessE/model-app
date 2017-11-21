@@ -32,9 +32,9 @@ export default {
   },
   watch: {
     value: function(newVal){
-      newVal[0] = '--'
-      this.value = newVal
-      this.$emit('on-change',value2name(newVal, ChinaAddressV4Data))
+      newVal[0] = '--';
+      this.value = newVal;
+      this.$emit('on-change',value2name(newVal, ChinaAddressV4Data));
     }
   }
 }

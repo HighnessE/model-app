@@ -1,34 +1,35 @@
 <template>
-  <div class="contentwrap">
-    <div class="headwrap">
-      <h4>选择风格标签</h4>
-      <slot></slot>
-    </div>
-    <ul class="popupcontent">
-      <li v-for="(item,index) in selections" :key="index"
-          :class="[popupline,{current:index === nowIndex}]"
-          @click="chosenSelection(index)">
-        <span>{{item.type}}</span>
-      </li>
-    </ul>
-  </div>
+	<div class="contentwrap">
+		<div class="headwrap">
+			<h4>选择工作类型</h4>
+			<slot></slot>
+		</div>
+		<ul class="popupcontent">
+			<li v-for="(item,index) in selections" :key="index" :class="[popupline,{current:index === nowIndex}]" @click="chosenSelection(index)">
+				<span>{{item.type}}</span>
+			</li>
+		</ul>
+	</div>
 </template>
 <script>  
-  export default {
-      props:['selections'],
-      data () {
-          return {
-              nowIndex:0,
-              popupline:'popupline'
-          }
-      },
-      methods: {
-          chosenSelection (index) {
-              this.nowIndex = index;
-              this.$emit('on-change',this.selections[index].type)
-          }
-      }
-  }
+export default {
+	props: ['selections'],
+	data() {
+		return {
+			nowIndex: 0,
+			popupline: 'popupline'
+		}
+	},
+	methods: {
+		chosenSelection(index) {
+			this.nowIndex = index;
+			this.$emit('on-change', this.selections[index].type)
+		}
+	},
+	mounted () {
+		
+	}
+}
 
 </script>
 <style lang="less" scoped>

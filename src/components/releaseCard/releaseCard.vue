@@ -6,14 +6,33 @@
 			</a>
 		</x-header>
 		<div class="editcard">
+			<!-- 上传头像 -->
+			<div class="items">
+				<div class="item-upload-picture">
+					<div class="itemtype">
+						<span>上传头像</span>
+					</div>
+					<div class="itemhandle" @click="editImage">
+						<img :src="imageUrl">
+					</div>
+				</div>
+			</div>
 			<!-- 姓名 -->
 			<group>
 				<x-input title="姓名" v-model="name" :should-toast-error=false :max="10" text-align="right" placeholder="（必填）"></x-input>
 			</group>
 			<!-- 性别 -->
-			<group>
-				<selector title="性别" :options="['女', '男']" v-model="gender" placeholder="（必填）"></selector>
-			</group>
+			<div class="items">
+				<div class="item-gender">
+					<div class="itemtype">
+						<span>性别</span>
+					</div>
+					<ul class="itemhandle">
+						<li class="gender-item" :class="{'gender-item-checked': gender == '男'}" @click="gender = '男'">男</li>
+						<li class="gender-item" :class="{'gender-item-checked': gender == '女'}" @click="gender = '女'">女</li>
+					</ul>
+				</div>
+			</div>
 			<!--年龄-->
 			<group>
 				<x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3" text-align="right" placeholder="（必填）"></x-input>
@@ -90,20 +109,20 @@
 						</div>
 					</div>
 				</div>
-				<div class="offerList">
-					<div class="joboffer">
+				<div class="offerList" v-if="!interview">
+					<div class="joboffer" v-for="(item, index) in workPriceList" :key="index">
 						<div class="offer">
 							<x-icon type="social-yen" size="0.5rem" class="icon-home"></x-icon>
-							<span class="type">发膜</span>
+							<span class="type">{{item.workType}}</span>
 							<span class="price">
-								<span class="money">10</span>元/天</span>
+								<span class="money">{{item.price}}</span>元/天</span>
 						</div>
-						<div class="delbtn">
+						<div class="delbtn" @click="delWorkPrice(index)">
 							<x-icon type="close-circled" size="0.5rem" class="icon-home"></x-icon>
 						</div>
 					</div>
 				</div>
-				<div class="addoffer">
+				<div class="addoffer" v-if="!interview">
 					<span @click="showOfferDialog = !showOfferDialog">添加报价</span>
 				</div>
 			</div>
@@ -122,7 +141,7 @@
 							<li class="showpic">
 								<img class="showpicimg">
 								<div class="deletebtn">
-									<x-icon type="android-add-circle" size="0.4rem" class="icon-home"></x-icon>
+									<x-icon type="ios-close-outline" size="0.5333rem" style="fill:#de3c3c"></x-icon>
 								</div>
 							</li>
 							<li class="addpicbtn">
@@ -172,27 +191,35 @@
 					<div class="worktype">
 						<span class="title">工作类型</span>
 						<div class="seletbox" @click="openNotifyDialog()">
-							<input type="text" placeholder="点击选择" readonly id="worktype">
+							<input v-model="workTypeInWorkPrice" type="text" placeholder="点击选择" readonly id="worktype">
 							<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 						</div>
 					</div>
 					<div class="pricewrap">
 						<span class="title">价格</span>
 						<div class="seletbox">
-							<input type="number" placeholder="点击输入" class="price">
+							<input v-model="priceInWorkPrice" type="number" placeholder="点击输入" class="price">
 						</div>
 					</div>
-					<div class="confirmbtn" @click="showOfferDialog = false">
+					<div class="confirmbtn" @click="insertWorkPrice">
 						<span>确定</span>
 					</div>
 				</div>
 			</x-dialog>
 			<!-- 通告类型弹窗 -->
 			<x-dialog v-model="showNotifyDialog">
-				<single-select-button :selections="notifyArr" @on-change="getNotifyTag($event)">
+				<single-select-button :selections="workArr" @on-change="getNotifyTag($event)">
 					<div @click="closeNotifyDialog()">完成</div>
 				</single-select-button>
 			</x-dialog>
+		</div>
+		<div class="app" id="uploadPage" :style="{ 'display': isShowEditPanel ? 'block' : 'none' }">
+			<div class="bar">
+				<a class="get-file" @click="useImage">使用</a>
+			</div>
+			<div class="main container">
+				<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality" :prevent-white-space="true"></croppa>
+			</div>
 		</div>
 	</div>
 </template>
@@ -203,10 +230,7 @@ import {
 	Group,
 	XTextarea,
 	XDialog,
-	PopupPicker,
-	// Checker,
-	// CheckerItem
-	Selector
+	PopupPicker
 } from 'vux';
 import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
@@ -224,10 +248,7 @@ export default {
 		VAddress,
 		selectButton,
 		singleSelectButton,
-		PopupPicker,
-		// Checker,
-		// CheckerItem
-		Selector
+		PopupPicker
 	},
 	data() {
 		return {
@@ -242,26 +263,53 @@ export default {
 			self: '',
 			workTag: [],
 			styleTag: [],
-			interview: false,
-			workArr: [{
-				type: 1
-			}, {
-				type: 2
-			},{
-				type:3
-			}],
-			styleArr: [{
-				type: 3
-			}, {
-				type: 4
-			}],
+			workArr: [
+				{
+					type: 1
+				}, 
+				{
+					type: 2
+				}
+			],
+			styleArr: [
+				{
+					type: 3
+				}, 
+				{
+					type: 4
+				}
+			],
 			notifyArr: [],
+			// 工作报价列表
+			workPriceList: [
+				{
+					workType: '发膜',
+					price: '10'
+				}
+			],
+			// 工作报价-->工作类型
+			workTypeInWorkPrice: '',
+			// 工作报价->价格
+			priceInWorkPrice: '',
+			// switch 是否面议
+			interview: false,
 			showWorkDialog: false,
 			showStyleDialog: false,
+			// 添加报价的弹窗
 			showOfferDialog: false,
 			showNotifyDialog: false,
 			// 三围列表
 			bwhList: bwhList,
+			// 是否展示编辑图片窗口
+			isShowEditPanel: false,
+			// croppa 绑定的数据对象
+			myCroppa: {},
+			// 正在编辑的 croppa 宽高和缩放比
+			croppaWidth: 200,
+			croppaHeight: 200,
+			croppaQuality: 1,
+			// 选中头像图片 url
+			imageUrl: require('./bg.jpg')
 		}
 	},
 	computed: {
@@ -277,19 +325,37 @@ export default {
 			this[attr] = val;
 			console.log(this.workTag)
 		},
-		getNotifyTag(val) {
-			console.log(val)
-		},
 		openNotifyDialog() {
 			this.showNotifyDialog = true;
 			this.showOfferDialog = false;
 		},
+		// 选择工作报价-->工作类型-->完成
 		closeNotifyDialog() {
 			this.showNotifyDialog = false;
 			this.showOfferDialog = true;
 		},
+		// 从 singleSelectButton 组件中获取数据( 工作报价-->工作类型 )
+		getNotifyTag(val) {
+			this.workTypeInWorkPrice = val;
+		},
+		// 获取 switch 组件的结果( 是否面议 )
 		ifInterView(val) {
 			this.interview = val
+		},
+		// 插入新的工作报价
+		insertWorkPrice() {
+			this.showOfferDialog = false;
+
+			if (this.workTypeInWorkPrice != '' && this.priceInWorkPrice != '') {
+				this.workPriceList.push({
+					workType: this.workTypeInWorkPrice,
+					price: this.priceInWorkPrice
+				});
+				this.workTypeInWorkPrice = '';
+				this.priceInWorkPrice = '';
+			} else {
+				alert('请输入所有信息！');
+			}
 		},
 		changeOffer() {
 			console.log(222);
@@ -306,10 +372,71 @@ export default {
 				modelHips: this.bwh[2]
 			});
 			this.$router.push({ path: '/CardTemplate' });
+		},
+		// 计算 croppa 宽高和缩放比例
+		computeCroppaSize() {
+			var appElement = document.getElementById('app'),
+				screenWidth = appElement.clientWidth;
+			this.croppaWidth = screenWidth;
+			this.croppaHeight = screenWidth;
+			this.croppaQuality = 400 / screenWidth;
+		},
+		// 编辑图片
+		editImage() {
+			// 打开编辑图片面板
+			this.isShowEditPanel = true;
+			// 保存历史记录使得返回键不会回跳页面
+			history.replaceState(null, null, location.href);
+			// 计算 croppa 宽高和缩放比例
+			this.computeCroppaSize();
+
+			// 添加图片状态
+			this.myCroppa.chooseFile();
+		},
+		// 使用图片
+		useImage() {
+			// 关闭编辑图片面板
+			this.isShowEditPanel = false;
+
+			// 拦截器：防止没有选择图片就对 croppa 对象操作导致错误
+			if (this.myCroppa.imageSet) {
+				// 生成 base64 字符串
+				var base64Url = this.myCroppa.generateDataUrl('image/jpeg', 0.8);
+				this.imageUrl = base64Url;
+			} else {
+				alert('没有选择图片');
+			}
+
+			// 删除 croppa 中图片
+			this.myCroppa.remove();
+		},
+		// 获取类型数据
+		getTypeList() {
+			this.$http({
+				method: 'GET',
+				url: '/model/Detail/TypeAdd'
+			}).then((response) => {
+				var res = response.data;
+				// 风格标签
+				this.styleArr = res['0'];
+				// 工作标签
+				this.workArr = res['1'];
+			}).catch((error) => {
+				console.log(error);
+			});
+		},
+		// 删除工作报价列表项
+		delWorkPrice(workPriceIndex) {
+			this.workPriceList.forEach((item, index)=>{
+				if (index == workPriceIndex) {
+					this.workPriceList.splice(index, 1);
+					return;
+				}
+			});
 		}
 	},
 	mounted() {
-
+		this.getTypeList();
 	}
 }
 
@@ -378,6 +505,63 @@ export default {
 				span {
 					font-size: 0.4rem;
 					color: #909090;
+				}
+			}
+		}
+		.item-upload-picture {
+			height: 2.1333rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			background-color: #fff;
+			.itemtype,
+			.itemhandle {
+				height: 100%;
+			}
+			.itemtype {
+				display: flex;
+				align-items: center;
+				span {
+					font-size: 0.4rem;
+					color: #382e2e;
+					margin-left: 0.4267rem;
+				}
+			}
+			.itemhandle {
+				img {
+					height: 100%;
+				}
+			}
+		}
+		.item-gender {
+			height: 1.3867rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			background-color: #fff;
+			.itemtype,
+			.itemhandle {
+				height: 100%;
+			}
+			.itemtype {
+				display: flex;
+				align-items: center;
+				span {
+					font-size: 0.4rem;
+					color: #382e2e;
+					margin-left: 0.4267rem;
+				}
+			}
+			.itemhandle {
+				display: flex;
+				align-items: center;
+				font-size: .4rem;
+				.gender-item {
+					padding: .3rem;
+					border: 1px solid #ddd;
+				}
+				.gender-item-checked {
+					border-color: #fe3076;
 				}
 			}
 		}
@@ -673,6 +857,43 @@ export default {
 					font-size: 0.4533rem;
 				}
 			}
+		}
+	}
+	#uploadPage {
+		height: 100%;
+		position: absolute;
+		display: none;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 100;
+		.bar {
+			color: white;
+			background: #fe3076;
+			height: 1.2267rem;
+			line-height: 1.2267rem;
+			position: relative;
+			z-index: 999;
+			display: flex;
+			justify-content: flex-end;
+			.get-file {
+				margin-right: 0.375rem;
+				height: 1.3125rem;
+				font-size: 0.48rem;
+				color: #fef4e9;
+			}
+		}
+		.main {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			position: absolute;
+			top: 1.3125rem;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: #fff;
 		}
 	}
 }

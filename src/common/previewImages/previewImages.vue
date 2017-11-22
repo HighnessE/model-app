@@ -1,23 +1,24 @@
 <template>
-	<swiper :options="swiperOption" ref="mySwiper">
-		<!-- 幻灯内容 -->
-		<swiper-slide>
-			<img style="width:100%" src="./img/0da3fbe.jpg">
-		</swiper-slide>
-		<swiper-slide>
-			<img style="width:100%" src="./img/01f2ff.jpg">
-		</swiper-slide>
-	</swiper>
+	<div id="previewImages">
+		<swiper :options="swiperOption" ref="mySwiper">
+			<!-- 幻灯内容 -->
+			<swiper-slide v-for="(item, index) in imagesSet" :key="index">
+				<img :src="item.picture">
+			</swiper-slide>
+		</swiper>
+	</div>
 </template>
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
+	props: ['imagesSet', 'slideToIndex'],
 	components: {
 		swiper,
 		swiperSlide
 	},
 	data() {
 		return {
+			// swiper 配置
 			swiperOption: {
 				notNextTick: true,
 				observeParents: true,
@@ -31,19 +32,32 @@ export default {
 			}
 		}
 	},
-    //定义这个sweiper对象  
-    // computed: {
-    //     swiper() {
-    //         return this.$refs.mySwiper.swiper;
-    //     }
-    // },
+	// 定义这个swiper对象  
+	computed: {
+		swiper() {
+			return this.$refs.mySwiper.swiper;
+		}
+	},
+	mounted() {
+		
+	},
+	watch: {
+		slideToIndex: (val)=>{
+			this.swiper.slideTo(val);
+		}
+	}
 }
 </script>
 <style lang="less">
-.swiper-wrapper {
+#previewImages {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	background-color: #000;
 	img {
-    width: 100%;
-    display: block;
-  }
+		width: 100%;
+	}
 }
 </style>

@@ -13,7 +13,7 @@
 						<span>上传头像</span>
 					</div>
 					<div class="itemhandle" @click="editImage">
-						<img src="./bg.jpg">
+						<img :src="imageUrl">
 					</div>
 				</div>
 			</div>
@@ -22,9 +22,17 @@
 				<x-input title="姓名" v-model="name" :should-toast-error=false :max="10" text-align="right" placeholder="（必填）"></x-input>
 			</group>
 			<!-- 性别 -->
-			<group>
-				<selector title="性别" :options="['女', '男']" v-model="gender" placeholder="（必填）"></selector>
-			</group>
+			<div class="items">
+				<div class="item-gender">
+					<div class="itemtype">
+						<span>性别</span>
+					</div>
+					<ul class="itemhandle">
+						<li class="gender-item" :class="{'gender-item-checked': gender == '男'}" @click="gender = '男'">男</li>
+						<li class="gender-item" :class="{'gender-item-checked': gender == '女'}" @click="gender = '女'">女</li>
+					</ul>
+				</div>
+			</div>
 			<!--年龄-->
 			<group>
 				<x-input title="年龄" type="number" v-model="age" :should-toast-error=false :max="3" text-align="right" placeholder="（必填）"></x-input>
@@ -222,10 +230,7 @@ import {
 	Group,
 	XTextarea,
 	XDialog,
-	PopupPicker,
-	// Checker,
-	// CheckerItem
-	Selector
+	PopupPicker
 } from 'vux';
 import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
@@ -243,10 +248,7 @@ export default {
 		VAddress,
 		selectButton,
 		singleSelectButton,
-		PopupPicker,
-		// Checker,
-		// CheckerItem
-		Selector
+		PopupPicker
 	},
 	data() {
 		return {
@@ -286,7 +288,9 @@ export default {
 			// 正在编辑的 croppa 宽高和缩放比
 			croppaWidth: 200,
 			croppaHeight: 200,
-			croppaQuality: 1
+			croppaQuality: 1,
+			// 选中头像图片 url
+			imageUrl: require('./bg.jpg')
 		}
 	},
 	computed: {
@@ -359,44 +363,9 @@ export default {
 
 			// 拦截器：防止没有选择图片就对 croppa 对象操作导致错误
 			if (this.myCroppa.imageSet) {
-				// 存放展示图片的链接 blob 和上传图片的链接 base64
-				// 获取当前正在编辑的模板数组
-				var templateEditingObject = this[`templateData${this.templateType}`];
 				// 生成 base64 字符串
 				var base64Url = this.myCroppa.generateDataUrl('image/jpeg', 0.8);
-				// 在模板数据对象中匹配到正在编辑的对象
-				var imageEditingObject = templateEditingObject[_.findKey(templateEditingObject, { 'imageId': this.imageEditing.imageId })];
-				// 生成 blob 地址并传入模板数据对象的展示位置
-				this.myCroppa.generateBlob((blob) => {
-					var url = URL.createObjectURL(blob);
-					imageEditingObject.initImage = url;
-				}, 'image/jpeg', 0.8)
-
-				// 缓存传给后台的 base64 字符串
-				imageEditingObject.base64Image = base64Url;
-
-				// 改变图片选中状态
-				imageEditingObject.imageChosen = true;
-
-				// 判断是否选择完所有图片
-				templateEditingObject.forEach((item, index) => {
-					if (item.imageChosen == '') {
-						this.isAllowSubmitCard = false;
-						return
-					} else {
-						this.isAllowSubmitCard = true;
-					}
-				});
-
-				// 上传图片到服务器
-				this.$http.post('/model/Work/workpicture', qs.stringify({
-					type: this.templateType,
-					id: this.imageEditing.imageId.split('-')[1],
-					picture: base64Url
-				})).then((response) => {
-					var res = response.data;
-					console.log(res);
-				});
+				this.imageUrl = base64Url;
 			} else {
 				alert('没有选择图片');
 			}
@@ -406,7 +375,7 @@ export default {
 		}
 	},
 	mounted() {
-		
+
 	}
 }
 
@@ -500,6 +469,38 @@ export default {
 			.itemhandle {
 				img {
 					height: 100%;
+				}
+			}
+		}
+		.item-gender {
+			height: 1.3867rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+			background-color: #fff;
+			.itemtype,
+			.itemhandle {
+				height: 100%;
+			}
+			.itemtype {
+				display: flex;
+				align-items: center;
+				span {
+					font-size: 0.4rem;
+					color: #382e2e;
+					margin-left: 0.4267rem;
+				}
+			}
+			.itemhandle {
+				display: flex;
+				align-items: center;
+				font-size: .4rem;
+				.gender-item {
+					padding: .3rem;
+					border: 1px solid #ddd;
+				}
+				.gender-item-checked {
+					border-color: #fe3076;
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 <template>
 	<div id="home" v-infinite-scroll="LoadMore" infinite-scroll-distance="10" infinite-scroll-immediate-check="false">
-		<swiper :list="baseList" :aspect-ratio="175/375"></swiper>
+		<swiper :list="baseList" :aspect-ratio="175/375" :auto="true" :loop="true" :show-desc-mask="false"></swiper>
 		<div id="selectpartment">
 			<div id="addrselectbox">
 				<div class="showarea">
@@ -54,7 +54,7 @@
 					<li v-for="(item,index) in officialNotify" :key="index">
 						<a href="javascript:;" @click="judgeIfOfficial(item.vid,item.official)">
 							<div class="headpart">
-								<img v-lazy="item.hurl">
+								<img v-lazy="item.picture">
 							</div>
 							<div class="maininfopart">
 								<div class="headline">
@@ -92,7 +92,7 @@
 					<li v-for="(item,index) in stickNotify" :key="index">
 						<router-link :to="`/notifyDetail/${item.vid}`">
 							<div class="headpart">
-								<img src="http://admin.qingmeng168.com:8081/ChatRobot/IMG/Type/XhCw6Jm_1503888510246.png">
+								<img v-lazy="item.picture">
 							</div>
 							<div class="maininfopart">
 								<div class="headline">
@@ -129,7 +129,7 @@
 				<li v-for="(item,index) in normalNotify" :key="index">
 					<router-link :to="`/notifyDetail/${item.vid}`">
 						<div class="headpart">
-							<img v-lazy="item.hurl">
+							<img v-lazy="item.picture">
 						</div>
 						<div class="maininfopart">
 							<div class="headline">
@@ -261,6 +261,7 @@ export default {
 		getTypeList() {
 			this.$http.get('/model/Annunciate/typeList')
 				.then((res) => {
+					console.log(res)
 					let arr = res.data.map(function(item) {
 						return item.antype
 					})
@@ -663,7 +664,7 @@ export default {
 						height: 2.987rem;
 						overflow: hidden;
 						img {
-							width: 100%;
+							height: 100%;
 							display: block;
 						}
 					}

@@ -1,17 +1,14 @@
 <template>
   <swiper :options="swiperOption" ref="mySwiperA">
     <!-- 幻灯内容 -->
-    <swiper-slide v-for="(item, index) in banneritems" :key=item.id>
-      <router-link :to="{ path: '/mall/details', query: { gid: banneritems[index].url } }">
-        <img :src=banneritems[index].imgsrc alt="">
-      </router-link>
+    <swiper-slide v-for="(item, index) in banneritems" :key="index">
+      <img :src='`http://www.qingmeng168.com${item.picture}`'>
     </swiper-slide>
     <!-- 以下控件元素均为可选（使用具名slot来确定并应用一些操作控件元素） -->
-    <div class="swiper-pagination" slot="pagination"></div>
+    <!--<div class="swiper-pagination" slot="pagination"></div>
     <div class="swiper-button-prev" slot="button-prev"></div>
     <div class="swiper-button-next" slot="button-next"></div>
-    <div class="swiper-scrollbar" slot="scrollbar"></div>
-
+    <div class="swiper-scrollbar" slot="scrollbar"></div>-->
   </swiper>
 </template>
 

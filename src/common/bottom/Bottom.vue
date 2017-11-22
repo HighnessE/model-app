@@ -5,22 +5,22 @@
 			<div class="wrapone">
 				<router-link to="/Home">
 					<img :src="$route.path == '/Home' ? imgHome.active : imgHome.quiet">
-					<span>最新通告</span>
+					<span>通告</span>
 				</router-link>
 				<router-link to="/Card">
 					<img :src="$route.path == '/Card' ? imgCard.active : imgCard.quiet">
-					<span>模特名片</span>
+					<span>模特</span>
 				</router-link>
 			</div>
 			<div class="wraptwo">
 				<router-link to="/Message">
 					<img :src="$route.path == '/Message' ? imgMessage.active : imgMessage.quiet">
-					<span>我的消息</span>
+					<span>消息</span>
 					<div class="badge" v-show="msgNumber != 0"></div>
 				</router-link>
 				<router-link to="/Center">
 					<img :src="$route.path == '/Center' ? imgCenter.active : imgCenter.quiet">
-					<span>个人中心</span>
+					<span>我的</span>
 				</router-link>
 			</div>
 		</div>

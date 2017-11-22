@@ -1,4 +1,4 @@
-<<template>
+<template>
 	<swiper :options="swiperOption" ref="mySwiper">
 		<!-- 幻灯内容 -->
 		<swiper-slide>
@@ -21,6 +21,10 @@ export default {
 			swiperOption: {
 				notNextTick: true,
 				observeParents: true,
+				direction: 'horizontal',
+				grabCursor: true,
+				setWrapperSize: true,
+				autoHeight: true,
 				// 懒加载
 				lazyLoading: true,
 				lazyLoadingInPrevNext: true,
@@ -28,15 +32,18 @@ export default {
 		}
 	},
     //定义这个sweiper对象  
-    computed: {
-        swiper() {
-            return this.$refs.mySwiper.swiper;
-        }
-    },
+    // computed: {
+    //     swiper() {
+    //         return this.$refs.mySwiper.swiper;
+    //     }
+    // },
 }
 </script>
-<style lang="less" scoped>
+<style lang="less">
 .swiper-wrapper {
-	display: flex;
+	img {
+    width: 100%;
+    display: block;
+  }
 }
 </style>

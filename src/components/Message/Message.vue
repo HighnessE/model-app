@@ -29,7 +29,7 @@
                         <h4>点赞消息</h4>
                     </div>
                     <div class="msg">
-                        <p>您的被点赞消息</p>
+                        <p>您的名片被点赞消息</p>
                         <span v-show="likeCount != 0">{{likeCount}}</span>
                     </div>
                 </div>

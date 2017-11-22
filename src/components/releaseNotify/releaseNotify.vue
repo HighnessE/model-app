@@ -10,8 +10,10 @@
 			<div class="items onepx">
 				<div class="itemwrap">
 					<div class="itemtype">
-						<!-- <x-icon type="ios-keypad-outline" size="0.6rem" class="icon-home"></x-icon> -->
-						<span>工作类型</span>
+						<span>
+							<b class="required">*</b>
+							工作类型
+						</span>
 					</div>
 					<div class="itemhandle" @click="showType=!showType">
 						<span>{{work_type}}</span>
@@ -21,13 +23,16 @@
 			</div>
 			<!-- 工作主题 -->
 			<group class="onepx">
-				<x-textarea title="工作主题" :max="140" v-model="theme" placeholder="说出你的故事" autosize></x-textarea>
+				<x-textarea title="工作主题" :max="25" v-model="theme" placeholder="简单说下~" :required="true" autosize></x-textarea>
 			</group>
 			<!-- 工作时间 -->
 			<div class="items garybar">
 				<div class="itemwrap">
 					<div class="itemtype">
-						<span>工作时间</span>
+						<span>
+							<b class="required">*</b>
+							工作时间
+						</span>
 					</div>
 					<div class="itemhandle2">
 						<group>
@@ -44,7 +49,10 @@
 			<div class="items onepx">
 				<div class="itemwrap">
 					<div class="itemtype">
-						<span>工作地点</span>
+						<span>
+							<b class="required">*</b>
+							工作地点
+						</span>
 					</div>
 					<div class="itemhandle">
 						<v-address></v-address>
@@ -53,14 +61,15 @@
 			</div>
 			<!-- 详细地址 -->
 			<group class="garybar">
-				<x-input title="详细地址" type="text" v-model="workPlace" :should-toast-error=false text-align="right"></x-input>
+				<x-input title="详细地址" type="text" v-model="workPlace" :should-toast-error=false text-align="right" :required='true'></x-input>
 			</group>
 			<!-- 岗位要求 -->
 			<div class="requestbox">
 				<div class="requestitems">
 					<div class="itemwrap">
 						<div class="itemtype">
-							<span>岗位要求</span>
+							<b class="required">*</b>
+								岗位要求
 						</div>
 						<div class="itemhandle">
 							<span>是否面试</span>
@@ -102,7 +111,7 @@
 			<div class="contactinfowrapbox">
 				<div class="contactinfobox">
 					<div class="titleline">
-						<h4>联系方式</h4>
+						<h4><b class="required">*</b>联系方式</h4>
 					</div>
 					<div class="inputcontactinfobox">
 						<select class="contactinfotype" v-model="contactInfoType">
@@ -290,11 +299,12 @@ export default {
 		.vux-input-icon.weui-icon-warn:before,
 		.vux-input-icon.weui-icon-success:before {
 			font-size: 0.56rem !important;
-		} //公共样式
-		// .weui-dialog {
-		//   width: 9.0933rem !important;
-		//   max-width: none !important;
-		// } // 日历组件
+		} 
+		//公共样式
+		.required {
+			color:#fe3076;
+			margin-right:0.1rem
+		}
 		.items {
 			.itemwrap {
 				display: flex;
@@ -391,17 +401,9 @@ export default {
 					.itemtype {
 						display: flex;
 						align-items: center;
+						font-size: 0.4rem;
 						.itemlogo {
 							width: 0.4267rem;
-						}
-						&>span {
-							line-height: 1.3867rem;
-							font-size: 0.4rem;
-							color: #382d2e;
-							.require {
-								color: #fe3076;
-								margin-left: 0.08rem;
-							}
 						}
 					}
 					.itemhandle {

@@ -60,7 +60,7 @@
 				<li v-for="(item,index) in normalCard" :key="index">
 					<router-link :to="`/cardDetail/${item.id}`">
 						<div class="img">
-							<img src="https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=759276231,3928522476&fm=11&gp=0.jpg">
+							<img v-lazy="`http://www.qingmeng168.com${item.picture}`">
 						</div>
 						<div class="baseinfo">
 							<span class="name">{{item.name}}</span>
@@ -435,7 +435,7 @@ export default {
 					overflow: hidden;
 					img {
 						display: block;
-						height: 100%;
+						width: 100%;
 					}
 				} //名字地区那一栏
 				.baseinfo {

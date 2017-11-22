@@ -20,7 +20,7 @@
 				<div class="like" @click="likeTheCard()">
 					<x-icon type="heart" size="0.5rem" :style="{'fill':ifAlreadyLike?'red':'#eee'}"></x-icon>
 					<span :style="{'color':ifAlreadyLike?'red':'#eee'}">{{ifAlreadyLike?'已点赞':'点赞'}}</span>
-				</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+				</div>
 				<div class="report">
 					<x-icon type="alert-circled" size="0.5rem" style="fill:#eee"></x-icon>
 					<span>举报</span>
@@ -123,8 +123,19 @@
 					<x-icon type="ios-folder-outline" size="0.6rem" style="fill:#382e2e"></x-icon>
 					<span>封面相册</span>
 				</div>
+				<div class="albumtips">
+					<span>左右滑动看更多</span>
+				</div>
 			</div>
-			<!-- <div class="swiper-container" id="albumSwiper"></div> -->
+			<swiper :options="swiperOption" id="albumSwiper">
+				<!-- 幻灯内容 -->
+				<swiper-slide v-for="(item, index) in albums" :key="index">
+					<!--<img :src='`http://www.qingmeng168.com${item.picture}`'>-->
+					<a href="javascript:;">
+						<img src='http://www.qingmeng168.com/model-spring-lm/Files/work/0ge9deurx2914y0.jpg'>
+					</a>
+				</swiper-slide>
+			</swiper>
 		</div>
 		<!--模卡作品-->
 		<div class="product" v-if="pictures.length!==0">
@@ -133,14 +144,14 @@
 					<x-icon type="ios-photos-outline" size="0.6rem" style="fill:#382e2e"></x-icon>
 					<span>我的模卡</span>
 				</div>
-				<div class="downcard">
+				<div class="downcard" @click="downloadTip()">
 					<x-icon type="ios-download-outline" size="0.55rem" style="fill:#5863a7"></x-icon>
 					<span>下载</span>
 				</div>
 			</div>
 			<div class="picbox">
 				<ul>
-					<li v-for="(item,index) in pictures" :key="index"><img :src="item.url" alt=""></li>
+					<li v-for="(item,index) in pictures" :key="index"><img v-lazy="`http://www.qingmeng168.com${item.picture}`" alt=""></li>
 				</ul>
 			</div>
 		</div>
@@ -198,6 +209,7 @@
 </template>
 <script>
 import qs from 'qs'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import {
 	Group,
 	XHeader,
@@ -208,7 +220,7 @@ export default {
 	components: {
 		Group,
 		XHeader,
-		XTextarea
+		XTextarea,
 	},
 	data() {
 		return {
@@ -220,11 +232,31 @@ export default {
 			userImg: '',
 			username: '',
 			cardInfo: {},
+			albums: [],
 			pictures: [],
 			leavemsg: '',
 			showLeavemsgDialog: false,
 			showDonateToast: false,
-			ifAlreadyLike: false
+			ifAlreadyLike: false,
+			//轮播图配置
+			swiperOption: {
+				// 所有配置均为可选（同Swiper配置）
+				// NotNextTick is a component's own property, and if notNextTick is set to true, the component will not instantiate the swiper through NextTick, which means you can get the swiper object the first time (if you need to use the get swiper object to do what Things, then this property must be true)
+				// notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象（假如你需要使用获取swiper对象来做什么事，那么这个属性一定要是true）
+				notNextTick: true,
+				//          autoplay: 3000,
+				direction: 'horizontal',
+				slidesPerView: 2,
+				spaceBetween: 20,
+				setWrapperSize: true,
+				autoHeight: true,
+				observeParents: true
+				// if you need use plugins in the swiper, you can config in here like this
+				// 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
+				//          debugger: true
+				// swiper callbacks
+				// swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
+			}
 		}
 	},
 	computed: {
@@ -241,7 +273,7 @@ export default {
 					wid: this.cardInfo.wid,
 					id: this.id
 				})).then(res => {
-					if(res.data.result === 'success'){
+					if (res.data.result === 'success') {
 						this.ifAlreadyLike = true
 					}
 				})
@@ -255,6 +287,10 @@ export default {
 				let card = res.data
 				card.work.workJob = card.work.workJob.split(' / ').slice(0, -1)
 				card.work.workType = card.work.workType.split(' / ').slice(0, -1)
+				card.workpicture.map(item => {
+					item.type == 1 ? this.albums.push(item) : this.pictures.push(item)
+					console.log(this.albums)
+				})
 				this.wid = card.work.wid
 				this.report = card.Reports
 				this.like = card.like
@@ -262,10 +298,11 @@ export default {
 				this.cardInfo = card.work
 				this.userImg = card.model.hurl
 				this.username = card.model.name
-				this.pictures = card.workpicture
 				this.ifAlreadyLike = card.like === '已点赞' ? true : false
-				console.log(this.ifAlreadyLike)
 			})
+		},
+		downloadTip(){
+			this.$vux.toast.text('长按图片即可保存哦~', 'middle')
 		},
 		collectCard() {
 			this.$http.post('/model/Work/workCollect', qs.stringify({
@@ -289,7 +326,7 @@ export default {
 					this.showLeavemsgDialog = false
 				})
 			} else {
-				alert('你好像什么都没说啊...')
+				this.$vux.toast.text('你好像什么都没说啊~', 'middle')
 			}
 		}
 	},
@@ -519,6 +556,7 @@ export default {
 		.albuminfo {
 			display: flex;
 			height: 1.3333333333333333rem;
+			justify-content: space-between;
 			align-items: center;
 			border-bottom: 0.0267rem solid #ddd;
 			margin-bottom: 0.26666666666666666rem;
@@ -538,6 +576,15 @@ export default {
 					margin-left: 0.29333333333333333rem;
 					color: #382e2e;
 				}
+			}
+		}
+		.albumtips {
+			display: flex;
+			align-items: center;
+			span {
+				font-size: 0.3733rem;
+				color: #999;
+				margin-right: 0.2rem;
 			}
 		}
 	}
@@ -804,6 +851,21 @@ export default {
 					background-color: #fe3076;
 					border-radius: 0 0 0.16rem 0;
 				}
+			}
+		}
+	}
+	#albumSwiper {
+		margin-left: 0.5066666666666667rem !important;
+		width: 10rem - 0.5066666666666667rem !important;
+		height: 5.306666666666667rem !important;
+		a {
+			display: flex;
+			justify-content: center;
+			height: 5.306666666666667rem !important;
+			width: 4.64rem !important;
+			overflow: hidden;
+			img {
+				height: 5.306666666666667rem !important;
 			}
 		}
 	}

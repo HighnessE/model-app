@@ -45,7 +45,7 @@ const routes = [{
 	meta: { title: '个人中心' },
 	component: Center
 }, {
-	path: '/MsgDetail',
+	path: '/messageDetail/type/:type/userId/:id',
 	meta: { title: '我的消息' },
 	component: MessageDetail
 }, {

@@ -12,6 +12,7 @@ import { WechatPlugin,ConfirmPlugin,ToastPlugin } from 'vux'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueLazyLoad from 'vue-lazyload'
 import './assets/animate.css'
+import 'swiper/dist/css/swiper.css'
 import 'vue-croppa/dist/vue-croppa.css'
 import Croppa from 'vue-croppa'
 Vue.use(ConfirmPlugin)
@@ -21,8 +22,8 @@ Vue.use(WechatPlugin)
 Vue.use(infiniteScroll)
 Vue.use(VueLazyLoad,{
     preLoad:1.3,
-    error:'http://a0.att.hudong.com/77/31/20300542906611142174319458811.jpg',
-    loading:'http://img.zcool.cn/community/01b97c55f131e432f875a132a7fbc6.gif',
+    error:require('./base/img/error.jpg'),
+    loading:require('./base/img/loading.gif'),
     attempt:1
 })
 Vue.use(ToastPlugin)

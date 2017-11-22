@@ -109,20 +109,20 @@
 						</div>
 					</div>
 				</div>
-				<div class="offerList">
-					<div class="joboffer">
+				<div class="offerList" v-if="!interview">
+					<div class="joboffer" v-for="(item, index) in workPriceList" :key="index">
 						<div class="offer">
 							<x-icon type="social-yen" size="0.5rem" class="icon-home"></x-icon>
-							<span class="type">发膜</span>
+							<span class="type">{{item.workType}}</span>
 							<span class="price">
-								<span class="money">10</span>元/天</span>
+								<span class="money">{{item.price}}</span>元/天</span>
 						</div>
-						<div class="delbtn">
+						<div class="delbtn" @click="delWorkPrice(index)">
 							<x-icon type="close-circled" size="0.5rem" class="icon-home"></x-icon>
 						</div>
 					</div>
 				</div>
-				<div class="addoffer">
+				<div class="addoffer" v-if="!interview">
 					<span @click="showOfferDialog = !showOfferDialog">添加报价</span>
 				</div>
 			</div>
@@ -141,7 +141,7 @@
 							<li class="showpic">
 								<img class="showpicimg">
 								<div class="deletebtn">
-									<x-icon type="android-add-circle" size="0.4rem" class="icon-home"></x-icon>
+									<x-icon type="ios-close-outline" size="0.5333rem" style="fill:#de3c3c"></x-icon>
 								</div>
 							</li>
 							<li class="addpicbtn">
@@ -191,24 +191,24 @@
 					<div class="worktype">
 						<span class="title">工作类型</span>
 						<div class="seletbox" @click="openNotifyDialog()">
-							<input type="text" placeholder="点击选择" readonly id="worktype">
+							<input v-model="workTypeInWorkPrice" type="text" placeholder="点击选择" readonly id="worktype">
 							<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 						</div>
 					</div>
 					<div class="pricewrap">
 						<span class="title">价格</span>
 						<div class="seletbox">
-							<input type="number" placeholder="点击输入" class="price">
+							<input v-model="priceInWorkPrice" type="number" placeholder="点击输入" class="price">
 						</div>
 					</div>
-					<div class="confirmbtn" @click="showOfferDialog = false">
+					<div class="confirmbtn" @click="insertWorkPrice">
 						<span>确定</span>
 					</div>
 				</div>
 			</x-dialog>
 			<!-- 通告类型弹窗 -->
 			<x-dialog v-model="showNotifyDialog">
-				<single-select-button :selections="notifyArr" @on-change="getNotifyTag($event)">
+				<single-select-button :selections="workArr" @on-change="getNotifyTag($event)">
 					<div @click="closeNotifyDialog()">完成</div>
 				</single-select-button>
 			</x-dialog>
@@ -263,20 +263,39 @@ export default {
 			self: '',
 			workTag: [],
 			styleTag: [],
-			interview: false,
-			workArr: [{
-				type: 1
-			}, {
-				type: 2
-			}],
-			styleArr: [{
-				type: 3
-			}, {
-				type: 4
-			}],
+			workArr: [
+				{
+					type: 1
+				}, 
+				{
+					type: 2
+				}
+			],
+			styleArr: [
+				{
+					type: 3
+				}, 
+				{
+					type: 4
+				}
+			],
 			notifyArr: [],
+			// 工作报价列表
+			workPriceList: [
+				{
+					workType: '发膜',
+					price: '10'
+				}
+			],
+			// 工作报价-->工作类型
+			workTypeInWorkPrice: '',
+			// 工作报价->价格
+			priceInWorkPrice: '',
+			// switch 是否面议
+			interview: false,
 			showWorkDialog: false,
 			showStyleDialog: false,
+			// 添加报价的弹窗
 			showOfferDialog: false,
 			showNotifyDialog: false,
 			// 三围列表
@@ -306,19 +325,37 @@ export default {
 			this[attr] = val;
 			console.log(this.workTag)
 		},
-		getNotifyTag(val) {
-			console.log(val)
-		},
 		openNotifyDialog() {
 			this.showNotifyDialog = true;
 			this.showOfferDialog = false;
 		},
+		// 选择工作报价-->工作类型-->完成
 		closeNotifyDialog() {
 			this.showNotifyDialog = false;
 			this.showOfferDialog = true;
 		},
+		// 从 singleSelectButton 组件中获取数据( 工作报价-->工作类型 )
+		getNotifyTag(val) {
+			this.workTypeInWorkPrice = val;
+		},
+		// 获取 switch 组件的结果( 是否面议 )
 		ifInterView(val) {
 			this.interview = val
+		},
+		// 插入新的工作报价
+		insertWorkPrice() {
+			this.showOfferDialog = false;
+
+			if (this.workTypeInWorkPrice != '' && this.priceInWorkPrice != '') {
+				this.workPriceList.push({
+					workType: this.workTypeInWorkPrice,
+					price: this.priceInWorkPrice
+				});
+				this.workTypeInWorkPrice = '';
+				this.priceInWorkPrice = '';
+			} else {
+				alert('请输入所有信息！');
+			}
 		},
 		changeOffer() {
 			console.log(222);
@@ -372,10 +409,34 @@ export default {
 
 			// 删除 croppa 中图片
 			this.myCroppa.remove();
+		},
+		// 获取类型数据
+		getTypeList() {
+			this.$http({
+				method: 'GET',
+				url: '/model/Detail/TypeAdd'
+			}).then((response) => {
+				var res = response.data;
+				// 风格标签
+				this.styleArr = res['0'];
+				// 工作标签
+				this.workArr = res['1'];
+			}).catch((error) => {
+				console.log(error);
+			});
+		},
+		// 删除工作报价列表项
+		delWorkPrice(workPriceIndex) {
+			this.workPriceList.forEach((item, index)=>{
+				if (index == workPriceIndex) {
+					this.workPriceList.splice(index, 1);
+					return;
+				}
+			});
 		}
 	},
 	mounted() {
-
+		this.getTypeList();
 	}
 }
 

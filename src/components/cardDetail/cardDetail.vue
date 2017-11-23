@@ -41,6 +41,7 @@
 			</div>
 			<div class="baseinfo">
 				<span>{{cardInfo.name}}</span>
+				<span>{{cardInfo.sex}}</span>
 				<span>{{cardInfo.age}}</span>
 				<span>{{cardInfo.city}}</span>
 			</div>
@@ -131,7 +132,7 @@
 				<!-- 幻灯内容 -->
 				<swiper-slide v-for="(item, index) in albums" :key="index">
 					<!--<img :src='`http://www.qingmeng168.com${item.picture}`'>-->
-					<a href="javascript:;">
+					<a href="javascript:;" @click="previewImages(index)">
 						<img src='http://www.qingmeng168.com/model-spring-lm/Files/work/0ge9deurx2914y0.jpg'>
 					</a>
 				</swiper-slide>
@@ -205,11 +206,13 @@
 				</div>
 			</div>
 		</transition>
+		<preview-image :imagesSet="albums" :slideToIndex="swiperIndex" v-if="showPreviewImages"></preview-image>
 	</div>
 </template>
 <script>
 import qs from 'qs'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import previewImage from '../../common/previewImages/previewImages'
 import {
 	Group,
 	XHeader,
@@ -221,23 +224,26 @@ export default {
 		Group,
 		XHeader,
 		XTextarea,
+		previewImage
 	},
 	data() {
 		return {
 			id: '', //名片id
 			wid: '', //发布人openid
-			report: '',
-			like: '',
-			collect: '',
-			userImg: '',
+			report: '', //举报
+			like: '',  //点赞
+			collect: '', //收藏
+			userImg: '', //用户头像
 			username: '',
 			cardInfo: {},
 			albums: [],
 			pictures: [],
 			leavemsg: '',
+			showPreviewImages: false,
 			showLeavemsgDialog: false,
 			showDonateToast: false,
 			ifAlreadyLike: false,
+			swiperIndex: 0,
 			//轮播图配置
 			swiperOption: {
 				// 所有配置均为可选（同Swiper配置）
@@ -283,7 +289,6 @@ export default {
 			this.$http.post('/model/Work/WorkXX', qs.stringify({
 				id: this.id
 			})).then(res => {
-				console.log(res)
 				let card = res.data
 				card.work.workJob = card.work.workJob.split(' / ').slice(0, -1)
 				card.work.workType = card.work.workType.split(' / ').slice(0, -1)
@@ -301,7 +306,12 @@ export default {
 				this.ifAlreadyLike = card.like === '已点赞' ? true : false
 			})
 		},
-		downloadTip(){
+		previewImages(index) {
+			this.swiperIndex = index
+			this.showPreviewImages = true
+			history.pushState(null,null,location.href)
+		},
+		downloadTip() {
 			this.$vux.toast.text('长按图片即可保存哦~', 'middle')
 		},
 		collectCard() {
@@ -333,6 +343,9 @@ export default {
 	created() {
 		this.id = this.$route.params.id
 		this.getCardInfo()
+		window.onpopstate = ()=>{
+			this.showPreviewImages = false
+		}
 	}
 };
 
@@ -368,7 +381,7 @@ export default {
 		}
 		.header {
 			position: absolute;
-			top: 72%;
+			top: 67%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			z-index: 3;

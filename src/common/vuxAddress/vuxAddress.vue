@@ -79,7 +79,7 @@ export default {
         display: none;
       }
       .vux-popup-picker-value {
-        font-size: 0.3125rem !important;
+        font-size: 0.373rem !important;
       }
     }
     &:before {

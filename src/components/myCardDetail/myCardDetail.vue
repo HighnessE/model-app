@@ -16,20 +16,6 @@
 					<div class="nickname">{{username}}</div>
 				</div>
 			</div>
-			<!--<div class="todobox">
-	        <div class="like">
-	          <x-icon type="heart" size="0.5rem" class="icon-default"></x-icon>
-	          <span>点赞</span>
-	        </div>
-	        <div class="report">
-	          <x-icon type="alert-circled" size="0.5rem" class="icon-default"></x-icon>
-	          <span>举报</span>
-	        </div>
-	        <div class="seen">
-	          <x-icon type="eye" size="0.6rem" class="icon-default"></x-icon>
-	          <span>{{cardInfo.examine}}</span>
-	        </div>
-	      </div>-->
 		</div>
 		<!-- 个人资料 -->
 		<div class="person-wrap">
@@ -41,6 +27,7 @@
 			</div>
 			<div class="baseinfo">
 				<span>{{cardInfo.name}}</span>
+				<span>{{cardInfo.sex}}</span>
 				<span>{{cardInfo.age}}</span>
 				<span>{{cardInfo.city}}</span>
 			</div>
@@ -130,8 +117,7 @@
 			<swiper :options="swiperOption" id="albumSwiper">
 				<!-- 幻灯内容 -->
 				<swiper-slide v-for="(item, index) in albums" :key="index">
-					<!--<img :src='`http://www.qingmeng168.com${item.picture}`'>-->
-					<a href="javascript:;">
+					<a href="javascript:;" @click="previewImages(index)">
 						<img src='http://www.qingmeng168.com/model-spring-lm/Files/work/0ge9deurx2914y0.jpg'>
 					</a>
 				</swiper-slide>
@@ -144,10 +130,6 @@
 					<x-icon type="ios-photos-outline" size="0.6rem" style="fill:#382e2e"></x-icon>
 					<span>我的模卡</span>
 				</div>
-				<!--<div class="downcard">
-	          <x-icon type="ios-download-outline" size="0.55rem" style="fill:#5863a7"></x-icon>
-	          <span>下载</span>
-	        </div>-->
 			</div>
 			<div class="picbox">
 				<ul>
@@ -164,51 +146,12 @@
 				</div>
 			</router-link>
 		</div>
-		<!-- 操作按钮 -->
-		<!--<div class="handlebars">
-	      <div class="handle-wrap">
-	        <a href="javascript:;" @click.prevent="showLeavemsgDialog = true">
-	          <div>
-	            <img src="./img/ask.png">
-	            <p>联系TA</p>
-	          </div>
-	        </a>
-	        <a href="javascript:;" @click.prevent="collectCard()">
-	          <div>
-	            <p>{{collectTips}}</p>
-	          </div>
-	        </a>
-	        <a href="javascript:;" @click.prevent="donateModel()">
-	          <div>
-	            <img src="./img/donate.png">
-	            <p>打赏TA</p>
-	          </div>
-	        </a>
-	        <div class="circle">
-	          <img src="./img/collect_footer.png">
-	        </div>
-	      </div>
-	    </div>-->
-		<!-- 留言弹窗 -->
-		<!--<transition enter-active-class="fadeIn" leave-active-class="fadeOut">
-	      <div class="leavemsglayer animated" v-show="showLeavemsgDialog">
-	        <div class="wrapbox">
-	          <div class="contentbox">
-	            <group title="填写您对他说的话：">
-	              <x-textarea :max="140" v-model="leavemsg" placeholder="说点什么吧~" autosize></x-textarea>
-	            </group>
-	          </div>
-	          <div class="desbtn">
-	            <span class="cancle" @click="showLeavemsgDialog =false">取消</span>
-	            <span class="confirm" @click="sendMsg()">确定</span>
-	          </div>
-	        </div>
-	      </div>
-	    </transition>-->
+		<preview-image :imagesSet="albums" :slideToIndex="swiperIndex" v-if="showPreviewImages"></preview-image>
 	</div>
 </template>
 <script>
 import qs from 'qs'
+import previewImage from '../../common/previewImages/previewImages'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import {
 	Group,
@@ -220,7 +163,8 @@ export default {
 	components: {
 		Group,
 		XHeader,
-		XTextarea
+		XTextarea,
+		previewImage
 	},
 	data() {
 		return {
@@ -232,9 +176,10 @@ export default {
 			username: '',
 			cardInfo: {},
 			albums:[],
+			swiperIndex:0,
 			pictures: [],
 			leavemsg: '',
-			showLeavemsgDialog: false,
+			showPreviewImages: false, //预览图
 			//轮播图配置
 			swiperOption: {
 				// 所有配置均为可选（同Swiper配置）
@@ -282,30 +227,10 @@ export default {
 				this.username = card.model.name
 			})
 		},
-		collectCard() {
-			this.$http.post('/model/Work/workCollect', qs.stringify({
-				id: this.id,
-				wid: this.cardInfo.wid
-			})).then(res => {
-				console.log(res)
-				this.collect = res.data.result
-			})
-		},
-		donateModel() {
-			alert('打赏功能暂未开放，敬请期待')
-		},
-		sendMsg() {
-			if (this.leavemsg !== '') {
-				this.$http.post('/model/Work/LeaveAMessage', qs.stringify({
-					wid: this.cardInfo.wid,
-					message: this.leavemsg
-				})).then(res => {
-					console.log(res)
-					this.showLeavemsgDialog = false
-				})
-			} else {
-				alert('你好像什么都没说啊...')
-			}
+		previewImages(index) {
+			this.swiperIndex = index
+			this.showPreviewImages = true
+			history.pushState(null,null,location.href)
 		}
 	},
 	created() {
@@ -333,7 +258,7 @@ export default {
 		}
 		.header {
 			position: absolute;
-			top: 72%;
+			top: 67%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			z-index: 3;

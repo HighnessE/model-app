@@ -55,7 +55,7 @@
 						</span>
 					</div>
 					<div class="itemhandle">
-						<v-address></v-address>
+						<v-addresses :localAddr="defaultPlaceholder" @on-change="getAddr($event)"></v-addresses>
 					</div>
 				</div>
 			</div>
@@ -84,22 +84,22 @@
 							<div class="units">人</div>
 						</div>
 						<select name="" id="gender" v-model="sex">
-							<option value="female">女</option>
-							<option value="male">男</option>
-							<option value="nolimit">不限</option>
+							<option>女</option>
+							<option>男</option>
+							<option>不限</option>
 						</select>
 						<select name="" id="price" v-model="priceType">
-							<option value="price">价格</option>
-							<option value="self">自报价</option>
-							<option value="facetoface">面议</option>
+							<option>价格</option>
+							<option>自报价</option>
+							<option>面议</option>
 						</select>
-						<select name="" id="units" v-model="units">
-							<option value="perpeo">元/人</option>
-							<option value="perday">元/人/天</option>
-							<option value="perpeohour">元/人/时</option>
-							<option value="perpeounit">元/人/件</option>
+						<select name="" id="units" v-model="units" v-show="priceType!=='面议'">
+							<option>元/人</option>
+							<option>元/人/天</option>
+							<option>元/人/时</option>
+							<option>元/人/件</option>
 						</select>
-						<input class="inputprice" type="number" placeholder="点击输入价格" v-model="price">
+						<input class="inputprice" type="number" placeholder="点击输入价格" v-model="price" v-show="priceType!=='面议'">
 					</div>
 				</div>
 			</div>
@@ -188,7 +188,7 @@ import {
 	XTextarea
 } from "vux";
 import VSwitch from "../../common/switch/switch";
-import VAddress from "../../common/vuxAddress/vuxAddress";
+import VAddresses from "../../common/vuxAddresses/vuxAddresses";
 import selectList from "../../common/selectLayer/selectLayer";
 export default {
 	data() {
@@ -200,13 +200,15 @@ export default {
 			theme: '',    //工作主题
 			height: '',
 			weight: '',
+			defaultPlaceholder:'',//地址默认提示
+			address:'', 
 			workPlace:'', // 详细地址
-			sex:'',
-			priceType:'', //报价类型
-			units:'',  //单位
+			sex:'女',
+			priceType:'价格', //报价类型
+			units:'元/人',  //单位
 			number:'', // 需要人数
 			price:'', // 价格
-			contactInfoType:'',
+			contactInfoType:'weixin',
 			inputContactInfo:'',//联系方式
 			ifInterview:'',
 			startTime: '',
@@ -249,6 +251,11 @@ export default {
 			this.showType = false
 			console.log(this[attr])
 		},
+		//获取地址
+		getAddr(val){
+			this.address = val
+		},
+		//点击确认提交
 		submitForm(){
 			this.$http.post('/model/AddParticulars/Annunciate',qs.stringify({
 				worktype:'',
@@ -273,7 +280,7 @@ export default {
 		XTextarea,
 		XDialog,
 		VSwitch,
-		VAddress,
+		VAddresses,
 		selectList
 	}
 };
@@ -379,7 +386,7 @@ export default {
 						color: #707070;
 					}
 					span {
-						font-size: 0.32rem !important;
+						font-size: 0.36rem !important;
 					}
 				}
 			}
@@ -422,6 +429,7 @@ export default {
 				display: flex;
 				justify-content: flex-end;
 				.requesttype {
+					width: 100%;
 					display: flex;
 					flex-flow: row wrap;
 					justify-content: space-between;

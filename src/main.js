@@ -10,6 +10,7 @@ import { remInit } from './base/remInit.js'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import { WechatPlugin,ConfirmPlugin,ToastPlugin } from 'vux'
 import infiniteScroll from 'vue-infinite-scroll'
+import VueChatScroll from 'vue-chat-scroll'
 import VueLazyLoad from 'vue-lazyload'
 import './assets/animate.css'
 import 'swiper/dist/css/swiper.css'
@@ -21,6 +22,7 @@ Vue.use(Croppa)
 Vue.use(VueAwesomeSwiper)
 Vue.use(WechatPlugin)
 Vue.use(infiniteScroll)
+Vue.use(VueChatScroll)
 Vue.use(VueLazyLoad,{
     preLoad:1.3,
     error:require('./base/img/error.jpg'),

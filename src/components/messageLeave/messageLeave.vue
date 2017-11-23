@@ -1,5 +1,5 @@
 <template>
-	<div class="messageLeave" ref="scroll">
+	<div class="messageLeave"  ref="scroll">
 		<x-header>我的消息</x-header>
 		<!-- 消息列表 -->
 		<div class="msgwrap">
@@ -42,12 +42,13 @@
 		</div>
 		<!-- 下方发送框 -->
 		<div class="send-wrap">
-			<input type="text" v-model="content">
+			<input type="text" v-model.trim="content">
 			<div class="button" @click="sendMessage()">发送</div>
 		</div>
 	</div>
 </template>
 <script>
+import '../../base/util'
 import qs from 'qs'
 import {
 	XHeader
@@ -71,7 +72,7 @@ export default {
 	methods: {
 		//获取历史消息
 		getConversation() {
-			console.log(this.cid)
+			// console.log(this.cid)
 			this.$http.post('/model/Model/WDetails', qs.stringify({
 				id: this.cid,
 				type: 3
@@ -79,21 +80,39 @@ export default {
 				console.log(res)
 				this.currentUser = res.data.CurrentUser
 				this.Recording = res.data.Recording
+				this.$refs.scroll.scrollIntoView(false)
+				setTimeout(()=>{
+					this.$refs.scroll.scrollIntoView(false)
+				},20)
 			})
 		},
 		//发送留言消息
 		sendMessage() {
-			console.log(this.content)
-			this.$http.post('/model/Model/Reply', qs.stringify({
-				content: this.content,
-				cid: this.cid
-			})).then(res => {
-				if (res.data.result === 'success') {
-					this.content = ''
-					this.getConversation()
-				}
-			})
-		}
+			if (this.content != '') {
+				this.$http.post('/model/Model/Reply', qs.stringify({
+					content: this.content,
+					cid: this.cid
+				})).then(res => {
+					console.log(res)
+					if (res.data.result === 'success') {
+						let obj = {
+							SendTime: new Date().Format('yyyy-MM-dd hh:mm:ss'),
+							hurl: res.data.hurl,
+							name: res.data.name,
+							user: this.currentUser,
+							content: this.content
+						}
+						this.Recording.push(obj)
+						this.content = ''
+						setTimeout(()=>{
+							this.$refs.scroll.scrollIntoView(false)
+						},20)
+					}
+				})
+			}
+		},
+		//获取当前时间类
+
 	}
 }
 
@@ -103,7 +122,7 @@ export default {
 	.msgwrap {
 		margin-top: 0.1867rem;
 		.messagecontent {
-			margin-bottom: 1.5rem;
+			padding-bottom: 1.5rem;
 			.left {
 				margin-top: 0.3733rem;
 				.time {

@@ -435,7 +435,7 @@ export default {
 					overflow: hidden;
 					img {
 						display: block;
-						width: 100%;
+						height: 100%;
 					}
 				} //名字地区那一栏
 				.baseinfo {

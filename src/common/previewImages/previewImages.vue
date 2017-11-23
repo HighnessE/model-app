@@ -4,6 +4,7 @@
 			<!-- 幻灯内容 -->
 			<swiper-slide v-for="(item, index) in imagesSet" :key="index">
 				<img :src="item.picture">
+				<!--<img src="http://www.qingmeng168.com/model-spring-lm/Files/work/0ge9deurx2914y0.jpg">-->
 			</swiper-slide>
 		</swiper>
 	</div>
@@ -51,10 +52,15 @@ export default {
 <style lang="less">
 #previewImages {
 	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
 	display: flex;
 	align-items: center;
 	height: 100%;
 	width: 100%;
+	z-index:100;
 	background-color: #000;
 	img {
 		width: 100%;

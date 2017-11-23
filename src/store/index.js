@@ -14,7 +14,8 @@ const state = {
         modelBust: '',
         modelWaist: '',
         modelHips: ''
-    }
+    },
+    modelCardList: []
 }
 
 const mutations = {
@@ -28,6 +29,19 @@ const mutations = {
     },
     UPDATE_MODEL_CARD_DATA(state, dataObj) {
         Object.assign(state.modelCardData, dataObj)
+    },
+    UPDATE_MODEL_CARD_LIST(state, obj) {
+        var templateExist = false;
+        state.modelCardList.forEach((item, index) => {
+            if (item.type == obj.type) {
+                state.modelCardList[index].url = obj.url;
+                templateExist = true;
+                return;
+            }
+        });
+        if (!templateExist) {
+            state.modelCardList.push(obj);
+        }
     }
 }
 
@@ -40,6 +54,9 @@ const getters = {
     },
     modelCardDataGetter: state => {
         return state.modelCardData
+    },
+    modelCardListGetter: state => {
+        return state.modelCardList
     }
 }
 

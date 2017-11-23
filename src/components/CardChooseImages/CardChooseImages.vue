@@ -141,7 +141,7 @@
 	</div>
 </template>
 <script>
-import { XHeader } from 'vux'
+import { XHeader, AlertModule } from 'vux'
 import _ from 'lodash'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
@@ -502,27 +502,20 @@ export default {
 	methods: {
 		// 上传模卡
 		upLoadCard() {
-			// var obj = {
-			// 	a: JSON.stringify({
-			// 		'0': 1,
-			// 		'1': 2
-			// 	})
-			// }
-			// this.$http({
-			// 	method: 'POST',
-			// 	url: '/model/Work/test',
-			// 	data: qs.stringify(obj)
-			// }).then((response) => {
-			// 	var res = response.data;
-			// 	console.log(res);
-			// });
-			if (this.isAllowSubmitCard) {
+			if (this.isAllowSubmitCard && this.templateType != '') {
 				this.$http.post('/model/Work/joint', qs.stringify({
 					type: this.templateType,
 					...this.modelCardDataGetter
 				})).then((response) => {
 					var res = response.data;
-					console.log(res);
+					if (res.result) {
+						this.$store.commit('UPDATE_MODEL_CARD_LIST', {
+							type: this.templateType,
+							url: res.result
+						})
+					} else {
+						alert('生成模卡失败！');
+					}
 				});
 			} else {
 				alert('您还有图片是空着的');

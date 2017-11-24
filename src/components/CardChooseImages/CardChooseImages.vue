@@ -137,20 +137,35 @@
 					<croppa v-model="myCroppa" :width="croppaWidth" :height="croppaHeight" accept="image/*" :zoom-speed="10" :quality="croppaQuality" :prevent-white-space="true"></croppa>
 				</div>
 			</div>
+
+			<!-- 模卡制作中 -->
+			<toast v-model="cardCreating" type="text" :time="3000" class="card-creating">
+				<x-icon type="load-a" size="1rem" class="card-creating-icon-move"></x-icon>
+				<p>模卡制作中</p>
+			</toast>
+			<!-- 模卡制作完成 -->
+			<toast v-model="cardCreated" type="text" :time="2000" class="card-creating">
+				<x-icon type="checkmark-round" size="1rem" class="card-creating-icon-static"></x-icon>
+				<p>模卡制作完成</p>
+			</toast>
 		</div>
 	</div>
 </template>
 <script>
-import { XHeader, AlertModule } from 'vux'
+import { XHeader, Toast } from 'vux'
 import _ from 'lodash'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
 export default {
 	components: {
-		XHeader
+		XHeader,
+		Toast
 	},
 	data() {
 		return {
+			// 正在制作中弹窗
+			cardCreating: false,
+			cardCreated: false,
 			// 正在编辑的 croppa 宽高和缩放比
 			croppaWidth: 200,
 			croppaHeight: 200,
@@ -503,16 +518,51 @@ export default {
 		// 上传模卡
 		upLoadCard() {
 			if (this.isAllowSubmitCard && this.templateType != '') {
+				// 弹窗提示模卡正在加载
+				this.cardCreating = true;
+
 				this.$http.post('/model/Work/joint', qs.stringify({
 					type: this.templateType,
 					...this.modelCardDataGetter
 				})).then((response) => {
 					var res = response.data;
 					if (res.result) {
+						// 弹窗提示模卡已生成
+						this.cardCreating = false;
+						this.cardCreated = true;
+
+						// 存 vuex 以及在 sessionStorage 中修改 cardList 数组
 						this.$store.commit('UPDATE_MODEL_CARD_LIST', {
 							type: this.templateType,
 							url: res.result
 						})
+						var cardList = sessionStorage.getItem('cardList');
+						if (cardList) {
+							cardList = JSON.parse(cardList);
+							var templateExist = false;
+							cardList.forEach((item, index) => {
+								if (item.type == this.templateType) {
+									cardList[index].url = res.result;
+									templateExist = true;
+									return;
+								}
+							});
+							if (!templateExist) {
+								cardList.push({
+									type: this.templateType,
+									url: res.result
+								});
+							}
+						} else {
+							cardList = [{
+								type: this.templateType,
+								url: res.result
+							}]
+						}
+						sessionStorage.setItem('cardList', JSON.stringify(cardList));
+
+						// 跳转到添加模卡界面
+						this.$router.push({ path: '/releaseCard' });
 					} else {
 						alert('生成模卡失败！');
 					}
@@ -1223,6 +1273,30 @@ export default {
 			width: 100%;
 			top: 0;
 			left: 0;
+		}
+	}
+
+	/* 模卡加载中 */
+	@keyframes rotate-a {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+	.card-creating {
+		.card-creating-icon-move {
+			padding-top: .2rem;
+			fill: #fff;
+			animation: rotate-a 1.5s linear infinite;
+		}
+		.card-creating-icon-static {
+			padding-top: .2rem;
+			fill: #fff;
+		}
+		p {
+			padding-bottom: .2rem;
 		}
 	}
 }

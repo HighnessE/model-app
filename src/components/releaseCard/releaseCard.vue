@@ -155,6 +155,17 @@
 			<div class="uploadpic">
 				<div class="title">上传模卡</div>
 				<div class="imgbox">
+					<ul class="addwork" v-if="cardList && cardList.length != 0">
+						<li class="showWork" v-for="(item, index) in cardList" :key="index">
+							<img class="showworkImg" v-lazy="item.url" alt="">
+							<div class="editbtn">
+								<x-icon type="edit" size=".5333rem" style="fill:#de3c3c;"></x-icon>
+							</div>
+							<div class="delbtn" @click="showDeleteCardModal(item.type)">
+								<x-icon type="close-circled" size=".5333rem" style="fill:#fff;"></x-icon>
+							</div>
+						</li>
+					</ul>
 				</div>
 				<div class="newcreate">
 					<span @click="jumpToCardTemplate">+新建模卡</span>
@@ -232,6 +243,7 @@ import {
 	XDialog,
 	PopupPicker
 } from 'vux';
+import _ from 'lodash'
 import VSwitch from '../../common/switch/switch'
 import VAddress from '../../common/vuxAddress/vuxAddress'
 import selectButton from '../../common/selectButton/selectButton'
@@ -266,7 +278,7 @@ export default {
 			workArr: [
 				{
 					type: 1
-				}, 
+				},
 				{
 					type: 2
 				}
@@ -274,7 +286,7 @@ export default {
 			styleArr: [
 				{
 					type: 3
-				}, 
+				},
 				{
 					type: 4
 				}
@@ -293,11 +305,13 @@ export default {
 			priceInWorkPrice: '',
 			// switch 是否面议
 			interview: false,
+			// 弹窗们
 			showWorkDialog: false,
 			showStyleDialog: false,
 			// 添加报价的弹窗
 			showOfferDialog: false,
 			showNotifyDialog: false,
+			showdeleteCardConfirm: false,
 			// 三围列表
 			bwhList: bwhList,
 			// 是否展示编辑图片窗口
@@ -309,7 +323,9 @@ export default {
 			croppaHeight: 200,
 			croppaQuality: 1,
 			// 选中头像图片 url
-			imageUrl: require('./bg.jpg')
+			imageUrl: require('./img/bg.jpg'),
+			// 要删除的模卡类型
+			deleteCardType: ''
 		}
 	},
 	computed: {
@@ -318,6 +334,14 @@ export default {
 		},
 		workTagVal() {
 			return this.workTag.join(' / ')
+		},
+		// vuex 获取模卡列表
+		cardList() {
+			var cardList = this.$store.getters.modelCardListGetter;
+			if (cardList && cardList.length == 0) {
+				cardList = JSON.parse(sessionStorage.getItem('cardList'));
+			}
+			return cardList;
 		}
 	},
 	methods: {
@@ -362,7 +386,7 @@ export default {
 		},
 		// 跳转到创建模卡页面
 		jumpToCardTemplate() {
-			this.$store.commit('UPDATE_MODEL_CARD_DATA', {
+			var infoList = {
 				modelName: this.name,
 				modelWeight: this.weight,
 				modelHeight: this.height,
@@ -370,8 +394,39 @@ export default {
 				modelBust: this.bwh[0],
 				modelWaist: this.bwh[1],
 				modelHips: this.bwh[2]
+			};
+			var alertList = {
+				modelName: '姓名不能为空！',
+				modelWeight: '体重不能为空！',
+				modelHeight: '身高不能为空！',
+				modelShoes: '鞋码不能为空！',
+				modelBust: '三围不能为空！',
+				modelWaist: '三围不能为空！',
+				modelHips: '三围不能为空！'
+			}
+
+			// 拦截有信息为空的情况并提示
+			var allowJump = true;
+			_.forIn(infoList, (item, index) => {
+				if (!item || item == '') {
+					alert(alertList[index]);
+					allowJump = false;
+					return false;
+				}
 			});
-			this.$router.push({ path: '/CardTemplate' });
+
+			if (allowJump) {
+				this.$store.commit('UPDATE_MODEL_CARD_DATA', {
+					modelName: this.name,
+					modelWeight: this.weight,
+					modelHeight: this.height,
+					modelShoes: this.shoe,
+					modelBust: this.bwh[0],
+					modelWaist: this.bwh[1],
+					modelHips: this.bwh[2]
+				});
+				this.$router.push({ path: '/CardTemplate' });
+			}
 		},
 		// 计算 croppa 宽高和缩放比例
 		computeCroppaSize() {
@@ -427,12 +482,34 @@ export default {
 		},
 		// 删除工作报价列表项
 		delWorkPrice(workPriceIndex) {
-			this.workPriceList.forEach((item, index)=>{
+			this.workPriceList.forEach((item, index) => {
 				if (index == workPriceIndex) {
 					this.workPriceList.splice(index, 1);
 					return;
 				}
 			});
+		},
+		// 打开删除模卡弹窗
+		showDeleteCardModal(cardType) {
+			var _this = this;
+			_this.deleteCardType = cardType;
+
+			_this.$vux.confirm.show({
+				title: '确定删除选中模卡？',
+				onConfirm() {
+					_this.$store.commit('DELETE_MODEL_CARD_LIST', _this.deleteCardType);
+					var cardList = JSON.parse(sessionStorage.getItem('cardList'));
+					// TODO 删除之后数组项变成 null 的问题
+					cardList.forEach((item, index) => {
+						if (item.type == _this.deleteCardType) {
+							delete cardList[index];
+							sessionStorage.setItem('cardList', JSON.stringify(cardList));
+							_this.$vux.toast.text('删除成功！');
+							return false;
+						}
+					});
+				}
+			})
 		}
 	},
 	mounted() {
@@ -717,6 +794,9 @@ export default {
 						height: 100%;
 					}
 					.editbtn {
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						position: absolute;
 						right: 0.8rem;
 						top: -0.2667rem;
@@ -724,12 +804,16 @@ export default {
 						height: 0.5333rem;
 						border-radius: 50%;
 						box-sizing: border-box;
+						background-color: #fff;
 						overflow: hidden;
 						img {
 							width: 100%;
 						}
 					}
 					.delbtn {
+						display: flex;
+						align-items: center;
+						justify-content: center;
 						position: absolute;
 						right: -0.2667rem;
 						top: -0.2667rem;
@@ -737,6 +821,7 @@ export default {
 						height: 0.5333rem;
 						border-radius: 50%;
 						box-sizing: border-box;
+						background-color: #de3c3c;
 						overflow: hidden;
 						img {
 							width: 100%;

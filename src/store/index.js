@@ -14,7 +14,8 @@ const state = {
         modelBust: '',
         modelWaist: '',
         modelHips: ''
-    }
+    },
+    modelCardList: []
 }
 
 const mutations = {
@@ -28,6 +29,29 @@ const mutations = {
     },
     UPDATE_MODEL_CARD_DATA(state, dataObj) {
         Object.assign(state.modelCardData, dataObj)
+    },
+    // 插入或更新创建名片中的模卡列表
+    UPDATE_MODEL_CARD_LIST(state, obj) {
+        var templateExist = false;
+        state.modelCardList.forEach((item, index) => {
+            if (item.type == obj.type) {
+                state.modelCardList[index].url = obj.url;
+                templateExist = true;
+                return;
+            }
+        });
+        if (!templateExist) {
+            state.modelCardList.push(obj);
+        }
+    },
+    // 删除创建名片中的模卡列表项
+    DELETE_MODEL_CARD_LIST(state, type) {
+        state.modelCardList.forEach((item, index)=>{
+            if (item.type == type) {
+                state.modelCardList.splice(index, 1);
+                return false;
+            }
+        });
     }
 }
 
@@ -40,6 +64,9 @@ const getters = {
     },
     modelCardDataGetter: state => {
         return state.modelCardData
+    },
+    modelCardListGetter: state => {
+        return state.modelCardList
     }
 }
 

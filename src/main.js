@@ -17,6 +17,7 @@ import 'swiper/dist/css/swiper.css'
 import 'vue-croppa/dist/vue-croppa.css'
 import 'swiper/dist/css/swiper.css'
 import Croppa from 'vue-croppa'
+
 Vue.use(ConfirmPlugin)
 Vue.use(Croppa)
 Vue.use(VueAwesomeSwiper)

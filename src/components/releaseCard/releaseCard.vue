@@ -158,9 +158,9 @@
 					<ul class="addwork" v-if="cardList && cardList.length != 0">
 						<li class="showWork" v-for="(item, index) in cardList" :key="index">
 							<img class="showworkImg" v-lazy="item.url" alt="">
-							<div class="editbtn">
+							<!--<div class="editbtn" @click="jumpToEditCard(item.type)">
 								<x-icon type="edit" size=".5333rem" style="fill:#de3c3c;"></x-icon>
-							</div>
+							</div>-->
 							<div class="delbtn" @click="showDeleteCardModal(item.type)">
 								<x-icon type="close-circled" size=".5333rem" style="fill:#fff;"></x-icon>
 							</div>
@@ -340,13 +340,13 @@ export default {
 			var cardList = this.$store.getters.modelCardListGetter;
 			if (cardList && cardList.length == 0) {
 				cardList = JSON.parse(sessionStorage.getItem('cardList'));
-				if (cardList && cardList.length == 0) {
+				if (cardList) {
 					cardList.forEach((item, index) => {
 						this.$store.commit('UPDATE_MODEL_CARD_DATA', item);
 					});
 				}
 			}
-			return this.$store.getters.modelCardListGetter;
+			return this.$store.state.modelCardList;
 		}
 	},
 	methods: {
@@ -432,6 +432,10 @@ export default {
 				});
 				this.$router.push({ path: '/CardTemplate' });
 			}
+		},
+		// 跳转到编辑模卡页面
+		jumpToEditCard(templateType) {
+			this.$router.push({ path: `/CardEditImages/${templateType}` });
 		},
 		// 计算 croppa 宽高和缩放比例
 		computeCroppaSize() {

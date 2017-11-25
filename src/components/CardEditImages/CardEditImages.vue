@@ -1,5 +1,5 @@
 <template>
-	<div id="CardChooseImages" ref="CardChooseImages">
+	<div id="CardEditImages" ref="CardEditImages">
 		<!-- 头部 -->
 		<x-header>选择模卡图片</x-header>
 
@@ -156,6 +156,7 @@ import { XHeader, Toast } from 'vux'
 import _ from 'lodash'
 import qs from 'qs'
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 export default {
 	components: {
 		XHeader,
@@ -180,6 +181,8 @@ export default {
 			isShowEditPanel: false,
 			// 模板类型
 			templateType: this.$route.params.template ? this.$route.params.template : '',
+			// 旧的模卡各单图数据集
+			oldCardImagesList: [],
 			// 五图模板数据
 			templateData5: [
 				{
@@ -515,6 +518,24 @@ export default {
 		}
 	},
 	methods: {
+		// 初始化模卡内单图
+		initCardImages() {
+			var templateEditingObject = this[`templateData${this.templateType}`];
+			axios({
+				method: 'POST',
+				url: '/model/Picture/mookeType',
+				data: qs.stringify({
+					type: this.templateType
+				})
+			}).then((response)=>{
+				var res = response.data;
+				this.oldCardImagesList = res;
+				res.forEach((item, index)=>{
+					templateEditingObject[index].initImage = item.path;
+					templateEditingObject[index].imageChosen = true;
+				});
+			});
+		},
 		// 上传模卡
 		upLoadCard() {
 			if (this.isAllowSubmitCard && this.templateType != '') {
@@ -634,7 +655,7 @@ export default {
 
 				// 判断是否选择完所有图片
 				templateEditingObject.forEach((item, index) => {
-					if (item.imageChosen == '') {
+					if (!item.imageChosen) {
 						this.isAllowSubmitCard = false;
 						return
 					} else {
@@ -658,8 +679,8 @@ export default {
 		},
 		// 计算 croppa 宽高和缩放比例
 		computeCroppaSize() {
-			var screenWidth = this.$refs.CardChooseImages.clientWidth,
-				screenHeight = this.$refs.CardChooseImages.clientHeight;
+			var screenWidth = this.$refs.CardEditImages.clientWidth,
+				screenHeight = this.$refs.CardEditImages.clientHeight;
 			if (this.imageEditing.width <= screenWidth && this.imageEditing.height <= screenHeight) {
 				this.croppaWidth = this.imageEditing.width;
 				this.croppaHeight = this.imageEditing.height;
@@ -696,11 +717,12 @@ export default {
 		window.onpopstate = () => {
 			this.isShowEditPanel = false
 		}
+		this.initCardImages()
 	}
 }
 </script>
 <style lang="less" scoped>
-#CardChooseImages {
+#CardEditImages {
 	width: 100%;
 	height: 100%; // croppa
 	.croppa-container {

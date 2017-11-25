@@ -113,13 +113,13 @@ const routes = [{
 	meta: { title: '选择图片' },
     component: resolve => require(['../components/CardChooseImages/CardChooseImages'], resolve)
 }, {
+	path: '/CardEditImages/:template',
+	meta: { title: '编辑图片' },
+    component: resolve => require(['../components/CardEditImages/CardEditImages'], resolve)
+}, {
 	path: '/platformRules',
 	meta: { title: '平台规则' },
     component: resolve => require(['../components/platformRules/platformRules'], resolve)
-}, {
-	path: '/preview',
-	meta: { title: 'preview' },
-    component: resolve => require(['../common/previewImages/previewImages'], resolve)
 }]
 
 export default new Router({

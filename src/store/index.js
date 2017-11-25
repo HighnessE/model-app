@@ -37,7 +37,7 @@ const mutations = {
             if (item.type == obj.type) {
                 state.modelCardList[index].url = obj.url;
                 templateExist = true;
-                return false;
+                return;
             }
         });
         if (!templateExist) {
@@ -48,7 +48,7 @@ const mutations = {
     DELETE_MODEL_CARD_LIST(state, type) {
         state.modelCardList.forEach((item, index)=>{
             if (item.type == type) {
-                delete state.modelCardList[index];
+                state.modelCardList.splice(index, 1);
                 return false;
             }
         });

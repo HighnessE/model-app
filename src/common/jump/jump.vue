@@ -28,7 +28,7 @@
         this.$emit('hideModal')
       },
       gotoStick() {
-        this.$router.push('stickNotify')
+        this.$router.push('/myRelease')
         this.$emit('hideModal')
       }
     }

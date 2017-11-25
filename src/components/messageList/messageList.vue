@@ -14,20 +14,21 @@
 									<x-icon type="ios-circle-outline" size="0.7rem" style="fill:#919191" v-if="!item.active"></x-icon>
 								</div>
 							</div>
-							<a class="mesdetailink" href="javascript:">
+							<router-link class="mesdetailink" :to="`/messageDetail/type/${Module}/userId/${item.id}`">
 								<div class="headpart">
 									<x-icon type="ios-cog" size="1.0667rem" style="fill:#ff9090"></x-icon>
 								</div>
 								<div class="maininfopart">
 									<div class="titleline">
 										<h4>系统消息</h4>
+										<div>{{item.release}}</div>
 									</div>
 									<div class="contentline">
-										<p>您的名片于今天被点赞一次</p>
-										<div>1</div>
+										<p>{{item.message}}</p>
+										<div v-if="item.look == '0'">1</div>
 									</div>
 								</div>
-							</a>
+							</router-link>
 						</li>
 					</template>
 					<template v-else-if="Module === '2'">
@@ -148,6 +149,10 @@ export default {
 				id: this.Module
 			})).then(res => {
 				console.log(res)
+				res.data.map(item=>{
+					item.active = false
+					item.release = this.formatTime(item.timestamp)
+				})
 				this.leaveMsgList = res.data
 			})
 		},

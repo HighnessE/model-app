@@ -340,8 +340,13 @@ export default {
 			var cardList = this.$store.getters.modelCardListGetter;
 			if (cardList && cardList.length == 0) {
 				cardList = JSON.parse(sessionStorage.getItem('cardList'));
+				if (cardList && cardList.length == 0) {
+					cardList.forEach((item, index) => {
+						this.$store.commit('UPDATE_MODEL_CARD_DATA', item);
+					});
+				}
 			}
-			return cardList;
+			return this.$store.getters.modelCardListGetter;
 		}
 	},
 	methods: {
@@ -499,10 +504,9 @@ export default {
 				onConfirm() {
 					_this.$store.commit('DELETE_MODEL_CARD_LIST', _this.deleteCardType);
 					var cardList = JSON.parse(sessionStorage.getItem('cardList'));
-					// TODO 删除之后数组项变成 null 的问题
 					cardList.forEach((item, index) => {
 						if (item.type == _this.deleteCardType) {
-							delete cardList[index];
+							cardList.splice(index, 1);
 							sessionStorage.setItem('cardList', JSON.stringify(cardList));
 							_this.$vux.toast.text('删除成功！');
 							return false;

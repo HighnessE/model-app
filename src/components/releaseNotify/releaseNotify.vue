@@ -69,7 +69,7 @@
 					<div class="itemwrap">
 						<div class="itemtype">
 							<b class="required">*</b>
-								岗位要求
+							岗位要求
 						</div>
 						<div class="itemhandle">
 							<span>是否面试</span>
@@ -111,7 +111,8 @@
 			<div class="contactinfowrapbox">
 				<div class="contactinfobox">
 					<div class="titleline">
-						<h4><b class="required">*</b>联系方式</h4>
+						<h4>
+							<b class="required">*</b>联系方式</h4>
 					</div>
 					<div class="inputcontactinfobox">
 						<select class="contactinfotype" v-model="contactInfoType">
@@ -200,23 +201,27 @@ export default {
 			theme: '',    //工作主题
 			height: '',
 			weight: '',
-			defaultPlaceholder:'',//地址默认提示
-			address:'', 
-			workPlace:'', // 详细地址
-			sex:'女',
-			priceType:'价格', //报价类型
-			units:'元/人',  //单位
-			number:'', // 需要人数
-			price:'', // 价格
-			contactInfoType:'weixin',
-			inputContactInfo:'',//联系方式
-			ifInterview:'',
+			defaultPlaceholder: '',//地址默认提示
+			address: '',
+			workPlace: '', // 详细地址
+			sex: '女',
+			priceType: '价格', //报价类型
+			units: '元/人',  //单位
+			number: '', // 需要人数
+			price: '', // 价格
+			contactInfoType: 'weixin',
+			inputContactInfo: '',//联系方式
+			ifInterview: '',
 			startTime: '',
-			endTime: ''
+			endTime: '',
+			// 微信上传图片的列表
+			localIds: [],
+			// 编号
+			oii: 0,
 		};
 	},
-	watch:{
-		units(){
+	watch: {
+		units() {
 			console.log(this.units)
 		}
 	},
@@ -252,20 +257,67 @@ export default {
 			console.log(this[attr])
 		},
 		//获取地址
-		getAddr(val){
+		getAddr(val) {
 			this.address = val
 		},
 		//点击确认提交
-		submitForm(){
-			this.$http.post('/model/AddParticulars/Annunciate',qs.stringify({
-				worktype:'',
-				worktheme:'',
-				starttime:'',
-				endtime:'',
-				
-			})).then(res=>{
+		submitForm() {
+			this.$http.post('/model/AddParticulars/Annunciate', qs.stringify({
+				worktype: '',
+				worktheme: '',
+				starttime: '',
+				endtime: '',
+
+			})).then(res => {
 
 			})
+		},
+		// 选择图片
+		chooseImages(remain, cb) {
+			this.$wechat.chooseImage({
+				count: remain, // 默认9
+				sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				success: (res) => {
+					// 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					res.localIds.map((item) => {
+						this.localIds.push(item);
+					});
+					cb && cb()
+				}
+			})
+		},
+		// 预览图片
+		previewImages(oIndex) {
+			this.$wechat.previewImage({
+				current: this.localIds[oIndex], // 当前显示图片的http链接
+				urls: this.localIds // 需要预览的图片http链接列表
+			})
+		},
+		// 删除图片
+		removeImages(oIndex) {
+			this.localIds.splice(oIndex, 1)
+		},
+		// 上传图片
+		uploadImage() {
+			if (this.localIds.length > 0) {
+				wx.uploadImage({
+					localId: this.localIds[this.oii], // 需要上传的图片的本地ID，由chooseImage接口获得
+					isShowProgressTips: 1, // 默认为1，显示进度提示
+					success: (res)=> {
+						this.oii++;
+						this.serverIds.push(res.serverId); // 返回图片的服务器端ID
+						// alert(this.serverIds);
+						if (this.oii < this.localIds.length) {
+							this.uploadImage()
+						} else {
+							uploadToServer(this.uploadData)
+						}
+					}
+				})
+			} else {
+				uploadToServer(this.uploadData)
+			}
 		}
 	},
 	created() {
@@ -306,11 +358,10 @@ export default {
 		.vux-input-icon.weui-icon-warn:before,
 		.vux-input-icon.weui-icon-success:before {
 			font-size: 0.56rem !important;
-		} 
-		//公共样式
+		} //公共样式
 		.required {
-			color:#fe3076;
-			margin-right:0.1rem
+			color: #fe3076;
+			margin-right: 0.1rem
 		}
 		.items {
 			.itemwrap {

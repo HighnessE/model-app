@@ -27,7 +27,7 @@ Vue.use(VueChatScroll)
 Vue.use(VueLazyLoad,{
     preLoad:1.3,
     error:require('./base/img/error.jpg'),
-    loading:require('./base/img/loading.gif'),
+    loading:'http://www.qingmeng168.com/model-spring-lm/img/loading.gif',
     attempt:1
 })
 Vue.use(ToastPlugin)

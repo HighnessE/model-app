@@ -16,14 +16,14 @@
 						</span>
 					</div>
 					<div class="itemhandle" @click="showType=!showType">
-						<span>{{work_type}}</span>
+						<span>{{worktype}}</span>
 						<x-icon type="chevron-right" size="0.4rem" class="icon-home"></x-icon>
 					</div>
 				</div>
 			</div>
 			<!-- 工作主题 -->
 			<group class="onepx">
-				<x-textarea title="工作主题" :max="25" v-model="theme" placeholder="简单说下~" :required="true" autosize></x-textarea>
+				<x-textarea title="工作主题" :max="25" v-model.trim="theme" placeholder="简单说下~" :required="true" autosize></x-textarea>
 			</group>
 			<!-- 工作时间 -->
 			<div class="items garybar">
@@ -61,7 +61,7 @@
 			</div>
 			<!-- 详细地址 -->
 			<group class="garybar">
-				<x-input title="详细地址" type="text" v-model="workPlace" :should-toast-error=false text-align="right" :required='true'></x-input>
+				<x-input title="详细地址" type="text" v-model="detailaddr" :should-toast-error='false' text-align="right"></x-input>
 			</group>
 			<!-- 岗位要求 -->
 			<div class="requestbox">
@@ -73,14 +73,14 @@
 						</div>
 						<div class="itemhandle">
 							<span>是否面试</span>
-							<v-switch title=""></v-switch>
+							<v-switch title="" :init="ifInterview" @on-change="getInterview($event)"></v-switch>
 						</div>
 					</div>
 				</div>
 				<div class="requesttypewrap">
 					<div class="requesttype">
 						<div class="inputcount">
-							<input type="number" placeholder="输入人数" min="1" max="999" v-model="number">
+							<input type="number" placeholder="输入人数" min="1" max="999" v-model="inputcount">
 							<div class="units">人</div>
 						</div>
 						<select name="" id="gender" v-model="sex">
@@ -93,19 +93,19 @@
 							<option>自报价</option>
 							<option>面议</option>
 						</select>
-						<select name="" id="units" v-model="units" v-show="priceType!=='面议'">
+						<select name="" id="units" v-model="units" v-show="priceType=='价格'">
 							<option>元/人</option>
 							<option>元/人/天</option>
 							<option>元/人/时</option>
 							<option>元/人/件</option>
 						</select>
-						<input class="inputprice" type="number" placeholder="点击输入价格" v-model="price" v-show="priceType!=='面议'">
+						<input class="inputprice" type="number" placeholder="点击输入价格" v-model.trim="price" v-show="priceType=='价格'">
 					</div>
 				</div>
 			</div>
 			<!-- 详细说明 -->
 			<group>
-				<x-textarea title="详细说明" :max="140" v-model="theme" placeholder="细致地介绍一下~" autosize></x-textarea>
+				<x-textarea title="详细说明" :max="140" v-model.trim="inputspecify" placeholder="细致地介绍一下~" autosize></x-textarea>
 			</group>
 			<!-- 联系方式 -->
 			<div class="contactinfowrapbox">
@@ -121,7 +121,7 @@
 							<option value="email">邮箱</option>
 							<option value="qq">qq</option>
 						</select>
-						<input type="text" class="inputcontactinfo" name="contactinfo" rows="4" placeholder="请输入联系方式" v-model="inputContactInfo">
+						<input type="text" class="inputcontactinfo" placeholder="请输入联系方式" v-model="inputContactInfo">
 					</div>
 				</div>
 			</div>
@@ -151,7 +151,7 @@
 				<button class="confirmsubmit" @click="submitForm()">确认提交</button>
 			</div>
 			<!-- 提交后的彈窗 -->
-			<div class="aftersubmitwrap" v-if="false">
+			<div class="aftersubmitwrap" v-if="if_first">
 				<div class="aftersubmit">
 					<div class="aftercontent">
 						<h4>首次发布请留下您的联系方式</h4>
@@ -159,21 +159,21 @@
 						<div class="inputwxbox">
 							<label for="inputwx">您的微信：</label>
 							<div>
-								<input type="text" id="inputwx" placeholder="请输入您的微信号">
+								<input type="text" v-model.trim="Wx" placeholder="请输入您的微信号">
 							</div>
 						</div>
 						<div class="inputphonebox">
 							<label for="inputphone">手机号码：</label>
 							<div>
-								<input type="text" id="inputphone" placeholder="请输入您的手机号">
+								<input type="text" v-model.trim="Wxphone" placeholder="请输入您的手机号">
 							</div>
 						</div>
 					</div>
-					<div class="afterbtn">确定</div>
+					<div class="afterbtn" @click="firstCommit()">确定</div>
 				</div>
 			</div>
 			<x-dialog v-model="showType" hide-on-blur>
-				<select-list :arrList="typeArr" @on-change="selectPrames('work_type',$event)"></select-list>
+				<select-list :arrList="typeArr" @on-change="selectPrames('worktype',$event)"></select-list>
 			</x-dialog>
 		</div>
 	</div>
@@ -194,36 +194,34 @@ import selectList from "../../common/selectLayer/selectLayer";
 export default {
 	data() {
 		return {
-			showType: false,
-			work_type: '',
+			if_first: false, //是否第一次发布
+			showType: false, //类型弹窗状态
+			worktype: '', //通告类型
+			typeArr: [],  //提供遍历的类型数组
 			albums: [],   //相册
-			typeArr: [],
 			theme: '',    //工作主题
-			height: '',
-			weight: '',
 			defaultPlaceholder: '',//地址默认提示
-			address: '',
-			workPlace: '', // 详细地址
-			sex: '女',
+			address: '',   //地址
+			detailaddr: '', // 详细地址
+			sex: '女',     //报价性别
 			priceType: '价格', //报价类型
-			units: '元/人',  //单位
-			number: '', // 需要人数
-			price: '', // 价格
-			contactInfoType: 'weixin',
-			inputContactInfo: '',//联系方式
-			ifInterview: '',
-			startTime: '',
-			endTime: '',
+			inputcount: '',  //报价需要人数
+			units: '元/人',  //报价单位
+			price: '',   //报价
+			inputspecify: '',//详细说明
+			contactInfoType: 'weixin',//联系方式类型
+			inputContactInfo: '',//联系方式内容
+			ifInterview: false, //是否面试
+			startTime: '', //开始时间
+			endTime: '',  //结束时间
+			serverId: '',
+			Wx: '',   //第一次提交的微信号
+			Wxphone: '', //第一次提交的手机号
 			// 微信上传图片的列表
 			localIds: [],
 			// 编号
-			oii: 0,
+			oii: 0
 		};
-	},
-	watch: {
-		units() {
-			console.log(this.units)
-		}
 	},
 	methods: {
 		//请求后台类型数据

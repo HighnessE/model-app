@@ -14,6 +14,7 @@ import Contact from '@/components/contact/contact'
 import notifyDetail from '@/components/notifyDetail/notifyDetail'
 import myNotifyDetail from '@/components/myNotifyDetail/myNotifyDetail'
 import releaseNotify from '@/components/releaseNotify/releaseNotify'
+import editNotify from '@/components/editNotify/editNotify'
 import releaseCard from '@/components/releaseCard/releaseCard'
 import cardDetail from '@/components/cardDetail/cardDetail'
 import myCardDetail from '@/components/myCardDetail/myCardDetail'
@@ -59,15 +60,15 @@ const routes = [{
 }, {
 	path: '/myCollect',
 	meta: { title: '我的收藏' },
-	component: myCollect
+	component: resolve => require(['../components/myCollect/myCollect'], resolve)
 }, {
 	path: '/Setup',
 	meta: { title: '设置与隐私' },
-	component: Setup
+	component: resolve => require(['../components/setup/setup'], resolve)
 }, {
 	path: '/Contact',
-	meta: { title: '联系我们' },
-	component: Contact
+	meta: { title: '联系平台' },
+	component: resolve => require(['../components/contact/contact'], resolve)
 }, {
 	path: '/releaseNotify',
 	meta: { title: '发布通告' },
@@ -75,7 +76,7 @@ const routes = [{
 }, {
 	path: '/editNotify/:vid',
 	meta: { title: '发布通告' },
-	component: resolve => require(['../components/editNotify/editNotify'], resolve)
+	component: editNotify
 }, {
 	path: '/notifyDetail/:vid',
 	meta: { title: '通告详情' },
@@ -87,7 +88,7 @@ const routes = [{
 }, {
 	path: '/myRelease',
 	meta: { title: '我的发布' },
-	component: myRelease
+	component: resolve => require(['../components/myRelease/myRelease'], resolve)
 }, {
 	path: '/cardDetail/:id',
 	meta: { title: '名片详情' },
@@ -101,9 +102,9 @@ const routes = [{
 	meta: { title: '发布名片' },
 	component: releaseCard
 }, {
-	path: '/stickNotify',
+	path: '/stickNotify/:vid',
 	meta: { title: '置顶通告' },
-	component: stickNotify
+	component: resolve => require(['../components/stickNotify/stickNotify'], resolve)
 }, {
 	path: '/CardTemplate',
 	meta: { title: '选择模板' },

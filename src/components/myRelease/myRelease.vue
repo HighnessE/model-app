@@ -15,7 +15,7 @@
                 </div>
                 <router-link class="releaselink" :to="`/myNotifyDetail/${item.vid}`">
                     <div class="headpart">
-                        <img alt="">
+                        <img v-lazy="item.picture">
                     </div>
                     <div class="maininfopart">
                         <div class="headline">
@@ -252,11 +252,14 @@ export default {
                 padding: 0.4rem 0.48rem 0.4rem 0.29333333333333333rem;
                 .headpart {
                     flex: 0 0 auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    overflow: hidden;
                     width: 2.986666666666667rem;
                     height: 2.986666666666667rem;
                     img {
                         width: 100%;
-                        display: block;
                     }
                 }
                 .maininfopart {

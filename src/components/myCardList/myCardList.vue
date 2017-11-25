@@ -100,7 +100,7 @@ export default {
 
 		},
 		editCard(item) {
-
+			this.$router.push(`/editCard/${item.id}`)
 		},
 		stickCard(item) {
 			// this.$router.push('/stickNotify')

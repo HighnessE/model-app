@@ -102,6 +102,10 @@ const routes = [{
 	meta: { title: '发布名片' },
 	component: releaseCard
 }, {
+	path: '/editCard/:id',
+	meta: { title: '发布名片' },
+	component: resolve => require(['../components/editCard/editCard'], resolve)
+}, {
 	path: '/stickNotify/:vid',
 	meta: { title: '置顶通告' },
 	component: resolve => require(['../components/stickNotify/stickNotify'], resolve)

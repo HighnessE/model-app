@@ -132,14 +132,13 @@
 						<div class="titleline">
 							<h4>添加图片(选填)</h4>
 						</div>
-						<div class="editbtn">编辑</div>
 					</div>
 					<div class="samplelist">
 						<ul class="addpicture">
-							<li class="showpic" v-for="(item,index) in albums" :key="index">
+							<li class="showpic" v-for="(item,index) in localIds" :key="index">
 								<img class="showpicimg" :src="item">
 							</li>
-							<li class="addpicbtn">
+							<li class="addpicbtn" @click="addPictures()">
 								<x-icon type="ios-plus-outline" size="2.0rem" class="icon-home"></x-icon>
 							</li>
 						</ul>
@@ -214,7 +213,9 @@ export default {
 			ifInterview: false, //是否面试
 			startTime: '', //开始时间
 			endTime: '',  //结束时间
-			serverId: '',
+			serverIds: [], //图片的服务端ID
+			localIds: [], //需要上传的图片的本地ID
+			oii: 0, //上传图片索引
 			Wx: '',   //第一次提交的微信号
 			Wxphone: '' //第一次提交的手机号
 		};
@@ -257,6 +258,21 @@ export default {
 		//获取是否面试状态
 		getInterview(val) {
 			this.ifInterview = val
+		},
+		//添加图片
+		addPictures() {
+			let wx = this.$wechat
+			let nolen = 3 - this.localIds.length
+			if (nolen > 0) {
+				wx.chooseImage({
+					count: nolen, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					}
+				})
+			}
 		},
 		//表单验证
 		checkForm() {

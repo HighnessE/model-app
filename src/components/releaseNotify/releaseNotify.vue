@@ -132,14 +132,13 @@
 						<div class="titleline">
 							<h4>添加图片(选填)</h4>
 						</div>
-						<div class="editbtn">编辑</div>
 					</div>
 					<div class="samplelist">
 						<ul class="addpicture">
-							<li class="showpic" v-for="(item,index) in albums" :key="index">
+							<li class="showpic" v-for="(item,index) in localIds" :key="index">
 								<img class="showpicimg" :src="item">
 							</li>
-							<li class="addpicbtn">
+							<li class="addpicbtn" @click="addPictures()">
 								<x-icon type="ios-plus-outline" size="2.0rem" class="icon-home"></x-icon>
 							</li>
 						</ul>
@@ -214,7 +213,9 @@ export default {
 			ifInterview: false, //是否面试
 			startTime: '', //开始时间
 			endTime: '',  //结束时间
-			serverId: '',
+			serverIds: [], //图片的服务端ID
+			localIds: [], //需要上传的图片的本地ID
+			oii: 0, //上传图片索引
 			Wx: '',   //第一次提交的微信号
 			Wxphone: '', //第一次提交的手机号
 			// 微信上传图片的列表
@@ -260,6 +261,56 @@ export default {
 		getAddr(val) {
 			this.address = val
 		},
+		//获取是否面试状态
+		getInterview(val) {
+			this.ifInterview = val
+		},
+		//添加图片
+		addPictures() {
+			let wx = this.$wechat
+			let nolen = 3 - this.localIds.length
+			if (nolen > 0) {
+				wx.chooseImage({
+					count: nolen, // 默认9
+					sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+					sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+					success: function(res) {
+						var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+					}
+				})
+			}
+		},
+		//表单验证
+		checkForm() {
+			let infoList = {
+				worktype: this.worktype,
+				worktheme: this.theme,
+				arealist: this.address,
+				inputcount: this.inputcount,
+				contactinfo: this.inputContactInfo,
+			}
+			let toastList = {
+				worktype: '请选择您的工作类型！',
+				worktheme: '请输入您的工作主题',
+				arealist: '请选择工作地点',
+				inputcount: '请选择需要的人数',
+				contactinfo: '请输入您的联系方式',
+			}
+			for (var x in infoList) {
+				if (infoList[x] === '') {
+					this.$vux.toast.text(toastList[x], 'middle')
+					return false
+				}
+
+			}
+			if (this.priceType == '价格') {
+				if (this.price == '') {
+					this.$vux.toast.text('请输入价格', 'middle')
+					return false
+				}
+			}
+			return true
+		},
 		//点击确认提交
 		submitForm() {
 			this.$http.post('/model/AddParticulars/Annunciate', qs.stringify({
@@ -304,7 +355,7 @@ export default {
 				wx.uploadImage({
 					localId: this.localIds[this.oii], // 需要上传的图片的本地ID，由chooseImage接口获得
 					isShowProgressTips: 1, // 默认为1，显示进度提示
-					success: (res)=> {
+					success: (res) => {
 						this.oii++;
 						this.serverIds.push(res.serverId); // 返回图片的服务器端ID
 						// alert(this.serverIds);

@@ -147,11 +147,11 @@ export default {
 					.head-img {
 						width: 1.0933rem;
 						height: 1.0933rem;
-						border-radius: 50%;
 						img {
 							display: block;
 							height: 100%;
 							width: 100%;
+							border-radius: 50%;
 						}
 					}
 					.info-content {
@@ -199,11 +199,11 @@ export default {
 					.head-img {
 						width: 1.0933rem;
 						height: 1.0933rem;
-						border-radius: 50%;
 						img {
 							display: block;
 							height: 100%;
 							width: 100%;
+							border-radius: 50%;
 						}
 					}
 					.info-content {

@@ -82,17 +82,17 @@ export default {
 				})
 		},
 		delCard(item, index) {
+			let _this = this
 			this.$vux.confirm.show({
 				title: '确定删除此名片吗？',
 				onConfirm() {
-					this.$http.post('/model/Work/WDelete', qs.stringify({
+					_this.$http.post('/model/Work/WDelete', qs.stringify({
 						id: item.id
 					})).then(res => {
 						console.log(res)
 						if (res.data.result === 'success') {
-							this.cardArray.splice(index, 1)
-							console.log(this.cardArray)
-							this.getMycard()
+							_this.cardArray.splice(index, 1)
+							console.log(_this.cardArray)
 						}
 					})
 				}

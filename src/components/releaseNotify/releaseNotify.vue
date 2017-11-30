@@ -220,7 +220,9 @@ export default {
 			// 微信上传图片的列表
 			localIds: [],
 			// 编号
-			oii: 0
+			oii: 0,
+			// 服务器上的图片ID
+			serverIds: []
 		};
 	},
 	methods: {
